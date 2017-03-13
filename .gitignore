@@ -2,7 +2,7 @@
 ### Start non-generated rules ###
 
 *.class
-build/*
+build
 
 # Gradle
 .gradle
