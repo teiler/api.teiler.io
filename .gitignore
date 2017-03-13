@@ -6,7 +6,6 @@ build/*
 
 # Gradle
 .gradle
-gradle
 
 ### End non-generated rules ### 
 
