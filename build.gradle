@@ -3,6 +3,10 @@ apply plugin: "java"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
+sourceCompatibility = 1.8
+sourceSets.main.java.srcDirs = [ "src/main/java", "src/main/resources"]
+sourceSets.test.java.srcDirs = [ "src/test/java"]
+
 repositories {
     mavenLocal()
     jcenter()
