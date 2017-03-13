@@ -10,11 +10,12 @@ addons:
     github_token:
       secure: 70c45aec45b92f28e14b9159a18a20c92e2dddae
 before_install:
-- chmod +x gradlew
+- chmod +x ./gradlew
 script:
-- "./gradlew assemble"
-- "./gradlew check"
+- ./gradlew assemble
+- ./gradlew check
 - sonar-scanner
+after_success: ./gradlew build
 notifications:
   webhooks:
     urls:
