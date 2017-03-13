@@ -1,6 +1,9 @@
 # Put non-generated rules into the following section #
 ### Start non-generated rules ###
 
+*.class
+build/*
+
 # Gradle
 .gradle
 gradle
