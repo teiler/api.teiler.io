@@ -1,0 +1,23 @@
+apply plugin: "java"
+
+apply plugin: "eclipse"
+apply plugin: "idea"
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+ext {
+    slf4jVersion = "1.7.24"
+    logbackVersion = "1.2.1"
+
+    junitVersion = "4.12"
+}
+
+dependencies {
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "ch.qos.logback:logback-classic:$logbackVersion"
+
+    testCompile "junit:junit:$junitVersion"
+}
