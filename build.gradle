@@ -1,3 +1,4 @@
+apply plugin: "application"
 apply plugin: "java"
 
 apply plugin: "eclipse"
@@ -7,6 +8,8 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/main/java", "src/main/resources"]
 sourceSets.test.java.srcDirs = [ "src/test/java"]
 
+mainClassName = "io.teiler.server.Tylr"
+
 repositories {
     mavenLocal()
     jcenter()
@@ -14,7 +17,7 @@ repositories {
 
 ext {
     sparkVersion = "2.5.5"
-    springVersion = "4.3.7.RELEASE"
+    springBootVersion = "1.5.2.RELEASE"
 
     slf4jVersion = "1.7.24"
     logbackVersion = "1.2.1"
@@ -23,11 +26,11 @@ ext {
 }
 
 dependencies {
-    compile "com.sparkjava:spark-core:$sparkVersion"
-    compile "org.springframework:spring-context:$springVersion"
+    compile "com.sparkjava:spark-core:${sparkVersion}"
+    compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
 
-    compile "org.slf4j:slf4j-api:$slf4jVersion"
-    compile "ch.qos.logback:logback-classic:$logbackVersion"
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    compile "ch.qos.logback:logback-classic:${logbackVersion}"
 
-    testCompile "junit:junit:$junitVersion"
+    testCompile "junit:junit:${junitVersion}"
 }
