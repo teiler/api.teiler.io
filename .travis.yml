@@ -12,8 +12,8 @@ addons:
 before_install:
   - chmod +x gradlew
 script:
-  - gradlew assemble
-  - gradlew check
+  - ./gradlew assemble
+  - ./gradlew check
   - sonar-scanner
 notifications:
   webhooks: 
