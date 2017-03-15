@@ -1,6 +1,8 @@
 apply plugin: "application"
 apply plugin: "java"
 
+apply plugin: "checkstyle"
+
 apply plugin: "eclipse"
 apply plugin: "idea"
 
@@ -28,9 +30,15 @@ ext {
 dependencies {
     compile "com.sparkjava:spark-core:${sparkVersion}"
     compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    // compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
 
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
     compile "ch.qos.logback:logback-classic:${logbackVersion}"
 
     testCompile "junit:junit:${junitVersion}"
+}
+
+checkstyle {
+    configFile = rootProject.file("checkstyle.xml")
+    toolVersion = "7.6"
 }
