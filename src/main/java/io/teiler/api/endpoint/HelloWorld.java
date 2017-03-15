@@ -17,7 +17,15 @@ public class HelloWorld {
     }
     
     public void register() {
-        before((req, res) -> LOGGER.info("API call to " + req.pathInfo()));
+        before((req, res) -> LOGGER.debug("API call to '" + req.pathInfo() + "'"));
+        before((req, res) -> {
+           String path = req.pathInfo();
+           if (path.endsWith("/")) {
+               String newPath = path.substring(0, path.length() - 1);
+               LOGGER.debug("Call to '" + path + "' redirected to '" + newPath + "'");
+               res.redirect(newPath);
+           }
+        });
         
         get("/hello", (req, res) -> "Hello World");
         get("/hello/:name", (req, res) -> "Hello " + req.params(":name"));
