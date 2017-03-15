@@ -8,10 +8,10 @@ import io.teiler.api.endpoint.HelloWorld;
 
 @Configuration
 public class SparkConfiguration {
-    
+
     @Bean
     CommandLineRunner sparkRunner() {
         return args -> new HelloWorld();
     }
-    
+
 }
