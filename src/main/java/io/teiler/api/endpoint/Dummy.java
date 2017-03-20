@@ -5,15 +5,26 @@ import static spark.Spark.get;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+
+import io.teiler.server.persistence.repositories.DummyRepository;
+
 @Component
-public class HelloWorld implements Endpoint {
+public class Dummy implements Endpoint {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(HelloWorld.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(Dummy.class);
+    
+    @Autowired
+    private DummyRepository dummyRepository;
+    
+    private Gson gson;
 
-    public HelloWorld() {
+    public Dummy() {
         register();
+        gson = new Gson();
     }
 
     public void register() {
@@ -27,8 +38,9 @@ public class HelloWorld implements Endpoint {
             }
         });
 
-        get("/hello", (req, res) -> "Hello World");
-        get("/hello/:name", (req, res) -> "Hello " + req.params(":name"));
+        get("/dummy/all/txt", (req, res) -> dummyRepository.getAll());
+        get("/dummy/all/json", (req, res) -> gson.toJson(dummyRepository.getAll()));
+        //get("/hello/:name", (req, res) -> "Hello " + req.params(":name"));
     }
 
 }
