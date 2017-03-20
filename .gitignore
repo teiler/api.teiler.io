@@ -3,6 +3,7 @@
 
 *.class
 build
+src/querydsl
 
 # Gradle
 .gradle
