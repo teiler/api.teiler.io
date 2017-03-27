@@ -40,7 +40,6 @@ public class Dummy implements Endpoint {
 
         get("/dummy/all/txt", (req, res) -> dummyRepository.getAll());
         get("/dummy/all/json", (req, res) -> gson.toJson(dummyRepository.getAll()));
-        //get("/hello/:name", (req, res) -> "Hello " + req.params(":name"));
     }
 
 }
