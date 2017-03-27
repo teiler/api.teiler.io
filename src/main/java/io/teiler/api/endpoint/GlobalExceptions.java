@@ -4,7 +4,7 @@ import static spark.Spark.exception;
 
 import com.google.gson.Gson;
 import io.teiler.server.persistence.repositories.GroupRepository;
-import io.teiler.server.util.NotAuthorizedException;
+import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.Error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,6 @@ public class GlobalExceptions implements Endpoint {
 
     private Gson gson = new Gson();
 
-    private static final Logger LOGGER = LoggerFactory
-        .getLogger(io.teiler.api.endpoint.GroupEndpoint.class);
     @Autowired
     private GroupRepository groupRepository;
 
