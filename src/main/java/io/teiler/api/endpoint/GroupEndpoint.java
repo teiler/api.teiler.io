@@ -8,6 +8,7 @@ import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.repositories.GroupRepository;
 import java.security.interfaces.ECKey;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class GroupEndpoint implements Endpoint {
         post("/v1/group", (req, res) -> {
             Group requestGroup = gson.fromJson(req.body(), Group.class);
 
-            requestGroup.setUuid(new BigInteger(NUMBER_OF_ID_CHARACTERS * 5, random).toString(32));
+            requestGroup.setUuid(createNewUuid());
             LOGGER.debug("New Group: " + requestGroup.getName() + ", " + requestGroup.getUuid());
 
             GroupEntity groupEntity = groupRepository.create(requestGroup.getUuid(), requestGroup.getName());
@@ -58,5 +59,15 @@ public class GroupEndpoint implements Endpoint {
         });
 
 
+    }
+
+    // this needs to go somewhere else
+    private String createNewUuid() {
+        String uuid = null;
+        List<String> allIds = groupRepository.getAllIds();
+        do {
+            uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * 5, random).toString(32);
+        } while(allIds.contains(uuid));
+        return uuid;
     }
 }
