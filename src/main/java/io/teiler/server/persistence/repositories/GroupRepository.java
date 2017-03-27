@@ -29,10 +29,12 @@ public class GroupRepository {
     }
 
     public GroupEntity get(String uuid) {
-        return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity).where(QGroupEntity.groupEntity.uuid.eq(uuid)).fetchOne();
+        return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity)
+            .where(QGroupEntity.groupEntity.uuid.eq(uuid)).fetchOne();
     }
 
     public List<String> getAllIds() {
-        return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity).select(QGroupEntity.groupEntity.uuid).fetch();
+        return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity)
+            .select(QGroupEntity.groupEntity.uuid).fetch();
     }
 }
