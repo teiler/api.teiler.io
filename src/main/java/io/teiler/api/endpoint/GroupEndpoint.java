@@ -41,11 +41,6 @@ public class GroupEndpoint implements Endpoint {
             GroupEntity groupEntity = groupRepository.create(requestGroup.getUuid(), requestGroup.getName());
             Group responseGroup = new Group(groupEntity.getUuid(), groupEntity.getName());
 
-            // Set "secured" to true on HTTPS and false on HTTP
-            res.cookie("/", "token", "abc", 86400, false, true);
-
-            LOGGER.debug(req.cookies().toString());
-
             return gson.toJson(responseGroup);
         });
 
