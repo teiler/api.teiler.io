@@ -6,9 +6,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by lroellin on 27.03.17.
- */
 @Entity
 @Table(name = "`group`") // f*** PSQL
 public class GroupEntity {
@@ -19,6 +16,7 @@ public class GroupEntity {
     @Column(name = "name")
     private String name;
 
+    
     public GroupEntity() { }
 
     public GroupEntity(String uuid, String name) {

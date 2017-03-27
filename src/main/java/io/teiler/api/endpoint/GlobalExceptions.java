@@ -6,14 +6,9 @@ import com.google.gson.Gson;
 import io.teiler.server.persistence.repositories.GroupRepository;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.Error;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by lroellin on 27.03.17.
- */
 @Component
 public class GlobalExceptions implements Endpoint {
 
