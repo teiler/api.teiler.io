@@ -3,19 +3,19 @@ package io.teiler.server.util;
 import com.google.gson.annotations.SerializedName;
 
 public class Error {
-    @SerializedName("error")
-    private String error;
+    @SerializedName("errorCode")
+    private String errorCode;
 
-    public Error(String error) {
-        this.error = error;
+    public Error(String errorCode) {
+        this.errorCode = errorCode;
     }
 
-    public String getError() {
+    public String getErrorCode() {
 
-        return error;
+        return errorCode;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
     }
 }

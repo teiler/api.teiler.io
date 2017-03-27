@@ -1,4 +1,4 @@
-package io.teiler.server.util;
+package io.teiler.server.util.exceptions;
 
 /**
  * Created by lroellin on 27.03.17.
