@@ -1,7 +1,9 @@
 package io.teiler.server.persistence.repositories;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
+import io.teiler.server.persistence.entities.QGroupEntity;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +25,9 @@ public class GroupRepository {
         GroupEntity groupEntity = new GroupEntity(uuid, name);
         entityManager.persist(groupEntity);
         return groupEntity;
+    }
+
+    public GroupEntity get(String uuid) {
+        return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity).where(QGroupEntity.groupEntity.uuid.eq(uuid)).fetchOne();
     }
 }
