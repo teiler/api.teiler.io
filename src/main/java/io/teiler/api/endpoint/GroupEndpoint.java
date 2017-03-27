@@ -7,6 +7,7 @@ import static spark.Spark.post;
 import com.google.gson.Gson;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.repositories.GroupRepository;
+import io.teiler.server.util.AuthorizationChecker;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,9 @@ public class GroupEndpoint implements Endpoint {
     private Gson gson = new Gson();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupEndpoint.class);
+
+    @Autowired
+    private AuthorizationChecker authorizationChecker;
     @Autowired
     private GroupRepository groupRepository;
 
@@ -48,6 +52,7 @@ public class GroupEndpoint implements Endpoint {
 
         get("/v1/group", (req, res) -> {
             String uuid = req.headers(GROUP_ID_HEADER);
+            authorizationChecker.checkAuthorization(uuid);
             LOGGER.debug("Request with group ID: " + uuid);
 
             Group responseGroup = new Group(groupRepository.get(uuid));
@@ -62,6 +67,7 @@ public class GroupEndpoint implements Endpoint {
     private String createNewUuid() {
         String uuid;
         List<String> allIds = groupRepository.getAllIds();
+        // reasoning: http://stackoverflow.com/a/41156
         do {
             uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * 5, random).toString(32);
         } while (allIds.contains(uuid));
