@@ -6,12 +6,8 @@ import static spark.Spark.post;
 
 import com.google.gson.Gson;
 import io.teiler.server.dto.Group;
-import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.repositories.GroupRepository;
-import java.security.interfaces.ECKey;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +60,7 @@ public class GroupEndpoint implements Endpoint {
 
     // this needs to go somewhere else
     private String createNewUuid() {
-        String uuid = null;
+        String uuid;
         List<String> allIds = groupRepository.getAllIds();
         do {
             uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * 5, random).toString(32);
