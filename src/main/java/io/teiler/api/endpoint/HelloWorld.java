@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HelloWorld implements Endpoint {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(HelloWorld.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorld.class);
 
     public HelloWorld() {
         register();

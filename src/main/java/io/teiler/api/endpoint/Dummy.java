@@ -15,7 +15,7 @@ import io.teiler.server.persistence.repositories.DummyRepository;
 @Component
 public class Dummy implements Endpoint {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(Dummy.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Dummy.class);
     
     @Autowired
     private DummyRepository dummyRepository;
