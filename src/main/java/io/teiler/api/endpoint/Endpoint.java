@@ -4,4 +4,4 @@ public interface Endpoint {
 
     void register();
 }
-y
+
