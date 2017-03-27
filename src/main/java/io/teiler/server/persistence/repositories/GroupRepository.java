@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.entities.QGroupEntity;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,9 @@ public class GroupRepository {
 
     public GroupEntity get(String uuid) {
         return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity).where(QGroupEntity.groupEntity.uuid.eq(uuid)).fetchOne();
+    }
+
+    public List<String> getAllIds() {
+        return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity).select(QGroupEntity.groupEntity.uuid).fetch();
     }
 }
