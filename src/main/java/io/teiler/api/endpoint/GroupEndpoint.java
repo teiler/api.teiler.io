@@ -3,6 +3,7 @@ package io.teiler.api.endpoint;
 import static spark.Spark.before;
 import static spark.Spark.get;
 import static spark.Spark.post;
+
 import com.google.gson.Gson;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
@@ -43,8 +44,8 @@ public class GroupEndpoint implements Endpoint {
             requestGroup.setUuid(createNewUuid());
             LOGGER.debug("New Group: " + requestGroup.getName() + ", " + requestGroup.getUuid());
 
-            GroupEntity groupEntity = groupRepository.create(requestGroup.getUuid(), requestGroup.getName());
-            Group responseGroup = new Group(groupEntity.getUuid(), groupEntity.getName());
+            Group responseGroup = new Group(
+                groupRepository.create(requestGroup.getUuid(), requestGroup.getName()));
 
             return gson.toJson(responseGroup);
         });
@@ -52,8 +53,8 @@ public class GroupEndpoint implements Endpoint {
         get("/v1/group", (req, res) -> {
             String uuid = req.headers(GROUP_ID_HEADER);
             LOGGER.debug("Request with group ID: " + uuid);
-            GroupEntity groupEntity = groupRepository.get(uuid);
-            Group responseGroup = new Group(groupEntity.getUuid(), groupEntity.getName());
+
+            Group responseGroup = new Group(groupRepository.get(uuid));
 
             return gson.toJson(responseGroup);
         });
@@ -67,7 +68,7 @@ public class GroupEndpoint implements Endpoint {
         List<String> allIds = groupRepository.getAllIds();
         do {
             uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * 5, random).toString(32);
-        } while(allIds.contains(uuid));
+        } while (allIds.contains(uuid));
         return uuid;
     }
 }
