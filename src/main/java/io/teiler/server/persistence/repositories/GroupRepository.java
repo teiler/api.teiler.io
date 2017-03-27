@@ -1,0 +1,27 @@
+package io.teiler.server.persistence.repositories;
+
+import io.teiler.server.dto.Group;
+import io.teiler.server.persistence.entities.GroupEntity;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+/**
+ * Created by lroellin on 27.03.17.
+ */
+@Repository
+public class GroupRepository {
+    @Autowired
+    private EntityManager entityManager;
+
+    //We could use a Group as the parameter in this case, but since
+    // you usually only have the attributes and not a whole class now
+    // we use the separated parameters.
+    @Transactional
+    public GroupEntity create(String uuid, String name) {
+        GroupEntity groupEntity = new GroupEntity(uuid, name);
+        entityManager.persist(groupEntity);
+        return groupEntity;
+    }
+}

@@ -4,6 +4,9 @@
 *.class
 build
 src/querydsl
+/application.properties
+
+.DS_Store
 
 # Gradle
 .gradle
