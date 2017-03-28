@@ -29,7 +29,7 @@ public class GroupEndpointTest {
     
     @Test
     public void shouldReturn401WhenViewingGroupWithoutValidUUID() {
-        ResponseEntity<String> response = testRestTemplate.getForEntity("http://0.0.0.0:" + port + "/v1/group", String.class);
+        ResponseEntity<String> response = testRestTemplate.getForEntity("http://127.0.0.1:" + port + "/v1/group", String.class);
         Assert.assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
