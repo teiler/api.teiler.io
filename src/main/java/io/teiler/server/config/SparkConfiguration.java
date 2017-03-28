@@ -1,9 +1,14 @@
 package io.teiler.server.config;
 
+import static spark.Spark.port;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +20,16 @@ import io.teiler.api.endpoint.Endpoint;
 @EnableTransactionManagement
 public class SparkConfiguration {
     
+    @Value("${server.port}")
+    private int port;
+    
     @Autowired
     private List<Endpoint> endpoints = new ArrayList<>();
+    
+    @PostConstruct
+    public void init() {
+        port(port);
+    }
 
     @Bean
     CommandLineRunner sparkRunner() {
