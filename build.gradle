@@ -51,6 +51,8 @@ dependencies {
     compile "ch.qos.logback:logback-classic:${logbackVersion}"
 
     testCompile "junit:junit:${junitVersion}"
+    testCompile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 }
 
 checkstyle {
