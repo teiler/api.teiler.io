@@ -8,17 +8,16 @@ import com.google.gson.Gson;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.repositories.GroupRepository;
 import io.teiler.server.util.AuthorizationChecker;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.security.SecureRandom;
-import java.math.BigInteger;
+import org.springframework.stereotype.Controller;
 
 
-@Component
+@Controller
 public class GroupEndpoint implements Endpoint {
 
     private SecureRandom random = new SecureRandom();
@@ -31,8 +30,11 @@ public class GroupEndpoint implements Endpoint {
     @Autowired
     private GroupRepository groupRepository;
 
-    private static final int NUMBER_OF_ID_CHARACTERS = 8;
     private static final String GROUP_ID_HEADER = "X-Teiler-GroupID";
+    private static final int NUMBER_OF_ID_CHARACTERS = 8;
+    // Mathematical fact, don't change it
+    private static final int ENTROPY_BITS_IN_ONE_CHARACTER = 5;
+
 
     @Override
     public void register() {
@@ -69,7 +71,7 @@ public class GroupEndpoint implements Endpoint {
         List<String> allIds = groupRepository.getAllIds();
         // reasoning: http://stackoverflow.com/a/41156
         do {
-            uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * 5, random).toString(32);
+            uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * ENTROPY_BITS_IN_ONE_CHARACTER, random).toString(32);
         } while (allIds.contains(uuid));
         return uuid;
     }

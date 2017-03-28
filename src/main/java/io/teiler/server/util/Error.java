@@ -11,7 +11,6 @@ public class Error {
     }
 
     public String getErrorCode() {
-
         return errorCode;
     }
 
