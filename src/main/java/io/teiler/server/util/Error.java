@@ -3,7 +3,7 @@ package io.teiler.server.util;
 import com.google.gson.annotations.SerializedName;
 
 public class Error {
-    @SerializedName("errorCode")
+    @SerializedName("error")
     private String errorCode;
 
     public Error(String errorCode) {
