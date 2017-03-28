@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import io.teiler.server.Tylr;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = {"local.server.port=4567"})
+@AutoConfigureTestDatabase
 public class GroupEndpointTest {
     
     @LocalServerPort
@@ -27,7 +29,7 @@ public class GroupEndpointTest {
     
     @Test
     public void shouldReturn401WhenViewingGroupWithoutValidUUID() {
-        ResponseEntity<String> response = testRestTemplate.getForEntity("http://localhost:" + port + "/v1/group", String.class);
+        ResponseEntity<String> response = testRestTemplate.getForEntity("http://0.0.0.0:" + port + "/v1/group", String.class);
         Assert.assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
