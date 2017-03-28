@@ -1,6 +1,7 @@
 package io.teiler.server.config;
 
 import static spark.Spark.port;
+import static spark.Spark.ipAddress;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,9 @@ import io.teiler.api.endpoint.Endpoint;
 @EnableTransactionManagement
 public class SparkConfiguration {
     
+    @Value("${server.ip}")
+    private String ip;
+    
     @Value("${server.port}")
     private int port;
     
@@ -28,6 +32,7 @@ public class SparkConfiguration {
     
     @PostConstruct
     public void init() {
+        ipAddress(ip);
         port(port);
     }
 
