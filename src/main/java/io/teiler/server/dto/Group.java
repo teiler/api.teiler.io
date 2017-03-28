@@ -1,6 +1,7 @@
 package io.teiler.server.dto;
 
 import com.google.gson.annotations.SerializedName;
+import io.teiler.server.persistence.entities.GroupEntity;
 
 /**
  * Created by lroellin on 27.03.17.
@@ -14,6 +15,11 @@ public class Group {
     public Group(String uuid, String name) {
         this.uuid = uuid;
         this.name = name;
+    }
+
+    public Group(GroupEntity group) {
+        this.uuid = group.getUuid();
+        this.name = group.getName();
     }
 
     public String getUuid() {
