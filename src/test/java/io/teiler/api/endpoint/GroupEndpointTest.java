@@ -1,7 +1,6 @@
 package io.teiler.api.endpoint;
 
 import com.google.gson.Gson;
-import io.teiler.api.endpoint.util.Util;
 import io.teiler.api.service.GroupService;
 import io.teiler.server.Tylr;
 import io.teiler.server.dto.Group;
@@ -28,9 +27,6 @@ public class GroupEndpointTest {
 
     @Autowired
     private GroupService groupService;
-    
-    @Autowired
-    private Util util;
     
     @Test(expected = NotAuthorizedException.class)
     public void shouldReturnNotAuthorizedWhenViewingGroupWithoutValidUUID()
