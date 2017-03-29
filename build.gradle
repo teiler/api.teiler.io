@@ -6,6 +6,7 @@ apply plugin: "application"
 apply plugin: "java"
 
 apply plugin: "checkstyle"
+apply plugin: "jacoco"
 
 apply plugin: "eclipse"
 apply plugin: "idea"
@@ -66,4 +67,11 @@ checkstyle {
 
 querydsl {
     jpa = true
+}
+
+test {
+    reports {
+        junitXml.enabled = true
+	html.enabled = false
+    }
 }
