@@ -1,20 +1,24 @@
 package io.teiler.api.endpoint;
 
+import static spark.Spark.awaitInitialization;
 import static spark.Spark.before;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.google.gson.Gson;
-import io.teiler.server.dto.Group;
-import io.teiler.server.persistence.repositories.GroupRepository;
-import io.teiler.server.util.AuthorizationChecker;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import com.google.gson.Gson;
+
+import io.teiler.server.dto.Group;
+import io.teiler.server.persistence.repositories.GroupRepository;
+import io.teiler.server.util.AuthorizationChecker;
 
 
 @Controller
@@ -41,6 +45,8 @@ public class GroupEndpoint implements Endpoint {
         before((req, res) -> LOGGER.debug("API call to '" + req.pathInfo() + "'"));
 
         post("/v1/group", (req, res) -> {
+            awaitInitialization();
+            
             Group requestGroup = gson.fromJson(req.body(), Group.class);
 
             requestGroup.setUuid(createNewUuid());
@@ -53,6 +59,8 @@ public class GroupEndpoint implements Endpoint {
         });
 
         get("/v1/group", (req, res) -> {
+            awaitInitialization();
+            
             String uuid = req.headers(GROUP_ID_HEADER);
             authorizationChecker.checkAuthorization(uuid);
             LOGGER.debug("Request with group ID: " + uuid);
