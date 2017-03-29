@@ -72,6 +72,13 @@ querydsl {
 test {
     reports {
         junitXml.enabled = true
-	html.enabled = false
+        html.enabled = false
+    }
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled false
     }
 }
