@@ -1,7 +1,5 @@
 package io.teiler.api.service;
 
-import static spark.Spark.awaitInitialization;
-
 import com.google.gson.Gson;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.repositories.GroupRepository;
@@ -14,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spark.Request;
 
 @Service
 public class GroupService {
@@ -30,33 +27,28 @@ public class GroupService {
     private GroupRepository groupRepository;
 
     // Constants
-    private static final String GROUP_ID_HEADER = "X-Teiler-GroupID";
     private static final int NUMBER_OF_ID_CHARACTERS = 8;
     // Mathematical fact, don't change it
     private static final int ENTROPY_BITS_IN_ONE_CHARACTER = 5;
 
-    public String handleGet(Request req) throws NotAuthorizedException {
-        awaitInitialization();
+    public String viewGroup(String authorizationHeader) throws NotAuthorizedException {
 
-        String uuid = req.headers(GROUP_ID_HEADER);
-        authorizationChecker.checkAuthorization(uuid);
-        LOGGER.debug("Request with group ID: " + uuid);
+        authorizationChecker.checkAuthorization(authorizationHeader);
+        LOGGER.debug("Request with group ID: " + authorizationHeader);
 
-        Group responseGroup = new Group(groupRepository.get(uuid));
+        Group responseGroup = new Group(groupRepository.get(authorizationHeader));
 
         return gson.toJson(responseGroup);
     }
 
-    public String handlePost(Request req) {
-        awaitInitialization();
+    public String createGroup(String name) {
+        Group newGroup = new Group(null, name);
 
-        Group requestGroup = gson.fromJson(req.body(), Group.class);
-
-        requestGroup.setUuid(createNewUuid());
-        LOGGER.debug("New Group: " + requestGroup.getName() + ", " + requestGroup.getUuid());
+        newGroup.setUuid(createNewUuid());
+        LOGGER.debug("New Group: " + newGroup.getName() + ", " + newGroup.getUuid());
 
         Group responseGroup = new Group(
-            groupRepository.create(requestGroup.getUuid(), requestGroup.getName()));
+            groupRepository.create(newGroup.getUuid(), newGroup.getName()));
 
         return gson.toJson(responseGroup);
     }
