@@ -35,6 +35,7 @@ ext {
     logbackVersion = "1.2.1"
 
     junitVersion = "4.12"
+    h2Version = "1.4.194"
 }
 
 dependencies {
@@ -45,14 +46,16 @@ dependencies {
     compile "org.postgresql:postgresql:${postgresqlVersion}"
     compile "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
     compile "com.querydsl:querydsl-jpa:${queryDslVersion}"
-    
+
     compile "com.google.code.gson:gson:${gsonVersion}"
+    
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
     compile "ch.qos.logback:logback-classic:${logbackVersion}"
 
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    testCompile "com.h2database:h2:${h2Version}"
 }
 
 checkstyle {
