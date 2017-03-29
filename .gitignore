@@ -6,7 +6,7 @@ build
 src/querydsl
 /application.properties
 /.idea/sonarlint/
-
+/.idea
 
 .DS_Store
 
