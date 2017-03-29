@@ -29,9 +29,6 @@ public class GroupEndpointTest {
     @Autowired
     private GroupService groupService;
     
-    @Autowired
-    private Util util;
-    
     @Test(expected = NotAuthorizedException.class)
     public void shouldReturnNotAuthorizedWhenViewingGroupWithoutValidUUID()
         throws NotAuthorizedException {
