@@ -10,15 +10,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -27,12 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @TestPropertySource(properties = {"local.server.port=4567"})
 @AutoConfigureTestDatabase
 public class GroupEndpointTest {
-    
-    @LocalServerPort
-    private int port;
-    
-    @Value("${server.ip}")
-    private String ip;
+    Gson gson = new Gson();
     
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -49,24 +38,17 @@ public class GroupEndpointTest {
         groupService.viewGroup("");
     }
 
-//    @Test
-    public void shouldReturn401WhenViewingGroupWithInvalidUUID() {
-        String url = "http://" + ip + ":" + util.getPort() + "/v1/group";
-        HttpEntity entity = Util.getHttpEntityWithHeader("abcdef");
-        ResponseEntity<String> response = testRestTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-        Assert.assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    @Test(expected = NotAuthorizedException.class)
+    public void shouldReturnNotAuthorizedWhenViewingGroupWithInvalidUUID()
+        throws NotAuthorizedException {
+        groupService.viewGroup("abcdef");
     }
 
-//    @Test
+    @Test
     public void shouldReturnGroupNameWhenCreating() {
-        String url = "http://" + ip + ":" + util.getPort() + "/v1/group";
         String testString = "Group Name";
-        Group testGroup = new Group("", testString);
-        Gson gson = new Gson();
-
-        ResponseEntity<String> response = testRestTemplate.postForEntity(url, gson.toJson(testGroup), String.class);
-        Group responseGroup = gson.fromJson(response.getBody(), Group.class);
+        String response = groupService.createGroup(testString);
+        Group responseGroup = gson.fromJson(response, Group.class);
         Assert.assertEquals(testString, responseGroup.getName());
     }
-
 }
