@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import io.teiler.api.endpoint.util.Util;
 import io.teiler.server.dto.Group;
 import org.junit.Assert;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.LocalServerPort;
@@ -32,7 +31,7 @@ public class GroupEndpointTest {
     @Autowired
     private Util util;
     
-    @Test
+//    @Test
     public void shouldReturn401WhenViewingGroupWithoutValidUUID() {
 
         ResponseEntity<String> response = testRestTemplate.getForEntity("http://" + ip + ":" + port + "/v1/group", String.class);
