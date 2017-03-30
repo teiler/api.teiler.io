@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "transaction" (
   "id"  SERIAL,
   "title" VARCHAR(50) NOT NULL,
   "amount" INTEGER NOT NULL,
-  "createTime" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+  "createTime" TIMESTAMP WITH TIME ZONE NOT NULL,
   "updateTime" TIMESTAMP WITH TIME ZONE NOT NULL,
   "type" transaction_type NOT NULL,
   "payer" INTEGER NOT NULL REFERENCES "person",
