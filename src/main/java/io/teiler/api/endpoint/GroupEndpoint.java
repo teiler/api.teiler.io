@@ -6,8 +6,6 @@ import static spark.Spark.post;
 import com.google.gson.Gson;
 import io.teiler.api.service.GroupService;
 import io.teiler.server.dto.Group;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -16,8 +14,6 @@ import org.springframework.stereotype.Controller;
 public class GroupEndpoint implements Endpoint {
 
     private Gson gson = new Gson();
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GroupEndpoint.class);
 
     private static final String GROUP_ID_HEADER = "X-Teiler-GroupID";
 
