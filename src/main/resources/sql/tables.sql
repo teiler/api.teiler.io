@@ -16,14 +16,14 @@ CREATE TABLE IF NOT EXISTS "group" (
 );
 
 CREATE TABLE IF NOT EXISTS "person" (
-  id  INTEGER,
+  id  SERIAL,
   name  VARCHAR(50) NOT NULL,
   groupUuid VARCHAR(50) NOT NULL REFERENCES "group",
   PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS "transaction" (
-  id  INTEGER,
+  id  SERIAL,
   title VARCHAR(50) NOT NULL,
   amount INTEGER NOT NULL,
   createTime TIMESTAMP WITH TIME ZONE NOT NULL,
