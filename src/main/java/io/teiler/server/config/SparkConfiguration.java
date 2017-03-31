@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import io.teiler.api.endpoint.Endpoint;
+import io.teiler.api.endpoint.EndpointController;
 
 @Configuration
 @EnableTransactionManagement
@@ -28,7 +28,7 @@ public class SparkConfiguration {
     private int port;
     
     @Autowired
-    private List<Endpoint> endpoints = new ArrayList<>();
+    private List<EndpointController> endpoints = new ArrayList<>();
     
     @PostConstruct
     public void init() {

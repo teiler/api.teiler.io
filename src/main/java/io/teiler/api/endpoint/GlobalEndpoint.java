@@ -13,7 +13,7 @@ import io.teiler.server.util.Error;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 
 @Component
-public class GlobalEndpoint implements Endpoint {
+public class GlobalEndpoint implements EndpointController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalEndpoint.class);
 

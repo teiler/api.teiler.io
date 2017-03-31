@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class GroupEndpoint implements Endpoint {
+public class GroupEndpoint implements EndpointController {
 
     private Gson gson = new Gson();
 
