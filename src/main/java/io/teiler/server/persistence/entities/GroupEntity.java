@@ -9,15 +9,16 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "`group`") // f*** PSQL
 public class GroupEntity {
+	
     @Id
     @Column(name = "uuid")
     private String uuid;
+    
     @NotNull
     @Column(name = "name")
     private String name;
-
     
-    public GroupEntity() { }
+    public GroupEntity() { /* intentionally empty */ }
 
     public GroupEntity(String uuid, String name) {
         this.uuid = uuid;
@@ -39,4 +40,5 @@ public class GroupEntity {
     public void setName(String name) {
         this.name = name;
     }
+    
 }

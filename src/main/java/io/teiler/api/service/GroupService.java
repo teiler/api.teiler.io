@@ -15,24 +15,25 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GroupService {
-    // Logger
-    private static final Logger LOGGER = LoggerFactory.getLogger(GroupService.class);
-    // Instance objects, potentially expensive ones you only need once
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(GroupService.class);
+	
+    /* Instance objects, potentially expensive ones you only need once */
     private SecureRandom random = new SecureRandom();
     private Gson gson = new Gson();
-    // Spark Components (Services/Controller)
+    
+    /* Spark Components (Services/Controller) */
     @Autowired
     private AuthorizationChecker authorizationChecker;
+    
     @Autowired
     private GroupRepository groupRepository;
 
-    // Constants
+    /* Constants */
     private static final int NUMBER_OF_ID_CHARACTERS = 8;
-    // Mathematical fact, don't change it
-    private static final int ENTROPY_BITS_IN_ONE_CHARACTER = 5;
+    private static final int ENTROPY_BITS_IN_ONE_CHARACTER = 5; // Mathematical fact, don't change it
 
     public String viewGroup(String authorizationHeader) throws NotAuthorizedException {
-
         authorizationChecker.checkAuthorization(authorizationHeader);
         LOGGER.debug("Request with group ID: " + authorizationHeader);
 
@@ -63,4 +64,5 @@ public class GroupService {
         } while (allIds.contains(uuid));
         return uuid;
     }
+    
 }
