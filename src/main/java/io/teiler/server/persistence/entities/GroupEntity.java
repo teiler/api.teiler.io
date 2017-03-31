@@ -6,6 +6,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Entity representing an entry of the <code>group</code>-table.
+ * 
+ * @author lroellin
+ */
 @Entity
 @Table(name = "`group`") // f*** PSQL
 public class GroupEntity {

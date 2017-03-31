@@ -2,6 +2,11 @@ package io.teiler.server.util;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Error-Wrapper to smoothly get error-codes across the REST-API.
+ * 
+ * @author lroellin
+ */
 public class Error {
 	
     @SerializedName("error")

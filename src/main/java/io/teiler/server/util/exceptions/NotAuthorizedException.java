@@ -1,7 +1,9 @@
 package io.teiler.server.util.exceptions;
 
 /**
- * Created by lroellin on 27.03.17.
+ * Exception denoting that access to some ressource(s) has not been authorised.
+ * 
+ * @author lroellin
  */
 public class NotAuthorizedException extends Exception {
 
