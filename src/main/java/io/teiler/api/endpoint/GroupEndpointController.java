@@ -9,6 +9,11 @@ import io.teiler.server.dto.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+/**
+ * Controller for group-related endpoints.
+ * 
+ * @author lroellin
+ */
 @Controller
 public class GroupEndpointController implements EndpointController {
 
