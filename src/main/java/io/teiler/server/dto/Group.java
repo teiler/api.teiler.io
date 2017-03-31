@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 import io.teiler.server.persistence.entities.GroupEntity;
 
 /**
- * Created by lroellin on 27.03.17.
+ * Class holding all information about a group.
+ * 
+ * @author lroellin
  */
 public class Group {
 	

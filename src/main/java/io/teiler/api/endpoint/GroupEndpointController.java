@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 /**
- * Controller for group-related endpoints.
+ * Controller for Group-related endpoints.
  * 
  * @author lroellin
  */

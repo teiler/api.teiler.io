@@ -13,7 +13,7 @@ import io.teiler.server.util.Error;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 
 /**
- * Controller for global things such as authorisation checks or exception handling.
+ * Controller for global things such as authorisation-checks or exception handling.
  * 
  * @author lroellin
  */
