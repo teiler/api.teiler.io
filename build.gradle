@@ -78,6 +78,8 @@ test {
 }
 
 tasks.withType(Checkstyle) {
+    exclude "**/querydsl/*"
+
     reports {
         xml.enabled false
         html.enabled false
