@@ -11,7 +11,7 @@ public class GroupServiceTest {
 	private static final int ENTROPY_BITS_IN_ONE_CHARACTER_EXPECTED = 5;
 	
 	@Test
-	public void testThatEntropyBitsAreStillSetToFive() throws Throwable {
+	public void testThatEntropyBitsAreStillSetToFive() throws NoSuchFieldException, IllegalAccessException {
 		Field field = GroupService.class.getDeclaredField(ENTROPY_BITS_CONSTANT_NAME);
 		Class<?> fieldType = field.getType();
 		field.setAccessible(true); // make sure we can access the value of the private field
