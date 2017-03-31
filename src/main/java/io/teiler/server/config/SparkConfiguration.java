@@ -18,23 +18,23 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import io.teiler.api.endpoint.EndpointController;
 
 /**
- * Holds the configuration and programmatic setup required for Spark. 
+ * Holds the configuration and programmatic setup required for Spark.
  * 
  * @author pbaechli
  */
 @Configuration
 @EnableTransactionManagement
 public class SparkConfiguration {
-    
+
     @Value("${server.ip}")
     private String ip;
-    
+
     @Value("${server.port}")
     private int port;
-    
+
     @Autowired
     private List<EndpointController> endpoints = new ArrayList<>();
-    
+
     @PostConstruct
     public void init() {
         ipAddress(ip);
