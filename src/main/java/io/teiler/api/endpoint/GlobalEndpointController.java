@@ -12,6 +12,11 @@ import com.google.gson.Gson;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 
+/**
+ * Controller for global things such as authorisation checks or exception handling.
+ * 
+ * @author lroellin
+ */
 @Component
 public class GlobalEndpointController implements EndpointController {
 
