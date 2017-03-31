@@ -9,7 +9,6 @@ import io.teiler.server.dto.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-
 @Controller
 public class GroupEndpoint implements Endpoint {
 
@@ -32,4 +31,5 @@ public class GroupEndpoint implements Endpoint {
             return groupService.viewGroup(authorizationHeader);
         });
     }
+    
 }

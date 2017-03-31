@@ -3,24 +3,21 @@ package io.teiler.api.endpoint;
 import static spark.Spark.before;
 import static spark.Spark.exception;
 
-import com.google.gson.Gson;
-import io.teiler.server.persistence.repositories.GroupRepository;
-import io.teiler.server.util.Error;
-import io.teiler.server.util.exceptions.NotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.google.gson.Gson;
+
+import io.teiler.server.util.Error;
+import io.teiler.server.util.exceptions.NotAuthorizedException;
 
 @Component
 public class GlobalEndpoint implements Endpoint {
 
-    private Gson gson = new Gson();
+	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalEndpoint.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalEndpoint.class);
-
-    @Autowired
-    private GroupRepository groupRepository;
+	private Gson gson = new Gson();
 
     @Override
     public void register() {
@@ -38,7 +35,6 @@ public class GlobalEndpoint implements Endpoint {
             Error error = new Error("GENERAL_SERVER_ERROR");
             response.body(gson.toJson(error));
         });
-
     }
 
 }

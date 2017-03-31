@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class GroupRepository {
+	
     @Autowired
     private EntityManager entityManager;
 
@@ -37,4 +38,5 @@ public class GroupRepository {
         return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity)
             .select(QGroupEntity.groupEntity.uuid).fetch();
     }
+    
 }

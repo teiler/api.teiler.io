@@ -7,8 +7,10 @@ import io.teiler.server.persistence.entities.GroupEntity;
  * Created by lroellin on 27.03.17.
  */
 public class Group {
+	
     @SerializedName("group-uuid")
     private String uuid;
+    
     @SerializedName("name")
     private String name;
 
@@ -37,4 +39,5 @@ public class Group {
     public void setName(String name) {
         this.name = name;
     }
+    
 }
