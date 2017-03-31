@@ -5,4 +5,6 @@ package io.teiler.server.util.exceptions;
  */
 public class NotAuthorizedException extends Exception {
 
+	private static final long serialVersionUID = 1L;
+
 }
