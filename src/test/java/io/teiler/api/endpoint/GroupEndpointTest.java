@@ -21,21 +21,20 @@ import io.teiler.server.util.exceptions.NotAuthorizedException;
 @TestPropertySource(properties = {"local.server.port=4567"})
 @AutoConfigureTestDatabase
 public class GroupEndpointTest {
-	
+
     Gson gson = new Gson();
     
     @Autowired
     private GroupService groupService;
-    
+
     @Test(expected = NotAuthorizedException.class)
-    public void shouldReturnNotAuthorizedWhenViewingGroupWithoutValidUUID()
-        throws NotAuthorizedException {
+    public void shouldReturnNotAuthorizedWhenViewingGroupWithoutValidUUID() {
         groupService.viewGroup("");
+        
     }
 
     @Test(expected = NotAuthorizedException.class)
-    public void shouldReturnNotAuthorizedWhenViewingGroupWithInvalidUUID()
-        throws NotAuthorizedException {
+    public void shouldReturnNotAuthorizedWhenViewingGroupWithInvalidUUID() {
         groupService.viewGroup("abcdef");
     }
 
@@ -46,5 +45,5 @@ public class GroupEndpointTest {
         Group responseGroup = gson.fromJson(response, Group.class);
         Assert.assertEquals(testString, responseGroup.getName());
     }
-    
+
 }
