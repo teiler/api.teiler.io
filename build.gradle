@@ -62,7 +62,8 @@ dependencies {
 checkstyle {
     configFile = rootProject.file("checkstyle.xml")
     toolVersion = "7.6"
-    sourceSets = [sourceSets.main]
+    sourceSets = [sourceSets.main, sourceSets.test]
+    
 }
 
 querydsl {
