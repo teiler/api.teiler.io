@@ -28,13 +28,13 @@ public class GroupEndpointTest {
     private GroupService groupService;
 
     @Test(expected = NotAuthorizedException.class)
-    public void shouldReturnNotAuthorizedWhenViewingGroupWithoutValidUUID() {
+    public void shouldReturnNotAuthorizedWhenViewingGroupWithoutValidId() {
         groupService.viewGroup("");
         
     }
 
     @Test(expected = NotAuthorizedException.class)
-    public void shouldReturnNotAuthorizedWhenViewingGroupWithInvalidUUID() {
+    public void shouldReturnNotAuthorizedWhenViewingGroupWithInvalidId() {
         groupService.viewGroup("abcdef");
     }
 
