@@ -28,18 +28,18 @@ public class GroupEndpointTest {
     private GroupService groupService;
 
     @Test(expected = NotAuthorizedException.class)
-    public void shouldReturnNotAuthorizedWhenViewingGroupWithoutValidId() {
+    public void testReturnNotAuthorizedWhenViewingGroupWithoutValidId() {
         groupService.viewGroup("");
         
     }
 
     @Test(expected = NotAuthorizedException.class)
-    public void shouldReturnNotAuthorizedWhenViewingGroupWithInvalidId() {
+    public void testReturnNotAuthorizedWhenViewingGroupWithInvalidId() {
         groupService.viewGroup("abcdef");
     }
 
     @Test
-    public void shouldReturnGroupNameWhenCreating() {
+    public void testReturnGroupNameWhenCreating() {
         String testString = "Group Name";
         String response = groupService.createGroup(testString);
         Group responseGroup = gson.fromJson(response, Group.class);
