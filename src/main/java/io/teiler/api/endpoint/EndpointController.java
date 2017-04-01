@@ -7,11 +7,10 @@ package io.teiler.api.endpoint;
  */
 public interface EndpointController {
 
-	/**
-	 * Within this method all REST-Endpoints provided by the respective
-	 * controller are to be initialised.
-	 */
+    /**
+     * Within this method all REST-Endpoints provided by the respective controller are to be
+     * initialised.
+     */
     void register();
-    
-}
 
+}

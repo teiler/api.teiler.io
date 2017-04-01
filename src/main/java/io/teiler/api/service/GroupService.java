@@ -24,22 +24,24 @@ import io.teiler.server.util.exceptions.NotAuthorizedException;
 @Service
 public class GroupService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GroupService.class);
-	
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroupService.class);
+
     /* Instance objects, potentially expensive ones you only need once */
     private SecureRandom random = new SecureRandom();
     private Gson gson = new Gson();
-    
+
     /* Spring Components (Services/Controller) */
     @Autowired
     private AuthorizationChecker authorizationChecker;
-    
+
     @Autowired
     private GroupRepository groupRepository;
 
     /* Constants */
     private static final int NUMBER_OF_ID_CHARACTERS = 8;
-    private static final int ENTROPY_BITS_IN_ONE_CHARACTER = 5; // Mathematical fact, don't change it
+
+    // Mathematical fact, don't change it
+    private static final int ENTROPY_BITS_IN_ONE_CHARACTER = 5;
 
     /**
      * Returns information about a Group.
@@ -69,15 +71,15 @@ public class GroupService {
         newGroup.setUuid(createNewUuid());
         LOGGER.debug("New Group: " + newGroup.getName() + ", " + newGroup.getUuid());
 
-        Group responseGroup = new Group(
-            groupRepository.create(newGroup.getUuid(), newGroup.getName()));
+        Group responseGroup =
+                new Group(groupRepository.create(newGroup.getUuid(), newGroup.getName()));
 
         return gson.toJson(responseGroup);
     }
 
     /**
      * Creates a new UUID for a Group.<br>
-     * See the linked page for further information. 
+     * See the linked page for further information.
      * 
      * @return A UUID (as a mere String; not to be confused with {@link java.util.UUID})
      * @see <a href="http://stackoverflow.com/a/41156">http://stackoverflow.com/a/41156<a>
@@ -86,9 +88,10 @@ public class GroupService {
         String uuid;
         List<String> allIds = groupRepository.getAllIds();
         do {
-            uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * ENTROPY_BITS_IN_ONE_CHARACTER, random).toString(32);
+            uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * ENTROPY_BITS_IN_ONE_CHARACTER, random)
+                    .toString(32);
         } while (allIds.contains(uuid));
         return uuid;
     }
-    
+
 }
