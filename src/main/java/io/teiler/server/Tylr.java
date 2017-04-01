@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * As of now, the only purpose of this class is to fire up the whole application. 
+ * As of now, the only purpose of this class is to fire up the whole application.
  * 
  * @author pbaechli
  */
@@ -16,5 +16,5 @@ public class Tylr {
     public static void main(String[] args) {
         SpringApplication.run(Tylr.class, args);
     }
-    
+
 }

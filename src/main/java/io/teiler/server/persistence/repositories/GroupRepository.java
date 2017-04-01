@@ -20,17 +20,15 @@ import io.teiler.server.persistence.entities.QGroupEntity;
  */
 @Repository
 public class GroupRepository {
-	
+
     @Autowired
     private EntityManager entityManager;
 
     /**
      * Creates a new Group and returns it.
      * 
-     * <i>We could use a Group as the parameter in this case, but since
-     *    you usually only have the attributes and not a whole class now
-     *    we use the separated parameters.
-     * </i>
+     * <i>We could use a Group as the parameter in this case, but since you usually only have the
+     * attributes and not a whole class now we use the separated parameters. </i>
      * 
      * @param uuid Id of the Group
      * @param name Name of the Group
@@ -44,14 +42,14 @@ public class GroupRepository {
     }
 
     /**
-     * Returns the {@link GroupEntity} with the given Id. 
+     * Returns the {@link GroupEntity} with the given Id.
      * 
      * @param uuid Id of the Group
      * @return {@link GroupEntity}
      */
     public GroupEntity get(String uuid) {
         return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity)
-            .where(QGroupEntity.groupEntity.uuid.eq(uuid)).fetchOne();
+                .where(QGroupEntity.groupEntity.uuid.eq(uuid)).fetchOne();
     }
 
     /**
@@ -61,7 +59,7 @@ public class GroupRepository {
      */
     public List<String> getAllIds() {
         return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity)
-            .select(QGroupEntity.groupEntity.uuid).fetch();
+                .select(QGroupEntity.groupEntity.uuid).fetch();
     }
-    
+
 }
