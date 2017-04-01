@@ -46,4 +46,22 @@ public class GroupEndpointTest {
         Assert.assertEquals(testString, responseGroup.getName());
     }
 
+    @Test
+    public void testNewIdOnEachCreation() {
+        String firstGroupResponse = groupService.createGroup("Hello");
+        String secondGroupResponse = groupService.createGroup("World");
+        Group firstGroup = gson.fromJson(firstGroupResponse, Group.class);
+        Group secondGroup = gson.fromJson(secondGroupResponse, Group.class);
+        Assert.assertNotEquals(firstGroup.getUuid(), secondGroup.getUuid());
+    }
+
+    @Test
+    public void testNoConflictInGroupNames() {
+        String firstGroupResponse = groupService.createGroup("Test");
+        String secondGroupResponse = groupService.createGroup("Test");
+        Group firstGroup = gson.fromJson(firstGroupResponse, Group.class);
+        Group secondGroup = gson.fromJson(secondGroupResponse, Group.class);
+        Assert.assertNotEquals(firstGroup.getUuid(), secondGroup.getUuid());
+    }
+
 }
