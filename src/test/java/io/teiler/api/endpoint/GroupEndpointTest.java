@@ -28,22 +28,40 @@ public class GroupEndpointTest {
     private GroupService groupService;
 
     @Test(expected = NotAuthorizedException.class)
-    public void shouldReturnNotAuthorizedWhenViewingGroupWithoutValidId() {
+    public void testReturnNotAuthorizedWhenViewingGroupWithoutValidId() {
         groupService.viewGroup("");
         
     }
 
     @Test(expected = NotAuthorizedException.class)
-    public void shouldReturnNotAuthorizedWhenViewingGroupWithInvalidId() {
+    public void testReturnNotAuthorizedWhenViewingGroupWithInvalidId() {
         groupService.viewGroup("abcdef");
     }
 
     @Test
-    public void shouldReturnGroupNameWhenCreating() {
+    public void testReturnGroupNameWhenCreating() {
         String testString = "Group Name";
         String response = groupService.createGroup(testString);
         Group responseGroup = gson.fromJson(response, Group.class);
         Assert.assertEquals(testString, responseGroup.getName());
+    }
+
+    @Test
+    public void testNewIdOnEachCreation() {
+        String firstGroupResponse = groupService.createGroup("Hello");
+        String secondGroupResponse = groupService.createGroup("World");
+        Group firstGroup = gson.fromJson(firstGroupResponse, Group.class);
+        Group secondGroup = gson.fromJson(secondGroupResponse, Group.class);
+        Assert.assertNotEquals(firstGroup.getUuid(), secondGroup.getUuid());
+    }
+
+    @Test
+    public void testNoConflictInGroupNames() {
+        String firstGroupResponse = groupService.createGroup("Test");
+        String secondGroupResponse = groupService.createGroup("Test");
+        Group firstGroup = gson.fromJson(firstGroupResponse, Group.class);
+        Group secondGroup = gson.fromJson(secondGroupResponse, Group.class);
+        Assert.assertNotEquals(firstGroup.getUuid(), secondGroup.getUuid());
     }
 
 }
