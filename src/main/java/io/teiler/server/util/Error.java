@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * @author lroellin
  */
 public class Error {
-	
+
     @SerializedName("error")
     private String errorCode;
 
@@ -23,5 +23,5 @@ public class Error {
     public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
     }
-    
+
 }

@@ -20,7 +20,8 @@ public class AuthorizationChecker {
      * Checks whether access to this group is to be authorised.
      * 
      * @param uuid Id of the group
-     * @throws NotAuthorizedException The Group-Id is <code>null</code> or does not exist in the database.
+     * @throws NotAuthorizedException The Group-Id is <code>null</code> or does not exist in the
+     *         database.
      */
     public void checkAuthorization(String uuid) throws NotAuthorizedException {
         // Java checks from left to right

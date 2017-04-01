@@ -5,8 +5,8 @@ package io.teiler.server.util.exceptions;
  * 
  * @author lroellin
  */
-public class NotAuthorizedException extends Exception {
+public class NotAuthorizedException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 }

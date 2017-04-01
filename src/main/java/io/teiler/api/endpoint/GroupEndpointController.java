@@ -36,5 +36,5 @@ public class GroupEndpointController implements EndpointController {
             return groupService.viewGroup(authorizationHeader);
         });
     }
-    
+
 }

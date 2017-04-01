@@ -20,9 +20,9 @@ import io.teiler.server.util.exceptions.NotAuthorizedException;
 @Component
 public class GlobalEndpointController implements EndpointController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalEndpointController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalEndpointController.class);
 
-	private Gson gson = new Gson();
+    private Gson gson = new Gson();
 
     @Override
     public void register() {
