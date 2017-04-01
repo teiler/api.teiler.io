@@ -9,9 +9,13 @@ import io.teiler.server.dto.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-
+/**
+ * Controller for Group-related endpoints.
+ * 
+ * @author lroellin
+ */
 @Controller
-public class GroupEndpoint implements Endpoint {
+public class GroupEndpointController implements EndpointController {
 
     private Gson gson = new Gson();
 
@@ -32,4 +36,5 @@ public class GroupEndpoint implements Endpoint {
             return groupService.viewGroup(authorizationHeader);
         });
     }
+
 }
