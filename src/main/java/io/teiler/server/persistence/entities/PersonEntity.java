@@ -1,5 +1,6 @@
 package io.teiler.server.persistence.entities;
 
+import com.google.gson.annotations.SerializedName;
 import io.teiler.server.dto.Person;
 import io.teiler.server.util.TimeUtil;
 import java.sql.Timestamp;
@@ -23,8 +24,11 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "`person`")
 public class PersonEntity {
+    // We need to duplicate the serialized names here, since the list of people is a list of PersonEntities.
+    // This should only be needed on nested properties
 
     @Id
+    @SerializedName("id")
     @SequenceGenerator(name="person_id_seq",
         sequenceName="person_id_seq",
         allocationSize=1)
@@ -34,14 +38,21 @@ public class PersonEntity {
     private Integer id;
 
     @NotNull
+    @SerializedName("name")
     @Column(name = "name")
     private String name;
 
+    // Only used in queries
+    @Column(name = "`group`")
+    private String groupId;
+
     @NotNull
+    @SerializedName("update-time")
     @Column(name = "update_time")
     private Timestamp updateTime;
 
     @NotNull
+    @SerializedName("create-time")
     @Column(name = "create_time")
     private Timestamp createTime;
 

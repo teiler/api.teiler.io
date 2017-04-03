@@ -1,10 +1,12 @@
 package io.teiler.api.service;
 
 import io.teiler.server.dto.Person;
-import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
-import io.teiler.server.util.GroupFetcher;
+import io.teiler.server.util.GroupUtil;
+import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import java.util.LinkedList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +24,22 @@ public class PersonService {
 
     /* Spring Components (Services/Controller) */
     @Autowired
-    private GroupFetcher groupFetcher;
+    private GroupUtil groupUtil;
 
     @Autowired
     private PersonRepository personRepository;
     /**
      * Creates a new Person.
      *
-     * @param group Group ID this person belongs to
+     * @param groupId Group ID this person belongs to
      * @param name Name of the new Person
      * @return Information about the Person
      */
     public Person createPerson(String groupId, String name) {
-
+        groupUtil.checkIdExists(groupId);
 
         Person newPerson = new Person(null, name);
+        if (personRepository.getByName(groupId, name)!= null) { throw new PeopleNameConflictException(); }
 
         PersonEntity personEntity = personRepository.create(groupId, newPerson);
 
@@ -44,4 +47,12 @@ public class PersonService {
         return responsePerson;
     }
 
+    public List<Person> getPeople(String groupId, long limit) {
+        groupUtil.checkIdExists(groupId);
+        List<Person> people = new LinkedList<>();
+        for(PersonEntity personEntity : personRepository.getPeople(groupId, limit)) {
+            people.add(personEntity.toPerson());
+        }
+        return people;
+    }
 }

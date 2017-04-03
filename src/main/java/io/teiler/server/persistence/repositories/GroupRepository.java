@@ -1,9 +1,12 @@
 package io.teiler.server.persistence.repositories;
 
+import static io.teiler.server.persistence.entities.QGroupEntity.groupEntity;
+
 import com.querydsl.jpa.impl.JPAQuery;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.entities.QGroupEntity;
+import io.teiler.server.util.exceptions.NotAuthorizedException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -42,8 +45,8 @@ public class GroupRepository {
      * @return {@link GroupEntity}
      */
     public GroupEntity get(String id) {
-        return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity)
-                .where(QGroupEntity.groupEntity.id.eq(id)).fetchOne();
+        return new JPAQuery<GroupEntity>(entityManager).from(groupEntity)
+                .where(groupEntity.id.eq(id)).fetchOne();
     }
 
     /**
@@ -52,8 +55,8 @@ public class GroupRepository {
      * @return {@link List} of Group-Ids
      */
     public List<String> getAllIds() {
-        return new JPAQuery<GroupEntity>(entityManager).from(QGroupEntity.groupEntity)
-                .select(QGroupEntity.groupEntity.id).fetch();
+        return new JPAQuery<GroupEntity>(entityManager).from(groupEntity)
+                .select(groupEntity.id).fetch();
     }
 
 }
