@@ -4,7 +4,7 @@ import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.repositories.GroupRepository;
-import io.teiler.server.util.GroupFetcher;
+import io.teiler.server.util.GroupUtil;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -28,7 +28,7 @@ public class GroupService {
 
     /* Spring Components (Services/Controller) */
     @Autowired
-    private GroupFetcher groupFetcher;
+    private GroupUtil groupUtil;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -45,10 +45,11 @@ public class GroupService {
      * 
      * @param id Id of Group
      * @return Information about the Group
-     * @throws NotAuthorizedException See {@link GroupFetcher#fetchGroup(String)}
+     * @throws NotAuthorizedException See {@link GroupUtil#fetchGroup(String)}
      */
     public Group viewGroup(String id) {
-        Group group = groupFetcher.fetchGroup(id);
+        groupUtil.checkIdExists(id);
+        Group group = groupUtil.fetchGroup(id);
         return group;
     }
 

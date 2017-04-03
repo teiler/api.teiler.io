@@ -8,13 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GroupFetcher {
+public class GroupUtil {
     @Autowired
     private GroupRepository groupRepository;
 
-    public GroupEntity fetchGroupEntity(String id) {
+    public void checkIdExists(String id) {
         GroupEntity groupEntity = groupRepository.get(id);
         if(groupEntity == null) { throw new NotAuthorizedException(); }
+    }
+
+    public GroupEntity fetchGroupEntity(String id) {
+        GroupEntity groupEntity = groupRepository.get(id);
         return groupEntity;
     }
 

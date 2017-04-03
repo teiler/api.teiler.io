@@ -29,13 +29,13 @@ public class GroupEndpointController implements EndpointController {
         post("/v1/groups", (req, res) -> {
             Group requestGroup = gson.fromJson(req.body(), Group.class);
             Group newGroup = groupService.createGroup(requestGroup.getName());
-            return gson.toJson(newGroup, Group.class);
+            return gson.toJson(newGroup);
         });
 
         get("/v1/groups/:id", (req, res) -> {
             String id = req.params(":id");
             Group requestGroup = groupService.viewGroup(id);
-            return gson.toJson(requestGroup, Group.class);
+            return gson.toJson(requestGroup);
         });
     }
 
