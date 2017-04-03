@@ -27,6 +27,7 @@ public class GroupEndpointTest {
     @Autowired
     private GroupService groupService;
 
+
     @Test(expected = NotAuthorizedException.class)
     public void testReturnNotAuthorizedWhenViewingGroupWithoutValidId() {
         groupService.viewGroup("");
@@ -41,27 +42,23 @@ public class GroupEndpointTest {
     @Test
     public void testReturnGroupNameWhenCreating() {
         String testString = "Group Name";
-        String response = groupService.createGroup(testString);
-        Group responseGroup = gson.fromJson(response, Group.class);
+        Group responseGroup = groupService.createGroup(testString);
         Assert.assertEquals(testString, responseGroup.getName());
     }
 
     @Test
     public void testNewIdOnEachCreation() {
-        String firstGroupResponse = groupService.createGroup("Hello");
-        String secondGroupResponse = groupService.createGroup("World");
-        Group firstGroup = gson.fromJson(firstGroupResponse, Group.class);
-        Group secondGroup = gson.fromJson(secondGroupResponse, Group.class);
-        Assert.assertNotEquals(firstGroup.getUuid(), secondGroup.getUuid());
+        Group firstGroup = groupService.createGroup("Hello");
+        Group secondGroup = groupService.createGroup("World");
+        Assert.assertNotEquals(firstGroup.getId(), secondGroup.getId());
     }
 
     @Test
     public void testNoConflictInGroupNames() {
-        String firstGroupResponse = groupService.createGroup("Test");
-        String secondGroupResponse = groupService.createGroup("Test");
-        Group firstGroup = gson.fromJson(firstGroupResponse, Group.class);
-        Group secondGroup = gson.fromJson(secondGroupResponse, Group.class);
-        Assert.assertNotEquals(firstGroup.getUuid(), secondGroup.getUuid());
+        Group firstGroup = groupService.createGroup("Test");
+        Group secondGroup = groupService.createGroup("Test");
+        Assert.assertNotEquals(firstGroup.getId(), secondGroup.getId());
     }
+
 
 }

@@ -4,8 +4,11 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.teiler.api.service.GroupService;
 import io.teiler.server.dto.Group;
+import io.teiler.server.util.LocalDateTimeSerializer;
+import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -17,7 +20,8 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class GroupEndpointController implements EndpointController {
 
-    private Gson gson = new Gson();
+    GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
+    private Gson gson = gsonBuilder.create();
 
     private static final String GROUP_ID_HEADER = "X-Teiler-GroupID";
 
@@ -26,14 +30,16 @@ public class GroupEndpointController implements EndpointController {
 
     @Override
     public void register() {
-        post("/v1/group", (req, res) -> {
+        post("/v1/groups", (req, res) -> {
             Group requestGroup = gson.fromJson(req.body(), Group.class);
-            return groupService.createGroup(requestGroup.getName());
+            Group newGroup = groupService.createGroup(requestGroup.getName());
+            return gson.toJson(newGroup, Group.class);
         });
 
-        get("/v1/group", (req, res) -> {
-            String authorizationHeader = req.headers(GROUP_ID_HEADER);
-            return groupService.viewGroup(authorizationHeader);
+        get("/v1/groups/:id", (req, res) -> {
+            String id = req.params(":id");
+            Group requestGroup = groupService.viewGroup(id);
+            return gson.toJson(requestGroup, Group.class);
         });
     }
 
