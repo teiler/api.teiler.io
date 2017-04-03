@@ -62,7 +62,8 @@ dependencies {
 checkstyle {
     configFile = rootProject.file("checkstyle.xml")
     toolVersion = "7.6"
-    sourceSets = [sourceSets.main]
+    sourceSets = [sourceSets.main, sourceSets.test]
+    
 }
 
 querydsl {
@@ -77,6 +78,8 @@ test {
 }
 
 tasks.withType(Checkstyle) {
+    exclude "**/querydsl/*"
+
     reports {
         xml.enabled false
         html.enabled false
