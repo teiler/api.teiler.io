@@ -1,6 +1,8 @@
 package io.teiler.server.util;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Error-Wrapper to smoothly get error-codes across the REST-API.
@@ -10,18 +12,14 @@ import com.google.gson.annotations.SerializedName;
 public class Error {
 
     @SerializedName("error")
-    private String errorCode;
+    private List<String> errorCodes = new LinkedList<>();
 
     public Error(String errorCode) {
-        this.errorCode = errorCode;
+        this.errorCodes.add(errorCode);
     }
 
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
+    public void addError(String errorCode) {
+        this.errorCodes.add(errorCode);
     }
 
 }

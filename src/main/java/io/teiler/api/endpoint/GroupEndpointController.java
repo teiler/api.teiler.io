@@ -4,11 +4,9 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import io.teiler.api.service.GroupService;
 import io.teiler.server.dto.Group;
-import io.teiler.server.util.LocalDateTimeSerializer;
-import java.time.LocalDateTime;
+import io.teiler.server.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -20,10 +18,8 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class GroupEndpointController implements EndpointController {
 
-    GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
-    private Gson gson = gsonBuilder.create();
 
-    private static final String GROUP_ID_HEADER = "X-Teiler-GroupID";
+    private Gson gson = GsonUtil.getHomebrewGson();
 
     @Autowired
     private GroupService groupService;

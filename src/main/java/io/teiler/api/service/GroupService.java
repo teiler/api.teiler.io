@@ -4,11 +4,10 @@ import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.repositories.GroupRepository;
-import io.teiler.server.util.AuthorizationChecker;
+import io.teiler.server.util.GroupFetcher;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class GroupService {
 
     /* Spring Components (Services/Controller) */
     @Autowired
-    private AuthorizationChecker authorizationChecker;
+    private GroupFetcher groupFetcher;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -46,13 +45,10 @@ public class GroupService {
      * 
      * @param id Id of Group
      * @return Information about the Group
-     * @throws NotAuthorizedException See {@link AuthorizationChecker#checkAuthorization(String)}
+     * @throws NotAuthorizedException See {@link GroupFetcher#fetchGroup(String)}
      */
     public Group viewGroup(String id) {
-        GroupEntity groupEntity = groupRepository.get(id);
-        if(groupEntity == null) { throw new NotAuthorizedException(); }
-
-        Group group = groupEntity.toGroup();
+        Group group = groupFetcher.fetchGroup(id);
         return group;
     }
 
@@ -84,11 +80,10 @@ public class GroupService {
      */
     private String createNewUuid() {
         String uuid;
-        List<String> allIds = groupRepository.getAllIds();
         do {
             uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * ENTROPY_BITS_IN_ONE_CHARACTER, random)
                     .toString(32);
-        } while (allIds.contains(uuid));
+        } while (groupRepository.get(uuid) != null);
         return uuid;
     }
 

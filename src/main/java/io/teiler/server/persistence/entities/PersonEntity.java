@@ -6,9 +6,12 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -18,12 +21,17 @@ import javax.validation.constraints.NotNull;
  * @author lroellin
  */
 @Entity
-@Table(name = "`person`") // f*** PSQL
+@Table(name = "`person`")
 public class PersonEntity {
 
     @Id
+    @SequenceGenerator(name="person_id_seq",
+        sequenceName="person_id_seq",
+        allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+        generator="person_id_seq")
     @Column(name = "id")
-    private String id;
+    private Integer id;
 
     @NotNull
     @Column(name = "name")
@@ -63,11 +71,11 @@ public class PersonEntity {
             TimeUtil.convertToLocalDateTime(this.getCreateTime()));
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
