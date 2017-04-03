@@ -3,7 +3,6 @@ package io.teiler.server.persistence.entities;
 import io.teiler.api.service.GroupService;
 import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
 import io.teiler.server.util.TimeUtil;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -47,8 +46,8 @@ public class GroupEntity {
     private Currency currency;
 
     @OneToMany(targetEntity = PersonEntity.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "group", referencedColumnName = "id")
-    private List<Person> people;
+    @JoinColumn(name = "`group`", referencedColumnName = "id")
+    private List people;
 
     @NotNull
     @Column(name = "update_time")
@@ -88,6 +87,10 @@ public class GroupEntity {
             TimeUtil.convertToLocalDateTime(this.getCreateTime()));
     }
 
+    public void addPerson(PersonEntity person) {
+        people.add(person);
+    }
+
     public String getId() {
         return id;
     }
@@ -112,11 +115,11 @@ public class GroupEntity {
         this.currency = currency;
     }
 
-    public List<Person> getPeople() {
+    public List getPeople() {
         return people;
     }
 
-    public void setPeople(List<Person> people) {
+    public void setPeople(List people) {
         this.people = people;
     }
 

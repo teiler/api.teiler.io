@@ -1,4 +1,4 @@
-package io.teiler.server.util;
+package io.teiler.server.util.jsonserializer;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;

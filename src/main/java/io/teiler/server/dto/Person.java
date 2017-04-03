@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Person {
 
     @SerializedName("id")
-    private String id;
+    private Integer id;
 
     @SerializedName("name")
     private String name;
@@ -23,24 +23,24 @@ public class Person {
     private LocalDateTime createTime;
 
     // Usual constructor
-    public Person(String id, String name) {
+    public Person(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
     // Constructor with all fields (useful for converting)
-    public Person(String id, String name, LocalDateTime updateTime, LocalDateTime createTime) {
+    public Person(Integer id, String name, LocalDateTime updateTime, LocalDateTime createTime) {
         this.id = id;
         this.name = name;
         this.updateTime = updateTime;
         this.createTime = createTime;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
