@@ -1,26 +1,23 @@
 package io.teiler.api.endpoint;
 
-import static spark.Spark.before;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.gson.Gson;
+import io.teiler.api.service.GroupService;
+import io.teiler.server.dto.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.google.gson.Gson;
-
-import io.teiler.api.service.GroupService;
-import io.teiler.server.dto.Group;
-
-
+/**
+ * Controller for Group-related endpoints.
+ * 
+ * @author lroellin
+ */
 @Controller
-public class GroupEndpoint implements Endpoint {
+public class GroupEndpointController implements EndpointController {
 
     private Gson gson = new Gson();
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GroupEndpoint.class);
 
     private static final String GROUP_ID_HEADER = "X-Teiler-GroupID";
 
@@ -29,8 +26,6 @@ public class GroupEndpoint implements Endpoint {
 
     @Override
     public void register() {
-        before((req, res) -> LOGGER.debug("API call to '" + req.pathInfo() + "'"));
-
         post("/v1/group", (req, res) -> {
             Group requestGroup = gson.fromJson(req.body(), Group.class);
             return groupService.createGroup(requestGroup.getName());
@@ -41,4 +36,5 @@ public class GroupEndpoint implements Endpoint {
             return groupService.viewGroup(authorizationHeader);
         });
     }
+
 }
