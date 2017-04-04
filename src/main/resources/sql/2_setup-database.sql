@@ -5,16 +5,13 @@ psql postgres -f <file>
 
 SET client_min_messages = ERROR;
 \set user tylr
-\set password '\'tylr\''
 \set database tylr
 \set promptvar ''
-
-CREATE USER :user WITH PASSWORD :password;
 
 -- terminate sessions
 SELECT pg_terminate_backend(pg_stat_activity.pid)
 FROM pg_stat_activity
-WHERE pg_stat_activity.datname = 'tylr'
+WHERE pg_stat_activity.datname = ':database'
   AND pid <> pg_backend_pid();
 
 CREATE DATABASE :database WITH OWNER :user ENCODING 'UTF8'
