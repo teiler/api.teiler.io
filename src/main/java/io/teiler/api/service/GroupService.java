@@ -1,20 +1,17 @@
 package io.teiler.api.service;
 
+import io.teiler.server.dto.Currency;
+import io.teiler.server.dto.Group;
+import io.teiler.server.persistence.entities.GroupEntity;
+import io.teiler.server.persistence.repositories.GroupRepository;
+import io.teiler.server.util.GroupUtil;
+import io.teiler.server.util.exceptions.NotAuthorizedException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.gson.Gson;
-
-import io.teiler.server.dto.Group;
-import io.teiler.server.persistence.repositories.GroupRepository;
-import io.teiler.server.util.AuthorizationChecker;
-import io.teiler.server.util.exceptions.NotAuthorizedException;
 
 /**
  * Provides service-methods for Groups.
@@ -28,11 +25,10 @@ public class GroupService {
 
     /* Instance objects, potentially expensive ones you only need once */
     private SecureRandom random = new SecureRandom();
-    private Gson gson = new Gson();
 
     /* Spring Components (Services/Controller) */
     @Autowired
-    private AuthorizationChecker authorizationChecker;
+    private GroupUtil groupUtil;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -43,20 +39,17 @@ public class GroupService {
     // Mathematical fact, don't change it
     private static final int ENTROPY_BITS_IN_ONE_CHARACTER = 5;
 
+
     /**
      * Returns information about a Group.
      * 
-     * @param authorizationHeader Id of Group
+     * @param id Id of Group
      * @return Information about the Group
-     * @throws NotAuthorizedException See {@link AuthorizationChecker#checkAuthorization(String)}
+     * @throws NotAuthorizedException See {@link GroupUtil#fetchGroup(String)}
      */
-    public String viewGroup(String authorizationHeader) throws NotAuthorizedException {
-        authorizationChecker.checkAuthorization(authorizationHeader);
-        LOGGER.debug("Request with group ID: " + authorizationHeader);
-
-        Group responseGroup = new Group(groupRepository.get(authorizationHeader));
-
-        return gson.toJson(responseGroup);
+    public Group viewGroup(String id) {
+        groupUtil.checkIdExists(id);
+        return groupUtil.fetchGroup(id);
     }
 
     /**
@@ -65,16 +58,15 @@ public class GroupService {
      * @param name Name of the new Group
      * @return Information about the Group
      */
-    public String createGroup(String name) {
-        Group newGroup = new Group(null, name);
+    public Group createGroup(String name) {
+        // Default currency CHF
+        Group newGroup = new Group(null, name, Currency.CHF);
 
-        newGroup.setUuid(createNewUuid());
-        LOGGER.debug("New Group: " + newGroup.getName() + ", " + newGroup.getUuid());
+        newGroup.setId(createNewUuid());
+        LOGGER.debug("New Group: " + newGroup.getName() + ", " + newGroup.getId());
 
-        Group responseGroup =
-                new Group(groupRepository.create(newGroup.getUuid(), newGroup.getName()));
-
-        return gson.toJson(responseGroup);
+        GroupEntity groupEntity = groupRepository.create(newGroup);
+        return groupEntity.toGroup();
     }
 
     /**
@@ -86,11 +78,10 @@ public class GroupService {
      */
     private String createNewUuid() {
         String uuid;
-        List<String> allIds = groupRepository.getAllIds();
         do {
             uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * ENTROPY_BITS_IN_ONE_CHARACTER, random)
                     .toString(32);
-        } while (allIds.contains(uuid));
+        } while (groupRepository.get(uuid) != null);
         return uuid;
     }
 
