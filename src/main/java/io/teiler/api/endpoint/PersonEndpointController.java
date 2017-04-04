@@ -1,5 +1,6 @@
 package io.teiler.api.endpoint;
 
+import static spark.Spark.delete;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -11,18 +12,18 @@ import io.teiler.server.dto.Person;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
-import io.teiler.server.util.exceptions.PersonDoesNotBelongToThisGroup;
+import io.teiler.server.util.exceptions.PersonNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Group-related endpoints.
- * 
  * @author lroellin
  */
 @Controller
 public class PersonEndpointController implements EndpointController {
+
     private Gson gson = GsonUtil.getHomebrewGson();
 
     @Autowired
@@ -45,13 +46,19 @@ public class PersonEndpointController implements EndpointController {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             String limitString = req.queryParams(LIMIT_PARAM);
             long limit = DEFAULT_QUERY_LIMIT;
-            if(limitString != null) {
+            if (limitString != null) {
                 limit = Long.parseLong(limitString);
             }
             List<Person> people = personService.getPeople(groupId, limit);
             return gson.toJson(people);
         });
 
+        delete("/v1/groups/:groupid/people/:personid", (req, res) -> {
+            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
+            int personId = Integer.parseInt(req.params(":personid"));
+            personService.deletePerson(groupId, personId);
+            return "";
+        });
 
         put("/v1/groups/:groupid/people/:personid", (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
@@ -61,9 +68,9 @@ public class PersonEndpointController implements EndpointController {
             return gson.toJson(person);
         });
 
-        exception(PersonDoesNotBelongToThisGroup.class, (e, request, response) -> {
-            response.status(403);
-            Error error = new Error("PERSON_NOT_IN_GROUP");
+        exception(PersonNotFoundException.class, (e, request, response) -> {
+            response.status(404);
+            Error error = new Error("PERSON_NOT_FOUND");
             response.body(gson.toJson(error));
         });
 

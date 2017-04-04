@@ -78,4 +78,10 @@ public class PersonRepository {
         entityManager.persist(person);
         return person;
     }
+
+    @Transactional
+    public void deletePerson(int personId) {
+        PersonEntity person = getById(personId);
+        entityManager.remove(person);
+    }
 }
