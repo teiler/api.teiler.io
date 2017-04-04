@@ -1,7 +1,6 @@
 package io.teiler.api.endpoint;
 
 import io.teiler.api.service.GroupService;
-import io.teiler.api.service.PersonService;
 import io.teiler.server.Tylr;
 import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
@@ -23,9 +22,6 @@ public class GroupEndpointTest {
 
     @Autowired
     private GroupService groupService;
-
-    @Autowired
-    PersonService personService;
 
     @Test(expected = NotAuthorizedException.class)
     public void testReturnNotAuthorizedWhenViewingGroupWithoutValidId() {
@@ -65,23 +61,7 @@ public class GroupEndpointTest {
         Assert.assertEquals(Currency.CHF, testGroup.getCurrency());
     }
 
-    public void testPeopleListIsUpdated() {
-        Group testGroup = groupService.createGroup("Test");
-        String groupId = testGroup.getId();
-        personService.createPerson(groupId, "Hans");
-        personService.createPerson(groupId, "Peter");
-        Assert.assertEquals("Hans", testGroup.getPeople().get(0).getName());
-    }
-
-    public void testPeopleListWhenRequested() {
-        Group testGroup = groupService.createGroup("Test");
-        String groupId = testGroup.getId();
-        personService.createPerson(groupId, "Hans");
-        personService.createPerson(groupId, "Peter");
-        Group getGroup = groupService.viewGroup(groupId);
-        Assert.assertEquals("Hans", getGroup.getPeople().get(0).getName());
-    }
-
+    @Test
     public void testIdMatchesRequest() {
         Group testGroup = groupService.createGroup("Test");
         String groupId = testGroup.getId();
