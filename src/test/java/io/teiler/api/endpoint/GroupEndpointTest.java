@@ -20,6 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AutoConfigureTestDatabase
 public class GroupEndpointTest {
 
+    private static final String TEST_GROUP_NAME = "Test";
+
     @Autowired
     private GroupService groupService;
 
@@ -36,7 +38,7 @@ public class GroupEndpointTest {
 
     @Test
     public void testReturnGroupNameWhenCreating() {
-        String testString = "Group Name";
+        String testString = TEST_GROUP_NAME;
         Group responseGroup = groupService.createGroup(testString);
         Assert.assertEquals(testString, responseGroup.getName());
     }
@@ -50,22 +52,50 @@ public class GroupEndpointTest {
 
     @Test
     public void testNoConflictInGroupNames() {
-        Group firstGroup = groupService.createGroup("Test");
-        Group secondGroup = groupService.createGroup("Test");
+        Group firstGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Group secondGroup = groupService.createGroup(TEST_GROUP_NAME);
         Assert.assertNotEquals(firstGroup.getId(), secondGroup.getId());
     }
 
     @Test
     public void testDefaultCurrency() {
-        Group testGroup = groupService.createGroup("Test");
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         Assert.assertEquals(Currency.CHF, testGroup.getCurrency());
     }
 
     @Test
     public void testIdMatchesRequest() {
-        Group testGroup = groupService.createGroup("Test");
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
         Group getGroup = groupService.viewGroup(groupId);
         Assert.assertEquals(groupId, getGroup.getId());
+    }
+
+    @Test
+    public void testGroupNameChanges() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Group changedGroup = new Group(null, "Neu", Currency.CHF);
+        groupService.editGroup(groupId, changedGroup);
+        Group newGroup = groupService.viewGroup(groupId);
+        Assert.assertEquals("Neu", newGroup.getName());
+    }
+
+    @Test
+    public void testCurrencyChanges() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Group changedGroup = new Group(null, TEST_GROUP_NAME, Currency.EUR);
+        groupService.editGroup(groupId, changedGroup);
+        Group newGroup = groupService.viewGroup(groupId);
+        Assert.assertEquals(Currency.EUR, newGroup.getCurrency());
+    }
+
+    @Test(expected = NotAuthorizedException.class)
+    public void testGroupsGetDeleted() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        groupService.deleteGroup(groupId);
+        groupService.viewGroup(groupId);
     }
 }

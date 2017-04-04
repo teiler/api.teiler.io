@@ -40,7 +40,7 @@ public class GroupEntity {
     @Column(name = "currency")
     private Currency currency;
 
-    @OneToMany(targetEntity = PersonEntity.class, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = PersonEntity.class, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "`group`", referencedColumnName = "id")
     private List people;
 
