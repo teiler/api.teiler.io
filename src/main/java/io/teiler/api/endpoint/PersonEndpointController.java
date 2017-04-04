@@ -33,16 +33,19 @@ public class PersonEndpointController implements EndpointController {
     private static final String PERSON_ID_PARAM = ":personid";
     private static final String LIMIT_PARAM = "limit";
 
+    private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/people";
+    private static final String URL_WITH_PERSON_ID = BASE_URL + "/:personid";
+
     @Override
     public void register() {
-        post("/v1/groups/:groupid/people", (req, res) -> {
+        post(BASE_URL, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             Person requestPerson = gson.fromJson(req.body(), Person.class);
             Person newPerson = personService.createPerson(groupId, requestPerson.getName());
             return gson.toJson(newPerson);
         });
 
-        get("/v1/groups/:groupid/people", (req, res) -> {
+        get(BASE_URL, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             String limitString = req.queryParams(LIMIT_PARAM);
             long limit = DEFAULT_QUERY_LIMIT;
@@ -53,7 +56,7 @@ public class PersonEndpointController implements EndpointController {
             return gson.toJson(people);
         });
 
-        put("/v1/groups/:groupid/people/:personid", (req, res) -> {
+        put(URL_WITH_PERSON_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             Person changedPerson = gson.fromJson(req.body(), Person.class);
@@ -61,7 +64,7 @@ public class PersonEndpointController implements EndpointController {
             return gson.toJson(person);
         });
 
-        delete("/v1/groups/:groupid/people/:personid", (req, res) -> {
+        delete(URL_WITH_PERSON_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             int personId = Integer.parseInt(req.params(":personid"));
             personService.deletePerson(groupId, personId);
