@@ -1,7 +1,9 @@
 package io.teiler.api.endpoint;
 
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.put;
 
 import com.google.gson.Gson;
 import io.teiler.api.service.GroupService;
@@ -37,6 +39,19 @@ public class GroupEndpointController implements EndpointController {
             String id = req.params(GROUP_ID_PARAM);
             Group requestGroup = groupService.viewGroup(id);
             return gson.toJson(requestGroup);
+        });
+
+        put("/v1/groups/:groupid", (req, res) -> {
+            String groupId = req.params(GROUP_ID_PARAM);
+            Group changedGroup = gson.fromJson(req.body(), Group.class);
+            Group group = groupService.editGroup(groupId, changedGroup);
+            return gson.toJson(group);
+        });
+
+        delete("/v1/groups/:groupid", (req, res) -> {
+            String groupId = req.params(GROUP_ID_PARAM);
+            groupService.deleteGroup(groupId);
+            return "";
         });
     }
 
