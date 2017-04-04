@@ -83,5 +83,24 @@ public class PersonEndpointTest {
     }
 
 
+    @Test
+    public void testEditPeopleWorks() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person oldPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        oldPerson.setName(SECOND_PERSON_NAME);
+        Person newPerson = personService.editPerson(groupId, oldPerson.getId(), oldPerson);
+        Assert.assertEquals(SECOND_PERSON_NAME, newPerson.getName());
+    }
+
+    @Test(expected = PeopleNameConflictException.class)
+    public void testEditPeopleYieldsConflict() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person oldPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.editPerson(groupId, oldPerson.getId(), oldPerson);
+    }
+
+
 
 }

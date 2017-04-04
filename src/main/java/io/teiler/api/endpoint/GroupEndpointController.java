@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class GroupEndpointController implements EndpointController {
+    public static final String GROUP_ID_PARAM = ":groupid";
 
 
     private Gson gson = GsonUtil.getHomebrewGson();
@@ -32,8 +33,8 @@ public class GroupEndpointController implements EndpointController {
             return gson.toJson(newGroup);
         });
 
-        get("/v1/groups/:id", (req, res) -> {
-            String id = req.params(":id");
+        get("/v1/groups/:groupid", (req, res) -> {
+            String id = req.params(GROUP_ID_PARAM);
             Group requestGroup = groupService.viewGroup(id);
             return gson.toJson(requestGroup);
         });
