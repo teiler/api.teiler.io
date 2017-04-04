@@ -29,19 +29,21 @@ public class PersonEndpointController implements EndpointController {
     private PersonService personService;
 
     private static final int DEFAULT_QUERY_LIMIT = 20;
+    private static final String PERSON_ID_PARAM = ":personid";
+    private static final String LIMIT_PARAM = "limit";
 
     @Override
     public void register() {
         post("/v1/groups/:groupid/people", (req, res) -> {
-            String groupId = req.params(":groupid");
+            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             Person requestPerson = gson.fromJson(req.body(), Person.class);
             Person newPerson = personService.createPerson(groupId, requestPerson.getName());
             return gson.toJson(newPerson);
         });
 
         get("/v1/groups/:groupid/people", (req, res) -> {
-            String groupId = req.params(":groupid");
-            String limitString = req.queryParams("limit");
+            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
+            String limitString = req.queryParams(LIMIT_PARAM);
             long limit = DEFAULT_QUERY_LIMIT;
             if(limitString != null) {
                 limit = Long.parseLong(limitString);
@@ -52,8 +54,8 @@ public class PersonEndpointController implements EndpointController {
 
 
         put("/v1/groups/:groupid/people/:personid", (req, res) -> {
-            String groupId = req.params(":groupid");
-            int personId = Integer.parseInt(req.params(":personid"));
+            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
+            int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             Person changedPerson = gson.fromJson(req.body(), Person.class);
             Person person = personService.editPerson(groupId, personId, changedPerson);
             return gson.toJson(person);
