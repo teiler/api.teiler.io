@@ -5,7 +5,6 @@ import static io.teiler.server.persistence.entities.QGroupEntity.groupEntity;
 import com.querydsl.jpa.impl.JPAQuery;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
