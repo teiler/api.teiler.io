@@ -1,5 +1,6 @@
 package io.teiler.api.endpoint;
 
+import static spark.Spark.delete;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -16,11 +17,12 @@ import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Group-related endpoints.
- * 
+ *
  * @author lroellin
  */
 @Controller
 public class PersonEndpointController implements EndpointController {
+
     private Gson gson = GsonUtil.getHomebrewGson();
 
     @Autowired
@@ -41,11 +43,18 @@ public class PersonEndpointController implements EndpointController {
             String groupId = req.params(":groupid");
             String limitString = req.queryParams("limit");
             long limit = DEFAULT_QUERY_LIMIT;
-            if(limitString != null) {
+            if (limitString != null) {
                 limit = Long.parseLong(limitString);
             }
             List<Person> people = personService.getPeople(groupId, limit);
             return gson.toJson(people);
+        });
+
+        delete("/v1/groups/:groupid/people/:personid", (req, res) -> {
+            String groupId = req.params(":groupid");
+            int personId = Integer.parseInt(req.params(":personid"));
+            personService.deletePerson(groupId, personId);
+            return "";
         });
 
         exception(PeopleNameConflictException.class, (e, request, response) -> {

@@ -12,11 +12,12 @@ import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Groups.
- * 
+ *
  * @author lroellin
  */
 @Service
 public class PersonService {
+
     /* Spring Components (Services/Controller) */
     @Autowired
     private GroupUtil groupUtil;
@@ -25,6 +26,7 @@ public class PersonService {
 
     @Autowired
     private PersonRepository personRepository;
+
     /**
      * Creates a new Person.
      *
@@ -46,9 +48,15 @@ public class PersonService {
         groupUtil.checkIdExists(groupId);
 
         List<Person> people = new LinkedList<>();
-        for(PersonEntity personEntity : personRepository.getPeople(groupId, limit)) {
+        for (PersonEntity personEntity : personRepository.getPeople(groupId, limit)) {
             people.add(personEntity.toPerson());
         }
         return people;
+    }
+
+    public void deletePerson(String groupId, int personId) {
+        groupUtil.checkIdExists(groupId);
+        personUtil.checkPersonBelongsToThisGroup(groupId, personId);
+        
     }
 }
