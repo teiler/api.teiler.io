@@ -56,6 +56,7 @@ public class PersonService {
 
     public Person editPerson(String groupId, int personId, Person changedPerson) {
         groupUtil.checkIdExists(groupId);
+        personUtil.checkPersonExists(personId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
         personUtil.checkNamesAreUnique(groupId, changedPerson.getName());
 
@@ -64,6 +65,7 @@ public class PersonService {
 
     public void deletePerson(String groupId, int personId) {
         groupUtil.checkIdExists(groupId);
+        personUtil.checkPersonExists(personId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
 
         personRepository.deletePerson(personId);
