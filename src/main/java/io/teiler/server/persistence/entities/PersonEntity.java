@@ -1,21 +1,18 @@
 package io.teiler.server.persistence.entities;
 
-import io.teiler.server.dto.Currency;
-import io.teiler.server.dto.Group;
+import com.google.gson.annotations.SerializedName;
+import io.teiler.server.dto.Person;
 import io.teiler.server.util.TimeUtil;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -25,30 +22,37 @@ import javax.validation.constraints.NotNull;
  * @author lroellin
  */
 @Entity
-@Table(name = "`group`") // f*** PSQL
-public class GroupEntity {
+@Table(name = "`person`")
+public class PersonEntity {
+    // We need to duplicate the serialized names here, since the list of people is a list of PersonEntities.
+    // This should only be needed on nested properties
+
     @Id
+    @SerializedName("id")
+    @SequenceGenerator(name="person_id_seq",
+        sequenceName="person_id_seq",
+        allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+        generator="person_id_seq")
     @Column(name = "id")
-    private String id;
+    private Integer id;
 
     @NotNull
+    @SerializedName("name")
     @Column(name = "name")
     private String name;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "currency")
-    private Currency currency;
-
-    @OneToMany(targetEntity = PersonEntity.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "`group`", referencedColumnName = "id")
-    private List people;
+    // Only used in queries
+    @Column(name = "`group`")
+    private String groupId;
 
     @NotNull
+    @SerializedName("update-time")
     @Column(name = "update_time")
     private Timestamp updateTime;
 
     @NotNull
+    @SerializedName("create-time")
     @Column(name = "create_time")
     private Timestamp createTime;
 
@@ -61,36 +65,28 @@ public class GroupEntity {
         }
     }
 
-    public GroupEntity() { /* intentionally empty */ }
+    public PersonEntity() { /* intentionally empty */ }
 
-    public GroupEntity(Group group) {
-        this.id = group.getId();
-        this.name = group.getName();
-        this.currency = group.getCurrency();
-        this.people = group.getPeople();
-        this.updateTime = TimeUtil.convertToTimestamp(group.getUpdateTime());
-        this.createTime = TimeUtil.convertToTimestamp(group.getCreateTime());
+    public PersonEntity(Person person) {
+        this.id = person.getId();
+        this.name = person.getName();
+        this.updateTime = TimeUtil.convertToTimestamp(person.getUpdateTime());
+        this.createTime = TimeUtil.convertToTimestamp(person.getCreateTime());
     }
 
-    public Group toGroup() {
-        return new Group(
+    public Person toPerson() {
+        return new Person(
             this.getId(),
             this.getName(),
-            this.getCurrency(),
-            this.getPeople(),
             TimeUtil.convertToLocalDateTime(this.getUpdateTime()),
             TimeUtil.convertToLocalDateTime(this.getCreateTime()));
     }
 
-    public void addPerson(PersonEntity person) {
-        people.add(person);
-    }
-
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -100,22 +96,6 @@ public class GroupEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-
-    public List getPeople() {
-        return people;
-    }
-
-    public void setPeople(List people) {
-        this.people = people;
     }
 
     public Timestamp getCreateTime() {
