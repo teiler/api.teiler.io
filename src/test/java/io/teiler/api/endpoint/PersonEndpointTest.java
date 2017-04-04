@@ -23,6 +23,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AutoConfigureTestDatabase
 public class PersonEndpointTest {
 
+    private static final String FIRST_PERSON_NAME = "Hans";
+    private static final String SECOND_PERSON_NAME = "Peter";
+    private static final String TEST_GROUP_NAME = "Test";
+
     @Autowired
     private PersonService personService;
     @Autowired
@@ -30,50 +34,50 @@ public class PersonEndpointTest {
 
     @Test(expected = NotAuthorizedException.class)
     public void testReturnNotAuthorizedWhenCreatingPersonWithInvalidGroupId() {
-        personService.createPerson("", "Fritz");
+        personService.createPerson("", FIRST_PERSON_NAME);
     }
 
     @Test(expected = PeopleNameConflictException.class)
     public void testReturnPeopleNameConflict() {
-        Group testGroup = groupService.createGroup("Test");
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
-        personService.createPerson(groupId, "Hans");
-        personService.createPerson(groupId, "Hans");
+        personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.createPerson(groupId, FIRST_PERSON_NAME);
     }
     @Test
     public void testDifferentNamesDontConflict() {
-        Group testGroup = groupService.createGroup("Test");
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
-        personService.createPerson(groupId, "Hans");
-        personService.createPerson(groupId, "Peter");
+        personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.createPerson(groupId, SECOND_PERSON_NAME);
     }
 
     @Test
     public void testPeopleListWhenRequested() {
-        Group testGroup = groupService.createGroup("Test");
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
-        personService.createPerson(groupId, "Hans");
-        personService.createPerson(groupId, "Peter");
+        personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.createPerson(groupId, SECOND_PERSON_NAME);
         Group getGroup = groupService.viewGroup(groupId);
         Assert.assertEquals("Hans", getGroup.getPeople().get(0).getName());
     }
 
     @Test
     public void testPeopleListSize() {
-        Group testGroup = groupService.createGroup("Test");
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
-        personService.createPerson(groupId, "Hans");
-        personService.createPerson(groupId, "Peter");
+        personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.createPerson(groupId, SECOND_PERSON_NAME);
         List<Person> people = personService.getPeople(groupId, 20);
         Assert.assertEquals(2, people.size());
     }
 
     @Test
     public void testPeopleListContainsHans() {
-        Group testGroup = groupService.createGroup("Test");
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
-        personService.createPerson(groupId, "Hans");
-        personService.createPerson(groupId, "Peter");
+        personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.createPerson(groupId, SECOND_PERSON_NAME);
         List<Person> people = personService.getPeople(groupId, 20);
         Assert.assertEquals("Hans", people.get(0).getName());
     }
