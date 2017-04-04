@@ -49,8 +49,7 @@ public class GroupService {
      */
     public Group viewGroup(String id) {
         groupUtil.checkIdExists(id);
-        Group group = groupUtil.fetchGroup(id);
-        return group;
+        return groupUtil.fetchGroup(id);
     }
 
     /**

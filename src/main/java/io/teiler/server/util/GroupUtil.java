@@ -13,7 +13,7 @@ public class GroupUtil {
     private GroupRepository groupRepository;
 
     public void checkIdExists(String id) {
-        GroupEntity groupEntity = groupRepository.get(id);
+        GroupEntity groupEntity = fetchGroupEntity(id);
         if(groupEntity == null) { throw new NotAuthorizedException(); }
     }
 
