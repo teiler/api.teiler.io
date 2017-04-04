@@ -44,4 +44,6 @@ public class PersonEndpointTest {
         personService.createPerson(groupId, "Hans");
         personService.createPerson(groupId, "Peter");
     }
+
+    
 }
