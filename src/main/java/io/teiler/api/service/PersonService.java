@@ -4,7 +4,7 @@ import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.util.GroupUtil;
-import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import io.teiler.server.util.PersonUtil;
 import java.util.LinkedList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -25,6 +25,8 @@ public class PersonService {
     /* Spring Components (Services/Controller) */
     @Autowired
     private GroupUtil groupUtil;
+    @Autowired
+    private PersonUtil personUtil;
 
     @Autowired
     private PersonRepository personRepository;
@@ -37,10 +39,9 @@ public class PersonService {
      */
     public Person createPerson(String groupId, String name) {
         groupUtil.checkIdExists(groupId);
+        personUtil.checkNamesAreUnique(groupId, name);
 
         Person newPerson = new Person(null, name);
-        if (personRepository.getByName(groupId, name)!= null) { throw new PeopleNameConflictException(); }
-
         PersonEntity personEntity = personRepository.create(groupId, newPerson);
 
         Person responsePerson = personEntity.toPerson();
@@ -49,6 +50,7 @@ public class PersonService {
 
     public List<Person> getPeople(String groupId, long limit) {
         groupUtil.checkIdExists(groupId);
+
         List<Person> people = new LinkedList<>();
         for(PersonEntity personEntity : personRepository.getPeople(groupId, limit)) {
             people.add(personEntity.toPerson());
