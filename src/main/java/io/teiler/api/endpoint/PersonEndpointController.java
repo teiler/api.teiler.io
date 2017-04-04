@@ -11,6 +11,7 @@ import io.teiler.server.dto.Person;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import io.teiler.server.util.exceptions.PersonDoesNotBelongToThisGroup;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,8 +55,14 @@ public class PersonEndpointController implements EndpointController {
             String groupId = req.params(":groupid");
             int personId = Integer.parseInt(req.params(":personid"));
             Person changedPerson = gson.fromJson(req.body(), Person.class);
-            personService.editPerson(groupId, personId, changedPerson);
-            return "";
+            Person person = personService.editPerson(groupId, personId, changedPerson);
+            return gson.toJson(person);
+        });
+
+        exception(PersonDoesNotBelongToThisGroup.class, (e, request, response) -> {
+            response.status(403);
+            Error error = new Error("PERSON_NOT_IN_GROUP");
+            response.body(gson.toJson(error));
         });
 
         exception(PeopleNameConflictException.class, (e, request, response) -> {
