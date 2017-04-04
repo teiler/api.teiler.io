@@ -29,8 +29,8 @@ public class PersonRepository {
     /**
      * Creates a new Person and returns it.
      * 
-     * @param id Id of the Group
-     * @param name Name of the Group
+     * @param groupId Id of the Group
+     * @param person Name of the Group
      * @return {@link GroupEntity}
      */
     @Transactional
@@ -55,5 +55,26 @@ public class PersonRepository {
             .where(QPersonEntity.personEntity.groupId.eq(groupId))
             .limit(limit)
             .fetch();
+    }
+
+    public PersonEntity getByGroupAndPersonId(String groupId, int personId) {
+        return new JPAQuery<PersonEntity>(entityManager).from(QPersonEntity.personEntity)
+            .where(QPersonEntity.personEntity.groupId.eq(groupId)
+            .and(QPersonEntity.personEntity.id.eq(personId)))
+            .fetchOne();
+    }
+
+    public PersonEntity getById(int personId) {
+        return new JPAQuery<PersonEntity>(entityManager).from(QPersonEntity.personEntity)
+            .where(QPersonEntity.personEntity.id.eq(personId))
+            .fetchOne();
+    }
+
+
+    @Transactional
+    public void editPerson(int personId, Person changedPerson) {
+        PersonEntity person = getById(personId);
+        person.setName(changedPerson.getName());
+        entityManager.persist(person);
     }
 }
