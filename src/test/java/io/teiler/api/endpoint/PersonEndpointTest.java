@@ -7,6 +7,7 @@ import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import io.teiler.server.util.exceptions.PersonNotFoundException;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -99,6 +100,24 @@ public class PersonEndpointTest {
         String groupId = testGroup.getId();
         Person oldPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
         personService.editPerson(groupId, oldPerson.getId(), oldPerson);
+    }
+
+    @Test(expected = PersonNotFoundException.class)
+    public void testPersonNotFoundAtAll() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        personService.deletePerson(groupId, 123456789);
+    }
+
+    @Test(expected = PersonNotFoundException.class)
+    public void testPersonExistsButNotInThisGroup() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Group testGroupSecond = groupService.createGroup(TEST_GROUP_NAME);
+
+        String groupId = testGroup.getId();
+        String groupIdSecond = testGroupSecond.getId();
+        Person testPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.deletePerson(groupIdSecond, testPerson.getId());
     }
 
 

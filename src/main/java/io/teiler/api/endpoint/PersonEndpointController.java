@@ -12,14 +12,13 @@ import io.teiler.server.dto.Person;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
-import io.teiler.server.util.exceptions.PersonDoesNotBelongToThisGroup;
+import io.teiler.server.util.exceptions.PersonNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Group-related endpoints.
- *
  * @author lroellin
  */
 @Controller
@@ -69,9 +68,9 @@ public class PersonEndpointController implements EndpointController {
             return gson.toJson(person);
         });
 
-        exception(PersonDoesNotBelongToThisGroup.class, (e, request, response) -> {
-            response.status(403);
-            Error error = new Error("PERSON_NOT_IN_GROUP");
+        exception(PersonNotFoundException.class, (e, request, response) -> {
+            response.status(404);
+            Error error = new Error("PERSON_NOT_FOUND");
             response.body(gson.toJson(error));
         });
 
