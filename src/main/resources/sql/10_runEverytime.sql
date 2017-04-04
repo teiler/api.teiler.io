@@ -5,7 +5,6 @@ psql postgres -f <file>
 
 SET client_min_messages = ERROR;
 \set user tylr
-\set password '\'tylr\''
 \set database tylr
 \set promptvar ''
 
