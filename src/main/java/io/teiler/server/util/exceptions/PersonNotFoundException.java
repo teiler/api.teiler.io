@@ -5,7 +5,7 @@ package io.teiler.server.util.exceptions;
  * 
  * @author lroellin
  */
-public class PersonDoesNotBelongToThisGroup extends RuntimeException {
+public class PersonNotFound extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
