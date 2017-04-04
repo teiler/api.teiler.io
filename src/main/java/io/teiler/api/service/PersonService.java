@@ -54,9 +54,18 @@ public class PersonService {
         return people;
     }
 
+    public Person editPerson(String groupId, int personId, Person changedPerson) {
+        groupUtil.checkIdExists(groupId);
+        personUtil.checkPersonBelongsToThisGroup(groupId, personId);
+        personUtil.checkNamesAreUnique(groupId, changedPerson.getName());
+
+        return personRepository.editPerson(personId, changedPerson).toPerson();
+    }
+
     public void deletePerson(String groupId, int personId) {
         groupUtil.checkIdExists(groupId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
-        
+
+        personRepository.deletePerson(personId);
     }
 }
