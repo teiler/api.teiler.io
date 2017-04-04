@@ -1,6 +1,7 @@
 package io.teiler.server.dto;
 
 import com.google.gson.annotations.SerializedName;
+import io.teiler.server.persistence.entities.PersonEntity;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Group {
     private Currency currency;
 
     @SerializedName("people")
-    private List<Person> people;
+    private List<PersonEntity> people;
 
     @SerializedName("update-time")
     private LocalDateTime updateTime;
@@ -38,7 +39,7 @@ public class Group {
 
     // Constructor with all fields (useful for converting)
     public Group(String id, String name, Currency currency,
-        List<Person> people, LocalDateTime updateTime, LocalDateTime createTime) {
+        List<PersonEntity> people, LocalDateTime updateTime, LocalDateTime createTime) {
         this.id = id;
         this.name = name;
         this.currency = currency;
@@ -70,11 +71,11 @@ public class Group {
         this.currency = currency;
     }
 
-    public List<Person> getPeople() {
+    public List<PersonEntity> getPeople() {
         return people;
     }
 
-    public void setPeople(List<Person> people) {
+    public void setPeople(List<PersonEntity> people) {
         this.people = people;
     }
 
