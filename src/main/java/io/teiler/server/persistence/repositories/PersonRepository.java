@@ -72,9 +72,10 @@ public class PersonRepository {
 
 
     @Transactional
-    public void editPerson(int personId, Person changedPerson) {
+    public PersonEntity editPerson(int personId, Person changedPerson) {
         PersonEntity person = getById(personId);
         person.setName(changedPerson.getName());
         entityManager.persist(person);
+        return person;
     }
 }
