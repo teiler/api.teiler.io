@@ -9,17 +9,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GroupUtil {
+    GroupUtil() { /* intentionally empty */ }
+
     @Autowired
     private GroupRepository groupRepository;
 
     public void checkIdExists(String id) {
         GroupEntity groupEntity = fetchGroupEntity(id);
-        if(groupEntity == null) { throw new NotAuthorizedException(); }
+        if(groupEntity == null) {
+            throw new NotAuthorizedException();
+        }
     }
 
     public GroupEntity fetchGroupEntity(String id) {
-        GroupEntity groupEntity = groupRepository.get(id);
-        return groupEntity;
+        return groupRepository.get(id);
     }
 
     public Group fetchGroup(String id) {

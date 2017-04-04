@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class GsonUtil {
+    GsonUtil() { /* intentionally empty */ }
+
     public static GsonBuilder getHomebrewGsonBuilder() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeHierarchyAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
