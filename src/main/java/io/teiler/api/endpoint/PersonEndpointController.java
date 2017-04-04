@@ -21,10 +21,8 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class PersonEndpointController implements EndpointController {
-
-    private Gson gson = GsonUtil.getHomebrewGson();
-
     private final static int DEFAULT_QUERY_LIMIT = 20;
+    private Gson gson = GsonUtil.getHomebrewGson();
 
     @Autowired
     private PersonService personService;

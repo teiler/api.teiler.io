@@ -7,11 +7,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PersonUtil {
+    PersonUtil() { /* intentionally empty */ }
+
     @Autowired
     private PersonRepository personRepository;
 
     public void checkNamesAreUnique(String groupId, String name) {
-        if (personRepository.getByName(groupId, name) != null) { throw new PeopleNameConflictException(); }
+        if (personRepository.getByName(groupId, name) != null) {
+            throw new PeopleNameConflictException();
+        }
     }
 
 }

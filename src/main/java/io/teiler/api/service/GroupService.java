@@ -60,15 +60,13 @@ public class GroupService {
      */
     public Group createGroup(String name) {
         // Default currency CHF
-        Group newGroup = new Group(null, name, Currency.chf);
+        Group newGroup = new Group(null, name, Currency.CHF);
 
         newGroup.setId(createNewUuid());
         LOGGER.debug("New Group: " + newGroup.getName() + ", " + newGroup.getId());
 
         GroupEntity groupEntity = groupRepository.create(newGroup);
-        Group responseGroup = groupEntity.toGroup();
-
-        return responseGroup;
+        return groupEntity.toGroup();
     }
 
     /**

@@ -1,6 +1,5 @@
 package io.teiler.server.persistence.entities;
 
-import io.teiler.api.service.GroupService;
 import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
 import io.teiler.server.util.TimeUtil;
@@ -19,8 +18,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Entity representing an entry of the <code>group</code>-table.
@@ -30,8 +27,6 @@ import org.slf4j.LoggerFactory;
 @Entity
 @Table(name = "`group`") // f*** PSQL
 public class GroupEntity {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GroupService.class);
-
     @Id
     @Column(name = "id")
     private String id;

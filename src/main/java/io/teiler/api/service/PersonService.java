@@ -7,8 +7,6 @@ import io.teiler.server.util.GroupUtil;
 import io.teiler.server.util.PersonUtil;
 import java.util.LinkedList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +17,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PersonService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
-
     /* Spring Components (Services/Controller) */
     @Autowired
     private GroupUtil groupUtil;
@@ -44,8 +39,7 @@ public class PersonService {
         Person newPerson = new Person(null, name);
         PersonEntity personEntity = personRepository.create(groupId, newPerson);
 
-        Person responsePerson = personEntity.toPerson();
-        return responsePerson;
+        return personEntity.toPerson();
     }
 
     public List<Person> getPeople(String groupId, long limit) {
