@@ -5,6 +5,7 @@ import io.teiler.api.service.PersonService;
 import io.teiler.server.Tylr;
 import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
+import io.teiler.server.util.PersonUtil;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
@@ -32,6 +33,8 @@ public class PersonEndpointTest {
     private PersonService personService;
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private PersonUtil personUtil;
 
     @Test(expected = NotAuthorizedException.class)
     public void testReturnNotAuthorizedWhenCreatingPersonWithInvalidGroupId() {
@@ -106,7 +109,7 @@ public class PersonEndpointTest {
     public void testPersonNotFoundAtAll() {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
-        personService.deletePerson(groupId, 123456789);
+        personUtil.checkPersonBelongsToThisGroup(groupId, 123456789);
     }
 
     @Test(expected = PersonNotFoundException.class)
@@ -117,9 +120,17 @@ public class PersonEndpointTest {
         String groupId = testGroup.getId();
         String groupIdSecond = testGroupSecond.getId();
         Person testPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
-        personService.deletePerson(groupIdSecond, testPerson.getId());
+        personUtil.checkPersonBelongsToThisGroup(groupIdSecond, testPerson.getId());
     }
 
+    @Test(expected = PersonNotFoundException.class)
+    public void testOrphanedPersonGetsDeleted() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person hans = personService.createPerson(groupId, "Hans");
+        groupService.deleteGroup(groupId);
+        personUtil.checkPersonExists(hans.getId());
+    }
 
 
 }

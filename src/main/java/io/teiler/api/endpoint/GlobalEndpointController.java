@@ -23,6 +23,7 @@ public class GlobalEndpointController implements EndpointController {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalEndpointController.class);
 
     private Gson gson = new Gson();
+    public static final String URL_VERSION = "/v1/";
 
     @Override
     public void register() {

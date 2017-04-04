@@ -5,7 +5,6 @@ import static io.teiler.server.persistence.entities.QGroupEntity.groupEntity;
 import com.querydsl.jpa.impl.JPAQuery;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +46,18 @@ public class GroupRepository {
                 .where(groupEntity.id.eq(id)).fetchOne();
     }
 
-    /**
-     * Returns a {@link List} of all Group-Ids.
-     * 
-     * @return {@link List} of Group-Ids
-     */
-    public List<String> getAllIds() {
-        return new JPAQuery<GroupEntity>(entityManager).from(groupEntity)
-                .select(groupEntity.id).fetch();
+    @Transactional
+    public GroupEntity editGroup(String groupId, Group changedGroup) {
+        GroupEntity group = get(groupId);
+        group.setName(changedGroup.getName());
+        group.setCurrency(changedGroup.getCurrency());
+        entityManager.persist(group);
+        return group;
     }
 
+    @Transactional
+    public void deleteGroup(String groupId) {
+        GroupEntity group = get(groupId);
+        entityManager.remove(group);
+    }
 }
