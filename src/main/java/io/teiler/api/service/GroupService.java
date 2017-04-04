@@ -69,6 +69,16 @@ public class GroupService {
         return groupEntity.toGroup();
     }
 
+    public Group editGroup(String groupId, Group changedGroup) {
+        groupUtil.checkIdExists(groupId);
+        return groupRepository.editGroup(groupId, changedGroup).toGroup();
+    }
+
+    public void deleteGroup(String groupId) {
+        groupUtil.checkIdExists(groupId);
+        groupRepository.deleteGroup(groupId);
+    }
+
     /**
      * Creates a new UUID for a Group.<br>
      * See the linked page for further information.
@@ -84,5 +94,4 @@ public class GroupService {
         } while (groupRepository.get(uuid) != null);
         return uuid;
     }
-
 }

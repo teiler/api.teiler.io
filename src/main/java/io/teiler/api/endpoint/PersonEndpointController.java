@@ -53,19 +53,19 @@ public class PersonEndpointController implements EndpointController {
             return gson.toJson(people);
         });
 
-        delete("/v1/groups/:groupid/people/:personid", (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            int personId = Integer.parseInt(req.params(":personid"));
-            personService.deletePerson(groupId, personId);
-            return "";
-        });
-
         put("/v1/groups/:groupid/people/:personid", (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             Person changedPerson = gson.fromJson(req.body(), Person.class);
             Person person = personService.editPerson(groupId, personId, changedPerson);
             return gson.toJson(person);
+        });
+
+        delete("/v1/groups/:groupid/people/:personid", (req, res) -> {
+            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
+            int personId = Integer.parseInt(req.params(":personid"));
+            personService.deletePerson(groupId, personId);
+            return "";
         });
 
         exception(PersonNotFoundException.class, (e, request, response) -> {

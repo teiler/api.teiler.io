@@ -47,14 +47,18 @@ public class GroupRepository {
                 .where(groupEntity.id.eq(id)).fetchOne();
     }
 
-    /**
-     * Returns a {@link List} of all Group-Ids.
-     * 
-     * @return {@link List} of Group-Ids
-     */
-    public List<String> getAllIds() {
-        return new JPAQuery<GroupEntity>(entityManager).from(groupEntity)
-                .select(groupEntity.id).fetch();
+    @Transactional
+    public GroupEntity editGroup(String groupId, Group changedGroup) {
+        GroupEntity group = get(groupId);
+        group.setName(changedGroup.getName());
+        group.setCurrency(changedGroup.getCurrency());
+        entityManager.persist(group);
+        return group;
     }
 
+    @Transactional
+    public void deleteGroup(String groupId) {
+        GroupEntity group = get(groupId);
+        entityManager.remove(group);
+    }
 }
