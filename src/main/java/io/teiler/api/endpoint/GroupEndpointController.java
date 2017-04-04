@@ -20,7 +20,8 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class GroupEndpointController implements EndpointController {
     public static final String GROUP_ID_PARAM = ":groupid";
-
+    public static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups";
+    public static final String URL_WITH_GROUP_ID = BASE_URL + "/:groupid";
 
     private Gson gson = GsonUtil.getHomebrewGson();
 
@@ -29,26 +30,26 @@ public class GroupEndpointController implements EndpointController {
 
     @Override
     public void register() {
-        post("/v1/groups", (req, res) -> {
+        post(BASE_URL, (req, res) -> {
             Group requestGroup = gson.fromJson(req.body(), Group.class);
             Group newGroup = groupService.createGroup(requestGroup.getName());
             return gson.toJson(newGroup);
         });
 
-        get("/v1/groups/:groupid", (req, res) -> {
+        get(URL_WITH_GROUP_ID, (req, res) -> {
             String id = req.params(GROUP_ID_PARAM);
             Group requestGroup = groupService.viewGroup(id);
             return gson.toJson(requestGroup);
         });
 
-        put("/v1/groups/:groupid", (req, res) -> {
+        put(URL_WITH_GROUP_ID, (req, res) -> {
             String groupId = req.params(GROUP_ID_PARAM);
             Group changedGroup = gson.fromJson(req.body(), Group.class);
             Group group = groupService.editGroup(groupId, changedGroup);
             return gson.toJson(group);
         });
 
-        delete("/v1/groups/:groupid", (req, res) -> {
+        delete(URL_WITH_GROUP_ID, (req, res) -> {
             String groupId = req.params(GROUP_ID_PARAM);
             groupService.deleteGroup(groupId);
             return "";
