@@ -1,5 +1,9 @@
 package io.teiler.api.endpoint;
 
+import io.teiler.api.service.GroupService;
+import io.teiler.server.Tylr;
+import io.teiler.server.dto.Group;
+import io.teiler.server.util.exceptions.NotAuthorizedException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,29 +13,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.google.gson.Gson;
-
-import io.teiler.api.service.GroupService;
-import io.teiler.server.Tylr;
-import io.teiler.server.dto.Group;
-import io.teiler.server.util.exceptions.NotAuthorizedException;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = {"local.server.port=4567"})
 @AutoConfigureTestDatabase
 public class GroupEndpointTest {
 
-    Gson gson = new Gson();
-    
     @Autowired
     private GroupService groupService;
-
 
     @Test(expected = NotAuthorizedException.class)
     public void testReturnNotAuthorizedWhenViewingGroupWithoutValidId() {
         groupService.viewGroup("");
-        
+
     }
 
     @Test(expected = NotAuthorizedException.class)
