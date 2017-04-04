@@ -2,6 +2,7 @@ package io.teiler.server.util;
 
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import io.teiler.server.util.exceptions.PersonDoesNotBelongToThisGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,4 +19,9 @@ public class PersonUtil {
         }
     }
 
+    public void checkPersonBelongsToThisGroup(String groupId, int personId) {
+        if(personRepository.getByGroupAndPersonId(groupId, personId) == null) {
+            throw new PersonDoesNotBelongToThisGroup();
+        }
+    }
 }

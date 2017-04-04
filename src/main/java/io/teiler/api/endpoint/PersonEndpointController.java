@@ -3,6 +3,7 @@ package io.teiler.api.endpoint;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.put;
 
 import com.google.gson.Gson;
 import io.teiler.api.service.PersonService;
@@ -46,6 +47,15 @@ public class PersonEndpointController implements EndpointController {
             }
             List<Person> people = personService.getPeople(groupId, limit);
             return gson.toJson(people);
+        });
+
+
+        put("/v1/groups/:groupid/people/:personid", (req, res) -> {
+            String groupId = req.params(":groupid");
+            int personId = Integer.parseInt(req.params(":personid"));
+            Person changedPerson = gson.fromJson(req.body(), Person.class);
+            personService.editPerson(groupId, personId, changedPerson);
+            return "";
         });
 
         exception(PeopleNameConflictException.class, (e, request, response) -> {
