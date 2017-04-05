@@ -2,9 +2,11 @@ package io.teiler.server.persistence.entities;
 
 import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
 import io.teiler.server.util.TimeUtil;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +44,7 @@ public class GroupEntity {
 
     @OneToMany(targetEntity = PersonEntity.class, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "`group`", referencedColumnName = "id")
-    private List people;
+    private List<PersonEntity> people;
 
     @NotNull
     @Column(name = "update_time")
@@ -64,20 +66,36 @@ public class GroupEntity {
     public GroupEntity() { /* intentionally empty */ }
 
     public GroupEntity(Group group) {
+        List<PersonEntity> peopleEntities = new LinkedList<>();
+        if(group.getPeople() != null) {
+            for (Person person : group.getPeople()) {
+                peopleEntities.add(new PersonEntity(person));
+            }
+        } else {
+            peopleEntities = null;
+        }
         this.id = group.getId();
         this.name = group.getName();
         this.currency = group.getCurrency();
-        this.people = group.getPeople();
+        this.people = peopleEntities;
         this.updateTime = TimeUtil.convertToTimestamp(group.getUpdateTime());
         this.createTime = TimeUtil.convertToTimestamp(group.getCreateTime());
     }
 
     public Group toGroup() {
+        List<Person> people = new LinkedList<>();
+        if(this.getPeople() != null) {
+            for(PersonEntity personEntity : this.getPeople()) {
+                people.add(personEntity.toPerson());
+            }
+        } else {
+            people = null;
+        }
         return new Group(
             this.getId(),
             this.getName(),
             this.getCurrency(),
-            this.getPeople(),
+            people,
             TimeUtil.convertToLocalDateTime(this.getUpdateTime()),
             TimeUtil.convertToLocalDateTime(this.getCreateTime()));
     }
@@ -110,11 +128,11 @@ public class GroupEntity {
         this.currency = currency;
     }
 
-    public List getPeople() {
+    public List<PersonEntity> getPeople() {
         return people;
     }
 
-    public void setPeople(List people) {
+    public void setPeople(List<PersonEntity> people) {
         this.people = people;
     }
 
