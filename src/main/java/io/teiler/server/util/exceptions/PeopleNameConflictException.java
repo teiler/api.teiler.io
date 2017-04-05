@@ -7,4 +7,8 @@ package io.teiler.server.util.exceptions;
  */
 public class PeopleNameConflictException extends RuntimeException {
     private static final long serialVersionUID = 1L;
+
+    public PeopleNameConflictException() {
+        super("PEOPLE_NAME_CONFLICT");
+    }
 }
