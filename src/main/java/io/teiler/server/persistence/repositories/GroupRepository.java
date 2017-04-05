@@ -2,13 +2,16 @@ package io.teiler.server.persistence.repositories;
 
 import static io.teiler.server.persistence.entities.QGroupEntity.groupEntity;
 
-import com.querydsl.jpa.impl.JPAQuery;
-import io.teiler.server.dto.Group;
-import io.teiler.server.persistence.entities.GroupEntity;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.querydsl.jpa.impl.JPAQuery;
+
+import io.teiler.server.dto.Group;
+import io.teiler.server.persistence.entities.GroupEntity;
 
 /**
  * Provides database-related operations for Groups.
@@ -60,4 +63,5 @@ public class GroupRepository {
         GroupEntity group = getGroupById(groupId);
         entityManager.remove(group);
     }
+    
 }

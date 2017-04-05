@@ -6,9 +6,11 @@ package io.teiler.server.util.exceptions;
  * @author lroellin
  */
 public class PersonNotFoundException extends RuntimeException {
+    
     private static final long serialVersionUID = 1L;
 
     public PersonNotFoundException() {
         super("PERSON_NOT_FOUND");
     }
+    
 }

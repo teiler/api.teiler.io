@@ -1,13 +1,10 @@
 package io.teiler.server.persistence.entities;
 
-import io.teiler.server.dto.Currency;
-import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
-import io.teiler.server.util.TimeUtil;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,6 +18,11 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import io.teiler.server.dto.Currency;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.util.TimeUtil;
+
 /**
  * Entity representing an entry of the <code>group</code>-table.
  *
@@ -29,6 +31,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "`group`") // f*** PSQL
 public class GroupEntity {
+    
     @Id
     @Column(name = "id")
     private String id;
@@ -151,4 +154,5 @@ public class GroupEntity {
     public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
+    
 }

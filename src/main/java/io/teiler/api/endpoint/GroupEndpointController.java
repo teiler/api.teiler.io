@@ -5,13 +5,15 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import com.google.gson.Gson;
+
 import io.teiler.api.service.GroupService;
 import io.teiler.server.dto.Group;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Group-related endpoints.
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class GroupEndpointController implements EndpointController {
+    
     public static final String GROUP_ID_PARAM = ":groupid";
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups";
     private static final String URL_WITH_GROUP_ID = BASE_URL + "/:groupid";
