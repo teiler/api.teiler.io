@@ -71,20 +71,20 @@ public class PersonEndpointController implements EndpointController {
         delete(URL_WITH_PERSON_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             groupId = Normalize.normalizeGroupId(groupId);
-            int personId = Integer.parseInt(req.params(":personid"));
+            int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             personService.deletePerson(groupId, personId);
             return "";
         });
 
         exception(PersonNotFoundException.class, (e, request, response) -> {
             response.status(404);
-            Error error = new Error("PERSON_NOT_FOUND");
+            Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
         });
 
         exception(PeopleNameConflictException.class, (e, request, response) -> {
             response.status(409);
-            Error error = new Error("PEOPLE_NAME_CONFLICT");
+            Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
         });
     }
