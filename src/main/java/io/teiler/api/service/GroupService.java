@@ -1,5 +1,12 @@
 package io.teiler.api.service;
 
+import java.security.SecureRandom;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
@@ -7,11 +14,6 @@ import io.teiler.server.persistence.repositories.GroupRepository;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.groupid.IDGenerator;
 import io.teiler.server.util.groupid.RandomGeneratorWithAlphabet;
-import java.security.SecureRandom;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Groups.
@@ -91,4 +93,5 @@ public class GroupService {
         } while (groupRepository.getGroupById(id) != null);
         return id;
     }
+    
 }

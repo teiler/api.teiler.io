@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class TimeUtil {
+    
     TimeUtil() { /* intentionally empty */ }
 
     public static Timestamp convertToTimestamp(LocalDateTime time) {
@@ -19,4 +20,5 @@ public class TimeUtil {
         }
         return time.toLocalDateTime();
     }
+    
 }
