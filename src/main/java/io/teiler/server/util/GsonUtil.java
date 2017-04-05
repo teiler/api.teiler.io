@@ -11,7 +11,7 @@ import io.teiler.server.util.jsonserializer.TimestampSerializer;
 
 public class GsonUtil {
     
-    GsonUtil() { /* intentionally empty */ }
+    private GsonUtil() { /* intentionally empty */ }
 
     public static GsonBuilder getHomebrewGsonBuilder() {
         GsonBuilder gsonBuilder = new GsonBuilder();
