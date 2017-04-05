@@ -5,7 +5,6 @@ import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.entities.QPersonEntity;
-import io.teiler.server.util.GroupUtil;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -24,7 +23,7 @@ public class PersonRepository {
     private EntityManager entityManager;
 
     @Autowired
-    private GroupUtil groupUtil;
+    private GroupRepository groupRepository;
 
     /**
      * Creates a new Person and returns it.
@@ -35,7 +34,7 @@ public class PersonRepository {
      */
     @Transactional
     public PersonEntity create(String groupId, Person person) {
-        GroupEntity groupEntity = groupUtil.fetchGroupEntity(groupId);
+        GroupEntity groupEntity = groupRepository.getGroupById(groupId);
         PersonEntity personEntity = new PersonEntity(person);
         groupEntity.addPerson(personEntity);
         entityManager.persist(personEntity);

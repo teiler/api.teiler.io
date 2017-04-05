@@ -25,7 +25,7 @@ public class AuthorizationChecker {
      */
     public void checkAuthorization(String uuid) throws NotAuthorizedException {
         // Java checks from left to right
-        if (uuid == null || groupRepository.get(uuid) == null) {
+        if (uuid == null || groupRepository.getGroupById(uuid) == null) {
             throw new NotAuthorizedException();
         }
     }

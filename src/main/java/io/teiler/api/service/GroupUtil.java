@@ -1,4 +1,4 @@
-package io.teiler.server.util;
+package io.teiler.api.service;
 
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
@@ -22,7 +22,7 @@ public class GroupUtil {
     }
 
     public GroupEntity fetchGroupEntity(String id) {
-        return groupRepository.get(id);
+        return groupRepository.getGroupById(id);
     }
 
     public Group fetchGroup(String id) {

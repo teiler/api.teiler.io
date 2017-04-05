@@ -3,8 +3,6 @@ package io.teiler.api.service;
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
-import io.teiler.server.util.GroupUtil;
-import io.teiler.server.util.PersonUtil;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

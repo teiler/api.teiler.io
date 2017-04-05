@@ -4,7 +4,6 @@ import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.repositories.GroupRepository;
-import io.teiler.server.util.GroupUtil;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -91,7 +90,7 @@ public class GroupService {
         do {
             uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * ENTROPY_BITS_IN_ONE_CHARACTER, random)
                     .toString(32);
-        } while (groupRepository.get(uuid) != null);
+        } while (groupRepository.getGroupById(uuid) != null);
         return uuid;
     }
 }
