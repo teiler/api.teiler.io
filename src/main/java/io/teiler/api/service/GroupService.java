@@ -5,7 +5,8 @@ import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.repositories.GroupRepository;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
-import java.math.BigInteger;
+import io.teiler.server.util.groupid.IDGenerator;
+import io.teiler.server.util.groupid.RandomGeneratorWithAlphabet;
 import java.security.SecureRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +33,10 @@ public class GroupService {
     @Autowired
     private GroupRepository groupRepository;
 
+    private IDGenerator idGenerator = new RandomGeneratorWithAlphabet();
+
     /* Constants */
     private static final int NUMBER_OF_ID_CHARACTERS = 8;
-
-    // Mathematical fact, don't change it
-    private static final int ENTROPY_BITS_IN_ONE_CHARACTER = 5;
-
 
     /**
      * Returns information about a Group.
@@ -61,7 +60,7 @@ public class GroupService {
         // Default currency CHF
         Group newGroup = new Group(null, name, Currency.CHF);
 
-        newGroup.setId(createNewUuid());
+        newGroup.setId(createNewId());
         LOGGER.debug("New Group: " + newGroup.getName() + ", " + newGroup.getId());
 
         GroupEntity groupEntity = groupRepository.create(newGroup);
@@ -85,12 +84,11 @@ public class GroupService {
      * @return A UUID (as a mere String; not to be confused with {@link java.util.UUID})
      * @see <a href="http://stackoverflow.com/a/41156">http://stackoverflow.com/a/41156<a>
      */
-    private String createNewUuid() {
-        String uuid;
+    private String createNewId() {
+        String id;
         do {
-            uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * ENTROPY_BITS_IN_ONE_CHARACTER, random)
-                    .toString(32);
-        } while (groupRepository.getGroupById(uuid) != null);
-        return uuid;
+            id = idGenerator.generateId(NUMBER_OF_ID_CHARACTERS);
+        } while (groupRepository.getGroupById(id) != null);
+        return id;
     }
 }
