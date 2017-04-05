@@ -10,7 +10,7 @@ import io.teiler.server.util.exceptions.PersonNotFoundException;
 @Service
 public class PersonUtil {
     
-    PersonUtil() { /* intentionally empty */ }
+    public PersonUtil() { /* intentionally empty */ }
 
     @Autowired
     private PersonRepository personRepository;

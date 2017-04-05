@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public class TimeUtil {
     
-    TimeUtil() { /* intentionally empty */ }
+    private TimeUtil() { /* intentionally empty */ }
 
     public static Timestamp convertToTimestamp(LocalDateTime time) {
         if(time == null) {
