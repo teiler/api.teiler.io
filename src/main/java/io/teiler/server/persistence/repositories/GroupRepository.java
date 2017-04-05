@@ -41,14 +41,14 @@ public class GroupRepository {
      * @param id Id of the Group
      * @return {@link GroupEntity}
      */
-    public GroupEntity get(String id) {
+    public GroupEntity getGroupById(String id) {
         return new JPAQuery<GroupEntity>(entityManager).from(groupEntity)
                 .where(groupEntity.id.eq(id)).fetchOne();
     }
 
     @Transactional
     public GroupEntity editGroup(String groupId, Group changedGroup) {
-        GroupEntity group = get(groupId);
+        GroupEntity group = getGroupById(groupId);
         group.setName(changedGroup.getName());
         group.setCurrency(changedGroup.getCurrency());
         entityManager.persist(group);
@@ -57,7 +57,7 @@ public class GroupRepository {
 
     @Transactional
     public void deleteGroup(String groupId) {
-        GroupEntity group = get(groupId);
+        GroupEntity group = getGroupById(groupId);
         entityManager.remove(group);
     }
 }

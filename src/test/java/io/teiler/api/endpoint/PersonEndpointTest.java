@@ -5,7 +5,7 @@ import io.teiler.api.service.PersonService;
 import io.teiler.server.Tylr;
 import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
-import io.teiler.server.util.PersonUtil;
+import io.teiler.api.service.PersonUtil;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;

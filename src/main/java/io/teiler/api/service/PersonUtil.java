@@ -1,4 +1,4 @@
-package io.teiler.server.util;
+package io.teiler.api.service;
 
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;

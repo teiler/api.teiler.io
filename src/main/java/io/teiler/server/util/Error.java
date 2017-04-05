@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Error-Wrapper to smoothly get error-codes across the REST-API.
+ * Error-Wrapper to smoothly getGroupById error-codes across the REST-API.
  * 
  * @author lroellin
  */
