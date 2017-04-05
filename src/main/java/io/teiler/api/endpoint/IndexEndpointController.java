@@ -20,6 +20,10 @@ public class IndexEndpointController implements EndpointController {
 
     @Override
     public void register() {
+        /**
+         * Returns a description of our versions. This could've been implemented by normal Java objects
+         * and then serializing them with GSON, but it's a bit overkill
+         */
         get("/", (req, res) -> {
             JsonObject json = new JsonObject();
             json.addProperty("documentation", "doc.teiler.io");
