@@ -1,11 +1,8 @@
 package io.teiler.api.service;
 
-import io.teiler.api.service.GroupService;
-import io.teiler.api.service.PersonService;
 import io.teiler.server.Tylr;
 import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
-import io.teiler.api.service.PersonUtil;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
@@ -23,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = {"local.server.port=4567"})
 @AutoConfigureTestDatabase
-public class PersonEndpointTest {
+public class PersonServiceTest {
 
     private static final String FIRST_PERSON_NAME = "Hans";
     private static final String SECOND_PERSON_NAME = "Peter";
