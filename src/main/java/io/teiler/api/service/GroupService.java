@@ -1,12 +1,5 @@
 package io.teiler.api.service;
 
-import java.security.SecureRandom;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
@@ -14,6 +7,10 @@ import io.teiler.server.persistence.repositories.GroupRepository;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.groupid.IDGenerator;
 import io.teiler.server.util.groupid.RandomGeneratorWithAlphabet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Groups.
@@ -24,21 +21,14 @@ import io.teiler.server.util.groupid.RandomGeneratorWithAlphabet;
 public class GroupService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupService.class);
-
-    /* Instance objects, potentially expensive ones you only need once */
-    private SecureRandom random = new SecureRandom();
-
+    /* Constants */
+    private static final int NUMBER_OF_ID_CHARACTERS = 8;
     /* Spring Components (Services/Controller) */
     @Autowired
     private GroupUtil groupUtil;
-
     @Autowired
     private GroupRepository groupRepository;
-
     private IDGenerator idGenerator = new RandomGeneratorWithAlphabet();
-
-    /* Constants */
-    private static final int NUMBER_OF_ID_CHARACTERS = 8;
 
     /**
      * Returns information about a Group.

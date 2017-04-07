@@ -4,14 +4,15 @@ import java.security.SecureRandom;
 
 public class RandomGeneratorWithAlphabet implements IDGenerator {
 
-    private static final String alphabet = "0123456789abcdefghijkmnpqrstuvwxyz";
+    // hand tuned to avoid characters that look alike
+    private static final String ALPHABET = "0123456789abcdefghijkmnpqrstuvwxyz";
     private static SecureRandom rnd = new SecureRandom();
 
     @Override
     public String generateId(int length) {
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            sb.append(alphabet.charAt(rnd.nextInt(alphabet.length())));
+            sb.append(ALPHABET.charAt(rnd.nextInt(ALPHABET.length())));
         }
         return sb.toString();
     }
