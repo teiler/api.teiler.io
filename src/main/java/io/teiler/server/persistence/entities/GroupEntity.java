@@ -1,10 +1,13 @@
 package io.teiler.server.persistence.entities;
 
+import io.teiler.server.dto.Currency;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.util.TimeUtil;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,11 +20,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import io.teiler.server.dto.Currency;
-import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
-import io.teiler.server.util.TimeUtil;
 
 /**
  * Entity representing an entry of the <code>group</code>-table.
@@ -57,15 +55,6 @@ public class GroupEntity {
     @Column(name = "create_time")
     private Timestamp createTime;
 
-    @PreUpdate
-    @PrePersist
-    public void updateTimeStamps() {
-        updateTime = new Timestamp(Instant.now().toEpochMilli());
-        if (createTime == null) {
-            createTime = new Timestamp(Instant.now().toEpochMilli());
-        }
-    }
-
     public GroupEntity() { /* intentionally empty */ }
 
     public GroupEntity(Group group) {
@@ -85,20 +74,29 @@ public class GroupEntity {
         this.createTime = TimeUtil.convertToTimestamp(group.getCreateTime());
     }
 
+    @PreUpdate
+    @PrePersist
+    public void updateTimeStamps() {
+        updateTime = new Timestamp(Instant.now().toEpochMilli());
+        if (createTime == null) {
+            createTime = new Timestamp(Instant.now().toEpochMilli());
+        }
+    }
+
     public Group toGroup() {
-        List<Person> people = new LinkedList<>();
+        List<Person> dtoPeople = new LinkedList<>();
         if(this.getPeople() != null) {
             for(PersonEntity personEntity : this.getPeople()) {
-                people.add(personEntity.toPerson());
+                dtoPeople.add(personEntity.toPerson());
             }
         } else {
-            people = null;
+            dtoPeople = null;
         }
         return new Group(
             this.getId(),
             this.getName(),
             this.getCurrency(),
-            people,
+            dtoPeople,
             TimeUtil.convertToLocalDateTime(this.getUpdateTime()),
             TimeUtil.convertToLocalDateTime(this.getCreateTime()));
     }
