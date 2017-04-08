@@ -8,14 +8,14 @@ public class TimeUtil {
     private TimeUtil() { /* intentionally empty */ }
 
     public static Timestamp convertToTimestamp(LocalDateTime time) {
-        if(time == null) {
+        if (time == null) {
             return null;
         }
         return Timestamp.valueOf(time);
     }
 
     public static LocalDateTime convertToLocalDateTime(Timestamp time) {
-        if(time == null) {
+        if (time == null) {
             return null;
         }
         return time.toLocalDateTime();

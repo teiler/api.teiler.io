@@ -18,7 +18,7 @@ public class GroupUtil {
 
     public void checkIdExists(String id) {
         GroupEntity groupEntity = fetchGroupEntity(id);
-        if(groupEntity == null) {
+        if (groupEntity == null) {
             throw new NotAuthorizedException();
         }
     }
@@ -29,6 +29,6 @@ public class GroupUtil {
 
     public Group fetchGroup(String id) {
         return fetchGroupEntity(id).toGroup();
-     }
+    }
 
 }

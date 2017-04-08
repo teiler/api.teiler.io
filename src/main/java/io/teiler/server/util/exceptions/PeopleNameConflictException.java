@@ -1,7 +1,7 @@
 package io.teiler.server.util.exceptions;
 
 /**
- * Exception denoting that person names in a group clash
+ * Exception denoting that person names in a group clash.
  * 
  * @author lroellin
  */

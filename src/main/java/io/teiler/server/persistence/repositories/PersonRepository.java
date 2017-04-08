@@ -49,8 +49,8 @@ public class PersonRepository {
     public PersonEntity getByName(String groupId, String name) {
         return new JPAQuery<PersonEntity>(entityManager).from(QPersonEntity.personEntity)
             .where(QPersonEntity.personEntity.groupId.eq(groupId)
-            .and(QPersonEntity.personEntity.name.eq(name))).
-            fetchOne();
+            .and(QPersonEntity.personEntity.name.eq(name)))
+            .fetchOne();
     }
 
     public List<PersonEntity> getPeople(String groupId, long limit) {

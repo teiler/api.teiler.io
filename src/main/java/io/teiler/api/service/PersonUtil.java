@@ -22,13 +22,13 @@ public class PersonUtil {
     }
 
     public void checkPersonBelongsToThisGroup(String groupId, int personId) {
-        if(personRepository.getByGroupAndPersonId(groupId, personId) == null) {
+        if (personRepository.getByGroupAndPersonId(groupId, personId) == null) {
             throw new PersonNotFoundException();
         }
     }
 
     public void checkPersonExists(int personId) {
-        if(personRepository.getById(personId) == null) {
+        if (personRepository.getById(personId) == null) {
             throw new PersonNotFoundException();
         }
     }

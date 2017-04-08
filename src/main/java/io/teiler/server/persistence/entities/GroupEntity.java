@@ -59,7 +59,7 @@ public class GroupEntity {
 
     public GroupEntity(Group group) {
         List<PersonEntity> peopleEntities = new LinkedList<>();
-        if(group.getPeople() != null) {
+        if (group.getPeople() != null) {
             for (Person person : group.getPeople()) {
                 peopleEntities.add(new PersonEntity(person));
             }
@@ -85,8 +85,8 @@ public class GroupEntity {
 
     public Group toGroup() {
         List<Person> dtoPeople = new LinkedList<>();
-        if(this.getPeople() != null) {
-            for(PersonEntity personEntity : this.getPeople()) {
+        if (this.getPeople() != null) {
+            for (PersonEntity personEntity : this.getPeople()) {
                 dtoPeople.add(personEntity.toPerson());
             }
         } else {
