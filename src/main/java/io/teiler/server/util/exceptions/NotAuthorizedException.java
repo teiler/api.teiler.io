@@ -1,7 +1,7 @@
 package io.teiler.server.util.exceptions;
 
 /**
- * Exception denoting that access to some ressource(s) has not been authorised.
+ * Exception denoting that access to some resource(s) has not been authorised.
  * 
  * @author lroellin
  */
