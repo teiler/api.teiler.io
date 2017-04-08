@@ -5,7 +5,7 @@ import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.repositories.GroupRepository;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
-import io.teiler.server.util.groupid.IDGenerator;
+import io.teiler.server.util.groupid.IdGenerator;
 import io.teiler.server.util.groupid.RandomGeneratorWithAlphabet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class GroupService {
     private GroupUtil groupUtil;
     @Autowired
     private GroupRepository groupRepository;
-    private IDGenerator idGenerator = new RandomGeneratorWithAlphabet();
+    private IdGenerator idGenerator = new RandomGeneratorWithAlphabet();
 
     /**
      * Returns information about a Group.

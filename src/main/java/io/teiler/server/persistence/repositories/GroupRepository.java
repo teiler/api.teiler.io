@@ -27,8 +27,7 @@ public class GroupRepository {
     /**
      * Creates a new Group and returns it.
      * 
-     * @param id Id of the Group
-     * @param name Name of the Group
+     * @param group {@link Group}
      * @return {@link GroupEntity}
      */
     @Transactional

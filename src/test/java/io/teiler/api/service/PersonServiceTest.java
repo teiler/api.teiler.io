@@ -45,6 +45,7 @@ public class PersonServiceTest {
         personService.createPerson(groupId, FIRST_PERSON_NAME);
         personService.createPerson(groupId, FIRST_PERSON_NAME);
     }
+    
     @Test
     public void testDifferentNamesDontConflict() {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);

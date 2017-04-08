@@ -9,7 +9,7 @@ import io.teiler.server.util.GsonUtil;
 import org.springframework.stereotype.Controller;
 
 /**
- * Controller for the index endpoint
+ * Controller for the index endpoint.
  * 
  * @author lroellin
  */
@@ -22,7 +22,7 @@ public class IndexEndpointController implements EndpointController {
     public void register() {
         /**
          * Returns a description of our versions. This could've been implemented by normal Java objects
-         * and then serializing them with GSON, but it's a bit overkill
+         * and then serialising them with GSON, but it's a bit overkill.
          */
         get("/", (req, res) -> {
             JsonObject json = new JsonObject();
