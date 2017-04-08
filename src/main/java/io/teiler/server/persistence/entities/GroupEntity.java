@@ -57,6 +57,11 @@ public class GroupEntity {
 
     public GroupEntity() { /* intentionally empty */ }
 
+    /**
+     * Converts a {@link GroupEntity} to a {@link Group}.
+     * 
+     * @param group {@link Group}
+     */
     public GroupEntity(Group group) {
         List<PersonEntity> peopleEntities = new LinkedList<>();
         if (group.getPeople() != null) {
@@ -74,6 +79,11 @@ public class GroupEntity {
         this.createTime = TimeUtil.convertToTimestamp(group.getCreateTime());
     }
 
+    /**
+     * Sets the update-time and creation-time to {@link Instant#now()}.
+     * <br>
+     * <i>Note:</i> The creation-time will only be set if it has not been set previously. 
+     */
     @PreUpdate
     @PrePersist
     public void updateTimeStamps() {
@@ -83,6 +93,11 @@ public class GroupEntity {
         }
     }
 
+    /**
+     * Converts this {@link GroupEntity} to a {@link Group}.
+     * 
+     * @return {@link Group}
+     */
     public Group toGroup() {
         List<Person> dtoPeople = new LinkedList<>();
         if (this.getPeople() != null) {

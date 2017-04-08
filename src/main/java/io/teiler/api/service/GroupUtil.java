@@ -10,13 +10,19 @@ import io.teiler.server.util.exceptions.NotAuthorizedException;
 
 @Service
 public class GroupUtil {
-    
+
     GroupUtil() { /* intentionally empty */ }
 
     @Autowired
     private GroupRepository groupRepository;
 
-    public void checkIdExists(String id) {
+    /**
+     * Checks whether a Group-Id exists.
+     * 
+     * @param id Id of the group
+     * @throws NotAuthorizedException Group-Id does not exist
+     */
+    public void checkIdExists(String id) throws NotAuthorizedException {
         GroupEntity groupEntity = fetchGroupEntity(id);
         if (groupEntity == null) {
             throw new NotAuthorizedException();

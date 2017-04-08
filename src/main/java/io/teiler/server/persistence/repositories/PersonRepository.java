@@ -46,6 +46,13 @@ public class PersonRepository {
         return personEntity;
     }
 
+    /**
+     * Returns a {@link PersonEntity} with the given name and Group-Id.
+     * 
+     * @param groupId Id of the Group
+     * @param name Name of the Person
+     * @return {@link PersonEntity}
+     */
     public PersonEntity getByName(String groupId, String name) {
         return new JPAQuery<PersonEntity>(entityManager).from(QPersonEntity.personEntity)
             .where(QPersonEntity.personEntity.groupId.eq(groupId)
@@ -53,6 +60,13 @@ public class PersonRepository {
             .fetchOne();
     }
 
+    /**
+     * Returns a {@link List} of {@link PersonEntity} in the Group with the given Id.
+     * 
+     * @param groupId Id of the Group
+     * @param limit Maximum amount of people to fetch
+     * @return {@link List} of {@link PersonEntity}
+     */
     public List<PersonEntity> getPeople(String groupId, long limit) {
         return new JPAQuery<PersonEntity>(entityManager).from(QPersonEntity.personEntity)
             .where(QPersonEntity.personEntity.groupId.eq(groupId))
@@ -60,6 +74,13 @@ public class PersonRepository {
             .fetch();
     }
 
+    /**
+     * Returns a {@link PersonEntity} with the given Group- and Person-Id.
+     * 
+     * @param groupId Id of the Group
+     * @param personId Id of the Person
+     * @return {@link PersonEntity}
+     */
     public PersonEntity getByGroupAndPersonId(String groupId, int personId) {
         return new JPAQuery<PersonEntity>(entityManager).from(QPersonEntity.personEntity)
             .where(QPersonEntity.personEntity.groupId.eq(groupId)
@@ -67,13 +88,25 @@ public class PersonRepository {
             .fetchOne();
     }
 
+    /**
+     * Returns the {@link PersonEntity} with the given Id.
+     * 
+     * @param personId Id of the Person
+     * @return {@link PersonEntity}
+     */
     public PersonEntity getById(int personId) {
         return new JPAQuery<PersonEntity>(entityManager).from(QPersonEntity.personEntity)
             .where(QPersonEntity.personEntity.id.eq(personId))
             .fetchOne();
     }
 
-
+    /**
+     * Updates a already persisted Person with the given values.
+     * 
+     * @param personId Id of the Person
+     * @param changedPerson {@link Person} containing the new values
+     * @return {@link PersonEntity} containing the new values
+     */
     @Transactional
     public PersonEntity editPerson(int personId, Person changedPerson) {
         PersonEntity person = getById(personId);
@@ -82,6 +115,11 @@ public class PersonRepository {
         return person;
     }
 
+    /**
+     * Deletes the Person with the given Id.
+     * 
+     * @param personId Id of the Person
+     */
     @Transactional
     public void deletePerson(int personId) {
         PersonEntity person = getById(personId);
