@@ -28,8 +28,10 @@ public class PersonServiceTest {
 
     @Autowired
     private PersonService personService;
+    
     @Autowired
     private GroupService groupService;
+    
     @Autowired
     private PersonUtil personUtil;
 
@@ -129,6 +131,5 @@ public class PersonServiceTest {
         groupService.deleteGroup(groupId);
         personUtil.checkPersonExists(hans.getId());
     }
-
 
 }
