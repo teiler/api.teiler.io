@@ -1,7 +1,7 @@
 package io.teiler.server.util.exceptions;
 
 /**
- * Exception denoting that person names in a group clash.
+ * Exception denoting that a person has not been found (and presumably doesn't exist).
  * 
  * @author lroellin
  */
