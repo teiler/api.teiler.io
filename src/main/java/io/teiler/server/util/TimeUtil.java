@@ -7,6 +7,12 @@ public class TimeUtil {
     
     private TimeUtil() { /* intentionally empty */ }
 
+    /**
+     * Converts a {@link LocalDateTime} to a {@link Timestamp}.
+     * 
+     * @param time {@link LocalDateTime}
+     * @return {@link Timestamp}
+     */
     public static Timestamp convertToTimestamp(LocalDateTime time) {
         if (time == null) {
             return null;
@@ -14,6 +20,12 @@ public class TimeUtil {
         return Timestamp.valueOf(time);
     }
 
+    /**
+     * Converts a {@link Timestamp} to a {@link LocalDateTime}.
+     * 
+     * @param time {@link Timestamp}
+     * @return {@link LocalDateTime}
+     */
     public static LocalDateTime convertToLocalDateTime(Timestamp time) {
         if (time == null) {
             return null;

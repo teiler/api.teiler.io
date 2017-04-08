@@ -27,8 +27,8 @@ import io.teiler.server.util.TimeUtil;
 @Entity
 @Table(name = "`person`")
 public class PersonEntity {
-    // We need to duplicate the serialized names here, since the list of people is a list of PersonEntities.
-    // This should only be needed on nested properties
+    /* We need to duplicate the serialised names here, since the list of people is a list of
+     * PersonEntities. This should only be needed on nested properties. */
 
     @Id
     @SerializedName("id")
@@ -59,6 +59,25 @@ public class PersonEntity {
     @Column(name = "create_time")
     private Timestamp createTime;
 
+    public PersonEntity() { /* intentionally empty */ }
+
+    /**
+     * Converts a {@link PersonEntity} to a {@link Person}.
+     * 
+     * @param person {@link Person}
+     */
+    public PersonEntity(Person person) {
+        this.id = person.getId();
+        this.name = person.getName();
+        this.updateTime = TimeUtil.convertToTimestamp(person.getUpdateTime());
+        this.createTime = TimeUtil.convertToTimestamp(person.getCreateTime());
+    }
+
+    /**
+     * Sets the update-time and creation-time to {@link Instant#now()}.
+     * <br>
+     * <i>Note:</i> The creation-time will only be set if it has not been set previously. 
+     */
     @PreUpdate
     @PrePersist
     public void updateTimeStamps() {
@@ -68,15 +87,11 @@ public class PersonEntity {
         }
     }
 
-    public PersonEntity() { /* intentionally empty */ }
-
-    public PersonEntity(Person person) {
-        this.id = person.getId();
-        this.name = person.getName();
-        this.updateTime = TimeUtil.convertToTimestamp(person.getUpdateTime());
-        this.createTime = TimeUtil.convertToTimestamp(person.getCreateTime());
-    }
-
+    /**
+     * Converts this {@link PersonEntity} to a {@link Person}.
+     * 
+     * @return {@link Person}
+     */
     public Person toPerson() {
         return new Person(
             this.getId(),

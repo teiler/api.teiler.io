@@ -29,14 +29,29 @@ public class Group {
     @SerializedName("create-time")
     private LocalDateTime createTime;
 
-    // Usual constructor
+    /**
+     * Usual constructor.
+     * 
+     * @param id Id of the Group
+     * @param name Name of the Group
+     * @param currency Default currency of the Group
+     */
     public Group(String id, String name, Currency currency) {
         this.id = id;
         this.name = name;
         this.currency = currency;
     }
 
-    // Constructor with all fields (useful for converting)
+    /** 
+     * Constructor with all fields (useful for converting).
+     * 
+     * @param id Id of the Group
+     * @param name Name of the Group
+     * @param currency Default currency of the Group
+     * @param people {@link List} of {@link Person} being members of the Group
+     * @param updateTime {@link LocalDateTime} marking the last update of the Group
+     * @param createTime {@link LocalDateTime} marking the creation of the Group
+     */
     public Group(String id, String name, Currency currency,
         List<Person> people, LocalDateTime updateTime, LocalDateTime createTime) {
         this.id = id;

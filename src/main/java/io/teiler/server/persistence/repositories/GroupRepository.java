@@ -48,6 +48,13 @@ public class GroupRepository {
                 .where(groupEntity.id.eq(id)).fetchOne();
     }
 
+    /**
+     * Updates a already persisted Group with the given values.
+     * 
+     * @param groupId Id of the Group
+     * @param changedGroup {@link Group} containing the new values
+     * @return {@link GroupEntity} containing the new values
+     */
     @Transactional
     public GroupEntity editGroup(String groupId, Group changedGroup) {
         GroupEntity group = getGroupById(groupId);
@@ -57,6 +64,11 @@ public class GroupRepository {
         return group;
     }
 
+    /**
+     * Deletes the Group with the given Id.
+     * 
+     * @param groupId Id of the Group
+     */
     @Transactional
     public void deleteGroup(String groupId) {
         GroupEntity group = getGroupById(groupId);
