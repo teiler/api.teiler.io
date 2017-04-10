@@ -43,7 +43,7 @@ public class SparkConfiguration {
 
     @Bean
     CommandLineRunner sparkRunner() {
-        return args -> endpoints.stream().forEach(e -> e.register());
+        return args -> endpoints.stream().forEach(EndpointController::register);
     }
 
 }

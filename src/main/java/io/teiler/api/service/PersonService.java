@@ -1,14 +1,14 @@
 package io.teiler.api.service;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
-import io.teiler.server.util.GroupUtil;
-import io.teiler.server.util.PersonUtil;
-import java.util.LinkedList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Groups.
@@ -21,6 +21,7 @@ public class PersonService {
     /* Spring Components (Services/Controller) */
     @Autowired
     private GroupUtil groupUtil;
+    
     @Autowired
     private PersonUtil personUtil;
 
@@ -70,4 +71,5 @@ public class PersonService {
 
         personRepository.deletePerson(personId);
     }
+    
 }

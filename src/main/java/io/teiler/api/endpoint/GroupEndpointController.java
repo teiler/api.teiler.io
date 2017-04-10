@@ -5,12 +5,15 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import com.google.gson.Gson;
+
 import io.teiler.api.service.GroupService;
 import io.teiler.server.dto.Group;
 import io.teiler.server.util.GsonUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import io.teiler.server.util.Normalize;
 
 /**
  * Controller for Group-related endpoints.
@@ -19,9 +22,10 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class GroupEndpointController implements EndpointController {
+    
     public static final String GROUP_ID_PARAM = ":groupid";
-    public static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups";
-    public static final String URL_WITH_GROUP_ID = BASE_URL + "/:groupid";
+    private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups";
+    private static final String URL_WITH_GROUP_ID = BASE_URL + "/:groupid";
 
     private Gson gson = GsonUtil.getHomebrewGson();
 
@@ -37,13 +41,15 @@ public class GroupEndpointController implements EndpointController {
         });
 
         get(URL_WITH_GROUP_ID, (req, res) -> {
-            String id = req.params(GROUP_ID_PARAM);
-            Group requestGroup = groupService.viewGroup(id);
+            String groupId = req.params(GROUP_ID_PARAM);
+            groupId = Normalize.normalizeGroupId(groupId);
+            Group requestGroup = groupService.viewGroup(groupId);
             return gson.toJson(requestGroup);
         });
 
         put(URL_WITH_GROUP_ID, (req, res) -> {
             String groupId = req.params(GROUP_ID_PARAM);
+            groupId = Normalize.normalizeGroupId(groupId);
             Group changedGroup = gson.fromJson(req.body(), Group.class);
             Group group = groupService.editGroup(groupId, changedGroup);
             return gson.toJson(group);
@@ -51,6 +57,7 @@ public class GroupEndpointController implements EndpointController {
 
         delete(URL_WITH_GROUP_ID, (req, res) -> {
             String groupId = req.params(GROUP_ID_PARAM);
+            groupId = Normalize.normalizeGroupId(groupId);
             groupService.deleteGroup(groupId);
             return "";
         });

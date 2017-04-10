@@ -4,10 +4,9 @@ import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.repositories.GroupRepository;
-import io.teiler.server.util.GroupUtil;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import io.teiler.server.util.groupid.IdGenerator;
+import io.teiler.server.util.groupid.RandomGeneratorWithAlphabet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,23 +21,14 @@ import org.springframework.stereotype.Service;
 public class GroupService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupService.class);
-
-    /* Instance objects, potentially expensive ones you only need once */
-    private SecureRandom random = new SecureRandom();
-
+    /* Constants */
+    private static final int NUMBER_OF_ID_CHARACTERS = 8;
     /* Spring Components (Services/Controller) */
     @Autowired
     private GroupUtil groupUtil;
-
     @Autowired
     private GroupRepository groupRepository;
-
-    /* Constants */
-    private static final int NUMBER_OF_ID_CHARACTERS = 8;
-
-    // Mathematical fact, don't change it
-    private static final int ENTROPY_BITS_IN_ONE_CHARACTER = 5;
-
+    private IdGenerator idGenerator = new RandomGeneratorWithAlphabet();
 
     /**
      * Returns information about a Group.
@@ -62,7 +52,7 @@ public class GroupService {
         // Default currency CHF
         Group newGroup = new Group(null, name, Currency.CHF);
 
-        newGroup.setId(createNewUuid());
+        newGroup.setId(createNewId());
         LOGGER.debug("New Group: " + newGroup.getName() + ", " + newGroup.getId());
 
         GroupEntity groupEntity = groupRepository.create(newGroup);
@@ -86,12 +76,12 @@ public class GroupService {
      * @return A UUID (as a mere String; not to be confused with {@link java.util.UUID})
      * @see <a href="http://stackoverflow.com/a/41156">http://stackoverflow.com/a/41156<a>
      */
-    private String createNewUuid() {
-        String uuid;
+    private String createNewId() {
+        String id;
         do {
-            uuid = new BigInteger(NUMBER_OF_ID_CHARACTERS * ENTROPY_BITS_IN_ONE_CHARACTER, random)
-                    .toString(32);
-        } while (groupRepository.get(uuid) != null);
-        return uuid;
+            id = idGenerator.generateId(NUMBER_OF_ID_CHARACTERS);
+        } while (groupRepository.getGroupById(id) != null);
+        return id;
     }
+    
 }

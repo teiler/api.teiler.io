@@ -32,7 +32,7 @@ public class GlobalEndpointController implements EndpointController {
 
         exception(NotAuthorizedException.class, (e, request, response) -> {
             response.status(401);
-            Error error = new Error("NOT_AUTHORIZED_TO_GROUP");
+            Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
         });
 
