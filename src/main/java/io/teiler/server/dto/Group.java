@@ -1,7 +1,6 @@
 package io.teiler.server.dto;
 
 import com.google.gson.annotations.SerializedName;
-import io.teiler.server.persistence.entities.PersonEntity;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class Group {
     private Currency currency;
 
     @SerializedName("people")
-    private List<PersonEntity> people;
+    private List<Person> people;
 
     @SerializedName("update-time")
     private LocalDateTime updateTime;
@@ -30,16 +29,31 @@ public class Group {
     @SerializedName("create-time")
     private LocalDateTime createTime;
 
-    // Usual constructor
+    /**
+     * Usual constructor.
+     * 
+     * @param id Id of the Group
+     * @param name Name of the Group
+     * @param currency Default currency of the Group
+     */
     public Group(String id, String name, Currency currency) {
         this.id = id;
         this.name = name;
         this.currency = currency;
     }
 
-    // Constructor with all fields (useful for converting)
+    /** 
+     * Constructor with all fields (useful for converting).
+     * 
+     * @param id Id of the Group
+     * @param name Name of the Group
+     * @param currency Default currency of the Group
+     * @param people {@link List} of {@link Person} being members of the Group
+     * @param updateTime {@link LocalDateTime} marking the last update of the Group
+     * @param createTime {@link LocalDateTime} marking the creation of the Group
+     */
     public Group(String id, String name, Currency currency,
-        List<PersonEntity> people, LocalDateTime updateTime, LocalDateTime createTime) {
+        List<Person> people, LocalDateTime updateTime, LocalDateTime createTime) {
         this.id = id;
         this.name = name;
         this.currency = currency;
@@ -63,6 +77,7 @@ public class Group {
     public void setName(String name) {
         this.name = name;
     }
+    
     public Currency getCurrency() {
         return currency;
     }
@@ -71,11 +86,11 @@ public class Group {
         this.currency = currency;
     }
 
-    public List<PersonEntity> getPeople() {
+    public List<Person> getPeople() {
         return people;
     }
 
-    public void setPeople(List<PersonEntity> people) {
+    public void setPeople(List<Person> people) {
         this.people = people;
     }
 

@@ -11,6 +11,7 @@ import io.teiler.api.service.PersonService;
 import io.teiler.server.dto.Person;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
+import io.teiler.server.util.Normalize;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import java.util.List;
@@ -40,6 +41,7 @@ public class PersonEndpointController implements EndpointController {
     public void register() {
         post(BASE_URL, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
+            groupId = Normalize.normalizeGroupId(groupId);
             Person requestPerson = gson.fromJson(req.body(), Person.class);
             Person newPerson = personService.createPerson(groupId, requestPerson.getName());
             return gson.toJson(newPerson);
@@ -47,6 +49,7 @@ public class PersonEndpointController implements EndpointController {
 
         get(BASE_URL, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
+            groupId = Normalize.normalizeGroupId(groupId);
             String limitString = req.queryParams(LIMIT_PARAM);
             long limit = DEFAULT_QUERY_LIMIT;
             if (limitString != null) {
@@ -58,6 +61,7 @@ public class PersonEndpointController implements EndpointController {
 
         put(URL_WITH_PERSON_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
+            groupId = Normalize.normalizeGroupId(groupId);
             int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             Person changedPerson = gson.fromJson(req.body(), Person.class);
             Person person = personService.editPerson(groupId, personId, changedPerson);
@@ -66,20 +70,21 @@ public class PersonEndpointController implements EndpointController {
 
         delete(URL_WITH_PERSON_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            int personId = Integer.parseInt(req.params(":personid"));
+            groupId = Normalize.normalizeGroupId(groupId);
+            int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             personService.deletePerson(groupId, personId);
             return "";
         });
 
         exception(PersonNotFoundException.class, (e, request, response) -> {
             response.status(404);
-            Error error = new Error("PERSON_NOT_FOUND");
+            Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
         });
 
         exception(PeopleNameConflictException.class, (e, request, response) -> {
             response.status(409);
-            Error error = new Error("PEOPLE_NAME_CONFLICT");
+            Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
         });
     }

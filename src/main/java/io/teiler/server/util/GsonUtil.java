@@ -1,14 +1,17 @@
 package io.teiler.server.util;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import io.teiler.server.util.jsonserializer.LocalDateTimeSerializer;
-import io.teiler.server.util.jsonserializer.TimestampSerializer;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import io.teiler.server.util.jsonserializer.LocalDateTimeSerializer;
+import io.teiler.server.util.jsonserializer.TimestampSerializer;
+
 public class GsonUtil {
-    GsonUtil() { /* intentionally empty */ }
+    
+    private GsonUtil() { /* intentionally empty */ }
 
     public static GsonBuilder getHomebrewGsonBuilder() {
         GsonBuilder gsonBuilder = new GsonBuilder();

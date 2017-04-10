@@ -2,9 +2,11 @@ package io.teiler.server.persistence.entities;
 
 import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
 import io.teiler.server.util.TimeUtil;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +29,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "`group`") // f*** PSQL
 public class GroupEntity {
+    
     @Id
     @Column(name = "id")
     private String id;
@@ -42,7 +45,7 @@ public class GroupEntity {
 
     @OneToMany(targetEntity = PersonEntity.class, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "`group`", referencedColumnName = "id")
-    private List people;
+    private List<PersonEntity> people;
 
     @NotNull
     @Column(name = "update_time")
@@ -52,6 +55,35 @@ public class GroupEntity {
     @Column(name = "create_time")
     private Timestamp createTime;
 
+    public GroupEntity() { /* intentionally empty */ }
+
+    /**
+     * Converts a {@link GroupEntity} to a {@link Group}.
+     * 
+     * @param group {@link Group}
+     */
+    public GroupEntity(Group group) {
+        List<PersonEntity> peopleEntities = new LinkedList<>();
+        if (group.getPeople() != null) {
+            for (Person person : group.getPeople()) {
+                peopleEntities.add(new PersonEntity(person));
+            }
+        } else {
+            peopleEntities = null;
+        }
+        this.id = group.getId();
+        this.name = group.getName();
+        this.currency = group.getCurrency();
+        this.people = peopleEntities;
+        this.updateTime = TimeUtil.convertToTimestamp(group.getUpdateTime());
+        this.createTime = TimeUtil.convertToTimestamp(group.getCreateTime());
+    }
+
+    /**
+     * Sets the update-time and creation-time to {@link Instant#now()}.
+     * <br>
+     * <i>Note:</i> The creation-time will only be set if it has not been set previously. 
+     */
     @PreUpdate
     @PrePersist
     public void updateTimeStamps() {
@@ -61,23 +93,25 @@ public class GroupEntity {
         }
     }
 
-    public GroupEntity() { /* intentionally empty */ }
-
-    public GroupEntity(Group group) {
-        this.id = group.getId();
-        this.name = group.getName();
-        this.currency = group.getCurrency();
-        this.people = group.getPeople();
-        this.updateTime = TimeUtil.convertToTimestamp(group.getUpdateTime());
-        this.createTime = TimeUtil.convertToTimestamp(group.getCreateTime());
-    }
-
+    /**
+     * Converts this {@link GroupEntity} to a {@link Group}.
+     * 
+     * @return {@link Group}
+     */
     public Group toGroup() {
+        List<Person> dtoPeople = new LinkedList<>();
+        if (this.getPeople() != null) {
+            for (PersonEntity personEntity : this.getPeople()) {
+                dtoPeople.add(personEntity.toPerson());
+            }
+        } else {
+            dtoPeople = null;
+        }
         return new Group(
             this.getId(),
             this.getName(),
             this.getCurrency(),
-            this.getPeople(),
+            dtoPeople,
             TimeUtil.convertToLocalDateTime(this.getUpdateTime()),
             TimeUtil.convertToLocalDateTime(this.getCreateTime()));
     }
@@ -110,11 +144,11 @@ public class GroupEntity {
         this.currency = currency;
     }
 
-    public List getPeople() {
+    public List<PersonEntity> getPeople() {
         return people;
     }
 
-    public void setPeople(List people) {
+    public void setPeople(List<PersonEntity> people) {
         this.people = people;
     }
 
@@ -133,4 +167,5 @@ public class GroupEntity {
     public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
+    
 }

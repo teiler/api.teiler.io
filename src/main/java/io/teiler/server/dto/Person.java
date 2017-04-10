@@ -22,13 +22,25 @@ public class Person {
     @SerializedName("create-time")
     private LocalDateTime createTime;
 
-    // Usual constructor
+    /**
+     * Usual constructor.
+     * 
+     * @param id Id of the Person
+     * @param name Name of the Person
+     */
     public Person(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    // Constructor with all fields (useful for converting)
+    /**
+     * Constructor with all fields (useful for converting).
+     * 
+     * @param id Id of the Person
+     * @param name Name of the Person
+     * @param updateTime {@link LocalDateTime} marking the last update of the Person
+     * @param createTime {@link LocalDateTime} marking the creation of the Person
+     */
     public Person(Integer id, String name, LocalDateTime updateTime, LocalDateTime createTime) {
         this.id = id;
         this.name = name;
