@@ -1,19 +1,15 @@
 package io.teiler.server.persistence.repositories;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import com.querydsl.jpa.impl.JPAQuery;
-
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.entities.QPersonEntity;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /**
  * Provides database-related operations for Groups.
@@ -71,6 +67,7 @@ public class PersonRepository {
         return new JPAQuery<PersonEntity>(entityManager).from(QPersonEntity.personEntity)
             .where(QPersonEntity.personEntity.groupId.eq(groupId))
             .limit(limit)
+            .orderBy(QPersonEntity.personEntity.id.asc())
             .fetch();
     }
 
