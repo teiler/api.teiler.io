@@ -1,0 +1,322 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Tylr",
+		"_postman_id": "cda3acd3-3f94-2c5a-3124-bf3938c12a1c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create new group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Group name is correct\"] = jsonData.name === postman.getGlobalVariable(\"groupname\");",
+							"tests[\"Contains group ID\"] = 'id' in jsonData;",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData;",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData;",
+							"",
+							"postman.setGlobalVariable(\"group\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{groupname}}\" \n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Group name is correct\"] = jsonData.name === postman.getGlobalVariable(\"groupname\");",
+							"tests[\"Contains group ID\"] = 'id' in jsonData;",
+							"tests[\"Contains people\"] = 'people' in jsonData;",
+							"tests[\"Contains currency\"] = 'currency' in jsonData;",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData;",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create first person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Person name is correct\"] = jsonData.name === postman.getGlobalVariable(\"person1\");",
+							"tests[\"Contains person id\"] = 'id' in jsonData;",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData;",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData;",
+							"",
+							"postman.setGlobalVariable(\"person1Id\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/people",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{person1}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create second Person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Person name is correct\"] = jsonData.name === postman.getGlobalVariable(\"person2\");",
+							"tests[\"Contains person id\"] = 'id' in jsonData;",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData;",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData;",
+							"",
+							"postman.setGlobalVariable(\"person2Id\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/people",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{person2}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Person name is correct\"] = jsonData.name === postman.getGlobalVariable(\"person3\");",
+							"tests[\"Contains person id\"] = 'id' in jsonData;",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData;",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/people/{{person1Id}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{person3}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Show people",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"First person is still there and changed\"] = jsonData[0].name === postman.getGlobalVariable(\"person3\");",
+							"tests[\"Second person is still there\"] = jsonData[1].name === postman.getGlobalVariable(\"person2\");",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData[0];",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData[0];"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/people?limit=5",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/people/{{person1Id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"fdfdff\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Group name is correct\"] = jsonData.name === postman.getGlobalVariable(\"newGroupName\");",
+							"tests[\"Group currency\"] = jsonData.currency === postman.getGlobalVariable(\"newCurrency\");",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData;",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{newGroupName}}\",\n    \"currency\": \"{{newCurrency}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "            {\n                \"name\": \"Hallo Velo\",\n                \"currency\": \"chf\"\n            }"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
