@@ -1,4 +1,4 @@
-/* Order is important */
+-- Order is important
 DROP TABLE "profiteer";
 DROP TABLE "transaction";
 DROP TABLE "person";
