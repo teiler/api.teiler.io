@@ -14,8 +14,9 @@ SET client_min_messages = ERROR;
 -- valid values are: 'UTF8', 'LATIN1', 'WIN1252'
 \encoding 'UTF8'
 
+\ir drop_tables.sql
 -- create tables
-\ir tables.sql
+\ir create_tables.sql
 
 -- constraints and indexes
 
