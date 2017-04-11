@@ -8,7 +8,7 @@ CREATE TYPE TRANSACTIONTYPE AS ENUM (
   'compensation'
 );
 
-CREATE TABLE IF NOT EXISTS "group" (
+CREATE TABLE "group" (
   "id"  VARCHAR(50),
   "name"  VARCHAR(50) NOT NULL,
   "currency"  VARCHAR(50) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS "group" (
   PRIMARY KEY ("id")
 );
 
-CREATE TABLE IF NOT EXISTS "person" (
+CREATE TABLE "person" (
   "id"  SERIAL,
   "name"  VARCHAR(50) NOT NULL,
   "group" VARCHAR(50) REFERENCES "group" ON DELETE CASCADE,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "person" (
   PRIMARY KEY ("id")
 );
 
-CREATE TABLE IF NOT EXISTS "transaction" (
+CREATE TABLE "transaction" (
   "id"  SERIAL,
   "title" VARCHAR(50) NOT NULL,
   "amount" INTEGER NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS "transaction" (
   PRIMARY KEY ("id")
 );
 
-CREATE TABLE IF NOT EXISTS "profiteer" (
+CREATE TABLE "profiteer" (
   "person" INTEGER REFERENCES "person" ON DELETE CASCADE,
   "transaction" INTEGER REFERENCES "transaction",
   "factor" DECIMAL(5) NOT NULL,
