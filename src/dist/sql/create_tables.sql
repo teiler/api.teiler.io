@@ -31,13 +31,14 @@ CREATE TABLE "transaction" (
   "title" VARCHAR(50) NOT NULL,
   "amount" INTEGER NOT NULL,
   "type" TRANSACTIONTYPE NOT NULL,
-  "payer" INTEGER NOT NULL REFERENCES "person" ON DELETE CASCADE,
+  "payer" INTEGER REFERENCES "person" ON DELETE CASCADE,
   "create_time" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
   "update_time" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "profiteer" (
+  "id"  SERIAL,
   "person" INTEGER REFERENCES "person" ON DELETE CASCADE,
   "transaction" INTEGER REFERENCES "transaction",
   "factor" DECIMAL(5) NOT NULL,
