@@ -82,4 +82,10 @@ public abstract class Transaction {
         this.createTime = createTime;
     }
 
+    @Override
+    public String toString() {
+        return "Transaction [id=" + id + ", amount=" + amount + ", payer=" + payer + ", updateTime="
+                + updateTime + ", createTime=" + createTime + "]";
+    }
+
 }

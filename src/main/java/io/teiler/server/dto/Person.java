@@ -79,4 +79,11 @@ public class Person {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "Person [id=" + id + ", name=" + name + ", updateTime=" + updateTime
+                + ", createTime=" + createTime + "]";
+    }
+    
 }
