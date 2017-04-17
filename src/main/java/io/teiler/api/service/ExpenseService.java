@@ -41,6 +41,8 @@ public class ExpenseService {
      * @return Information about the Expense
      */
     public Expense createExpense(Expense expense) {
+        expenseUtil.checkFactorsAddUp(expense.getShares());
+        
         ExpenseEntity expenseEntity = expenseRepository.create(expense);
         
         for(Share share : expense.getShares()) {
@@ -94,6 +96,7 @@ public class ExpenseService {
         groupUtil.checkIdExists(groupId);
         expenseUtil.checkExpenseExists(expenseId);
         expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
+        expenseUtil.checkFactorsAddUp(changedExpense.getShares());
         
         expenseRepository.editExpense(expenseId, changedExpense);
         ExpenseEntity expenseEntity = expenseRepository.getById(expenseId);
