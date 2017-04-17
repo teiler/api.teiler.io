@@ -169,7 +169,7 @@
 							"",
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Expense title is correct\"] = jsonData.title === \"Getrocknete Bananen\";",
-							"tests[\"Expense amount is correct\"] = jsonData.amount == \"1000\"",
+							"tests[\"Expense amount is correct\"] = jsonData.amount == \"1000\";",
 							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
 							"tests[\"Number of profiteers is correct\"] = jsonData.profiteers.length == 2;",
 							"tests[\"Profiteer ids are correct\"] = jsonData.profiteers[0].profiteer.id == globals.person1Id && jsonData.profiteers[1].profiteer.id == globals.person2Id;",
@@ -269,7 +269,7 @@
 							"",
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Expense title is correct\"] = jsonData.title === \"Luftgetrocknete Bananen\";",
-							"tests[\"Expense amount is correct\"] = jsonData.amount == \"950\"",
+							"tests[\"Expense amount is correct\"] = jsonData.amount == \"950\";",
 							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
 							"tests[\"Number of profiteers is correct\"] = jsonData.profiteers.length == 2;",
 							"tests[\"Profiteer ids are correct\"] = jsonData.profiteers[0].profiteer.id == globals.person1Id && jsonData.profiteers[1].profiteer.id == globals.person2Id;",
@@ -298,6 +298,98 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"950\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"0.7\"\r\n        },\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"0.3\"\r\n        }\r\n    ]\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit expense - Remove Profiteer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Expense title is correct\"] = jsonData.title === \"Luftgetrocknete Bananen\";",
+							"tests[\"Expense amount is correct\"] = jsonData.amount == \"950\";",
+							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
+							"tests[\"Number of profiteers is correct\"] = jsonData.profiteers.length == 1;",
+							"tests[\"Profiteer ids are correct\"] = jsonData.profiteers[0].profiteer.id == globals.person1Id;",
+							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].factor == \"1.0\";",
+							"tests[\"Contains expense id\"] = 'id' in jsonData;",
+							"tests[\"Contains payer\"] = 'payer' in jsonData;",
+							"tests[\"Contains profiteers\"] = 'profiteers' in jsonData;",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData;",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData;",
+							"",
+							"postman.setGlobalVariable(\"expenseId\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/expenses/{{expenseId}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"950\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"1.0\"\r\n        }\r\n    ]\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit expense - Add Profiteer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Expense title is correct\"] = jsonData.title === \"Luftgetrocknete Bananen\";",
+							"tests[\"Expense amount is correct\"] = jsonData.amount == \"950\";",
+							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
+							"tests[\"Number of profiteers is correct\"] = jsonData.profiteers.length == 2;",
+							"tests[\"Profiteer ids are correct\"] = jsonData.profiteers[0].profiteer.id == globals.person1Id && jsonData.profiteers[1].profiteer.id == globals.person2Id;",
+							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].factor == \"0.5\" && jsonData.profiteers[1].factor == \"0.5\";",
+							"tests[\"Contains expense id\"] = 'id' in jsonData;",
+							"tests[\"Contains payer\"] = 'payer' in jsonData;",
+							"tests[\"Contains profiteers\"] = 'profiteers' in jsonData;",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData;",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData;",
+							"",
+							"postman.setGlobalVariable(\"expenseId\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/expenses/{{expenseId}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"950\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"0.5\"\r\n        },\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"0.5\"\r\n        }\r\n    ]\r\n}"
 				},
 				"description": ""
 			},
