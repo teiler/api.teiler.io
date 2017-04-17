@@ -1,10 +1,14 @@
 package io.teiler.api.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.teiler.server.dto.Share;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
+import io.teiler.server.util.exceptions.FactorsNotAddingUpException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
@@ -44,9 +48,29 @@ public class ExpenseUtil {
         }
     }
     
-    public void checkProfiteerExistsInThisExpense(int expenseId, int profiteerId) {
-        if (profiteerRepository.getByExpenseIdAndProfiteerPersonId(expenseId, profiteerId) == null) {
+    /**
+     * Checks whether a Profiteer-Person exists within an Expense.
+     * 
+     * @param expenseId Id of the Expense
+     * @param profiteerPersonId Id of the Profiteer-Person
+     * @throws ProfiteerNotFoundException Profiteer does not exist
+     */
+    public void checkProfiteerExistsInThisExpense(int expenseId, int profiteerPersonId) throws ProfiteerNotFoundException {
+        if (profiteerRepository.getByExpenseIdAndProfiteerPersonId(expenseId, profiteerPersonId) == null) {
             throw new ProfiteerNotFoundException();
+        }
+    }
+    
+    /**
+     * Checks whether the factors of the given shares add up to 1.0.
+     * 
+     * @param shares {@link List} of {@link Share}
+     * @throws FactorsNotAddingUpException Factors do not add up
+     */
+    public void checkFactorsAddUp(List<Share> shares) throws FactorsNotAddingUpException {
+        double total = shares.stream().map(s -> s.getFactor()).mapToDouble(Double::doubleValue).sum();
+        if (total != 1.0) {
+            throw new FactorsNotAddingUpException();
         }
     }
     

@@ -18,6 +18,7 @@ import io.teiler.server.dto.Expense;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
+import io.teiler.server.util.exceptions.FactorsNotAddingUpException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
 /**
@@ -89,6 +90,12 @@ public class ExpenseEndpointController implements EndpointController {
 
         exception(TransactionNotFoundException.class, (e, request, response) -> {
             response.status(404);
+            Error error = new Error(e.getMessage());
+            response.body(gson.toJson(error));
+        });
+        
+        exception(FactorsNotAddingUpException.class, (e, request, response) -> {
+            response.status(406);
             Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
         });
