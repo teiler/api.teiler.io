@@ -55,8 +55,8 @@ public class ExpenseServiceTest {
         // We have to set the shares here in order to have the correct Person-Ids in the Profiteers.
         TEST_SHARES = getTestShares();
         
-        Expense expense = expenseService.createExpense(TEST_EXPENSE_TITLE, TEST_EXPENSE_AMOUNT,
-                TEST_PAYER, TEST_SHARES);
+        Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, TEST_PAYER, TEST_EXPENSE_TITLE, TEST_SHARES);
+        Expense expense = expenseService.createExpense(testExpense);
 
         Assert.assertEquals(TEST_EXPENSE_TITLE, expense.getTitle());
         Assert.assertEquals(TEST_EXPENSE_AMOUNT, expense.getAmount());

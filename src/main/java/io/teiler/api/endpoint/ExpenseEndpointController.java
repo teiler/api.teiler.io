@@ -48,11 +48,7 @@ public class ExpenseEndpointController implements EndpointController {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             groupId = Normalize.normalizeGroupId(groupId);
             Expense requestExpense = gson.fromJson(req.body(), Expense.class);
-            Expense newExpense = expenseService.createExpense(
-                requestExpense.getTitle(),
-                requestExpense.getAmount(),
-                requestExpense.getPayer(),
-                requestExpense.getShares());
+            Expense newExpense = expenseService.createExpense(requestExpense);
             return gson.toJson(newExpense);
         });
 
