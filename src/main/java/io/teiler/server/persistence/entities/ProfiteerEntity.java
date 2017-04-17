@@ -45,7 +45,7 @@ public class ProfiteerEntity {
     private Integer expenseId;
     
     @NotNull
-    @Column(name = "factor")
+    @Column(name = "factor", precision = 5, scale = 4)
     private Double factor;
     
     @NotNull
