@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Share;
 import io.teiler.server.persistence.entities.ExpenseEntity;
+import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
+import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 
 /**
  * Provides service-methods for Expenses.
@@ -86,23 +88,53 @@ public class ExpenseService {
      * @param groupId Id of the Group
      * @param expenseId Id of the Expense
      * @param changedExpense {@link Expense} containing the new values
+     * @return {@link Expense} containing the new values
      */
     public Expense editExpense(String groupId, int expenseId, Expense changedExpense) {
         groupUtil.checkIdExists(groupId);
         expenseUtil.checkExpenseExists(expenseId);
         expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
         
-        ExpenseEntity expenseEntity = expenseRepository.editExpense(expenseId, changedExpense);
-
-        // TODO Add support for editing profiteers/shares as well
-//        for(Share changedShare : changedExpense.getShares()) {
-//            changedShare.setExpenseId(expenseEntity.getId());
-//            profiteerRepository.editProfiteer(expenseEntity.getId(), changedShare);
-//        }
+        expenseRepository.editExpense(expenseId, changedExpense);
+        ExpenseEntity expenseEntity = expenseRepository.getById(expenseId);
+        
+        // -----------------------------------
+        //  The following section ought to be
+        //             cleaned up.
+        // -----------------------------------
+        
+        List<Integer> removedProfiteerPersonIds = expenseEntity.getProfiteers().stream().map(p -> p.getPerson().getId()).collect(Collectors.toList());
+        
+        for (Share changedShare : changedExpense.getShares()) {
+            try {
+                expenseUtil.checkProfiteerExistsInThisExpense(expenseEntity.getId(), changedShare.getProfiteer().getId());
+                
+                // does exist and was not removed => update the existing one
+                ProfiteerEntity profiteerEntity = profiteerRepository.getByExpenseIdAndProfiteerPersonId(expenseEntity.getId(), changedShare.getProfiteer().getId());
+                profiteerRepository.editProfiteer(profiteerEntity.getId(), changedShare);
+                
+                // remove this profiteer from the list of removed profiteers as it has not been removed
+                removedProfiteerPersonIds.remove(changedShare.getProfiteer().getId());
+            }
+            catch (ProfiteerNotFoundException e) {
+                // does not yet exist => create a new one
+                changedShare.setExpenseId(expenseEntity.getId());
+                profiteerRepository.create(changedShare);
+            }
+        }
+        
+        // remove all the remaining profiteers as they were not included in the input and thus shall be removed
+        removedProfiteerPersonIds.forEach(removedProfiteerPersonId -> {
+            profiteerRepository.deleteProfiteerByExpenseIdAndProfiteerPersonId(expenseEntity.getId(), removedProfiteerPersonId);
+        });
+        
+        // -----------------------------------
+        //       End of cleanup-section.
+        // -----------------------------------
         
         return expenseRepository.getById(expenseEntity.getId()).toExpense();
     }
-
+    
     /**
      * Deletes the Expense with the given Id and Group-Id.<br>
      * <i>Note:</i> The Expense has to exist within the given Group.
