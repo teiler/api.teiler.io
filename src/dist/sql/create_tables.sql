@@ -41,7 +41,7 @@ CREATE TABLE "profiteer" (
   "id"  SERIAL,
   "person" INTEGER REFERENCES "person" ON DELETE CASCADE,
   "transaction" INTEGER REFERENCES "transaction",
-  "factor" DECIMAL(5) NOT NULL,
+  "factor" DECIMAL(5, 4) NOT NULL,
   "create_time" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
   "update_time" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
   PRIMARY KEY ("person", "transaction")
