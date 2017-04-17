@@ -36,7 +36,6 @@ public class ExpenseEndpointController implements EndpointController {
     private ExpenseService expenseService;
 
     private static final int DEFAULT_QUERY_LIMIT = 20;
-    private static final int DEFAULT_EXPENSE_ID = -1;
     private static final String EXPENSE_ID_PARAM = ":expenseid";
     private static final String LIMIT_PARAM = "limit";
 
@@ -68,11 +67,7 @@ public class ExpenseEndpointController implements EndpointController {
         get(URL_WITH_EXPENSE_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             groupId = Normalize.normalizeGroupId(groupId);
-            String expenseIdString = req.params(EXPENSE_ID_PARAM);
-            int expenseId = DEFAULT_EXPENSE_ID;
-            if (expenseIdString != null) {
-                expenseId = Integer.parseInt(expenseIdString);
-            }
+            int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
             Expense expense = expenseService.getExpense(groupId, expenseId);
             return gson.toJson(expense);
         });
@@ -85,15 +80,15 @@ public class ExpenseEndpointController implements EndpointController {
 //            Person person = personService.editPerson(groupId, personId, changedPerson);
 //            return gson.toJson(person);
 //        });
-//
-//        delete(URL_WITH_PERSON_ID, (req, res) -> {
+
+//        delete(URL_WITH_EXPENSE_ID, (req, res) -> {
 //            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
 //            groupId = Normalize.normalizeGroupId(groupId);
 //            int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
 //            personService.deletePerson(groupId, personId);
 //            return "";
 //        });
-//
+
 //        exception(PersonNotFoundException.class, (e, request, response) -> {
 //            response.status(404);
 //            Error error = new Error(e.getMessage());
