@@ -49,6 +49,21 @@ public class ProfiteerRepository {
     }
     
     /**
+     * Returns the {@link ProfiteerEntity} with the given Person- and Expense-Id.
+     * <i>Note:</i> The Profiteer has to exist within the given GrouExpensep.
+     * 
+     * @param expenseId Id of the Expense
+     * @param profiteerPersonId Id of the Profiteer-Person
+     * @return {@link ProfiteerEntity}
+     */
+    public ProfiteerEntity getByExpenseIdAndProfiteerPersonId(int expenseId, int profiteerPersonId) {
+        return new JPAQuery<ProfiteerEntity>(entityManager).from(QProfiteerEntity.profiteerEntity)
+            .where(QProfiteerEntity.profiteerEntity.person.id.eq(profiteerPersonId))
+            .where(QProfiteerEntity.profiteerEntity.expenseId.eq(expenseId))
+            .fetchOne();
+    }
+    
+    /**
      * Updates a already persisted {@link ProfiteerEntity} with the given values.
      * 
      * @param profiteerId Id of the Profiteer
@@ -61,6 +76,21 @@ public class ProfiteerRepository {
         profiteer.setFactor(changedShare.getFactor());
         entityManager.persist(profiteer);
         return profiteer;
+    }
+    
+    /**
+     * Deletes the {@link ProfiteerEntity} with the given Id.
+     * 
+     * @param expenseId Id of the Expense
+     * @param profiteerId Id of the Profiteer-Person
+     */
+    @Transactional
+    public void deleteProfiteerByExpenseIdAndProfiteerPersonId(int expenseId, int profiteerPersonId) {
+        entityManager
+            .createQuery("DELETE FROM ProfiteerEntity p WHERE p.expenseId = :expenseId AND p.person.id = :profiteerPersonId")
+            .setParameter("expenseId", expenseId)
+            .setParameter("profiteerPersonId", profiteerPersonId)
+            .executeUpdate();
     }
     
 }
