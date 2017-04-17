@@ -27,7 +27,7 @@ public class ExpenseEntity extends TransactionEntity {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "expenseId", fetch = FetchType.EAGER)
     private List<ProfiteerEntity> profiteers;
 
     public ExpenseEntity() { /* intentionally empty */ }
