@@ -44,7 +44,7 @@ public class ExpenseRepository {
      * @param id Id of the Expense
      * @return {@link ExpenseEntity}
      */
-    public ExpenseEntity getById(Integer id) {
+    public ExpenseEntity getById(int id) {
         return new JPAQuery<ExpenseEntity>(entityManager).from(QExpenseEntity.expenseEntity)
             .where(QExpenseEntity.expenseEntity.id.eq(id))
             .fetchOne();
@@ -58,7 +58,7 @@ public class ExpenseRepository {
      * @param expenseId Id of the Expense
      * @return {@link ExpenseEntity}
      */
-    public ExpenseEntity getExpense(String groupId, int expenseId) {
+    public ExpenseEntity getByGroupIdAndExpenseId(String groupId, int expenseId) {
         return new JPAQuery<ExpenseEntity>(entityManager).from(QExpenseEntity.expenseEntity)
             .where(QExpenseEntity.expenseEntity.id.eq(expenseId))
             .where(QExpenseEntity.expenseEntity.payer.groupId.eq(groupId))
@@ -72,13 +72,24 @@ public class ExpenseRepository {
      * @param limit Maximum amount of Expenses to fetch
      * @return {@link List} of {@link ExpenseEntity}
      */
-    public List<ExpenseEntity> getExpenses(String groupId, long limit) {
+    public List<ExpenseEntity> getExpensesByGroupId(String groupId, long limit) {
         return new JPAQuery<ExpenseEntity>(entityManager).from(QExpenseEntity.expenseEntity)
             .where(QExpenseEntity.expenseEntity.payer.groupId.eq(groupId))
             .where(QExpenseEntity.expenseEntity.profiteers.any().person.groupId.eq(groupId))
             .limit(limit)
             .orderBy(QExpenseEntity.expenseEntity.id.asc())
             .fetch();
+    }
+
+    /**
+     * Deletes the Expense with the given Id.
+     * 
+     * @param expenseId Id of the Expense
+     */
+    @Transactional
+    public void deleteExpense(int expenseId) {
+        ExpenseEntity expense = getById(expenseId);
+        entityManager.remove(expense);
     }
     
 }

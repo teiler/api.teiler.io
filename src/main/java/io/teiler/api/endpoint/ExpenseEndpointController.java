@@ -81,13 +81,13 @@ public class ExpenseEndpointController implements EndpointController {
 //            return gson.toJson(person);
 //        });
 
-//        delete(URL_WITH_EXPENSE_ID, (req, res) -> {
-//            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-//            groupId = Normalize.normalizeGroupId(groupId);
-//            int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
-//            personService.deletePerson(groupId, personId);
-//            return "";
-//        });
+        delete(URL_WITH_EXPENSE_ID, (req, res) -> {
+            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
+            groupId = Normalize.normalizeGroupId(groupId);
+            int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
+            expenseService.deleteExpense(groupId, expenseId);
+            return "";
+        });
 
 //        exception(PersonNotFoundException.class, (e, request, response) -> {
 //            response.status(404);
