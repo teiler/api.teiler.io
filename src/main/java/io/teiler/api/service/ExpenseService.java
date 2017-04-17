@@ -29,6 +29,9 @@ public class ExpenseService {
     @Autowired
     private GroupUtil groupUtil;
     
+    @Autowired
+    private ExpenseUtil expenseUtil;
+    
     /**
      * Creates a new Expense.
      * @param expense {@link List} of {@link Share} related to the Expense
@@ -56,7 +59,7 @@ public class ExpenseService {
     public Expense getExpense(String groupId, int expenseId) {
         groupUtil.checkIdExists(groupId);
         
-        ExpenseEntity expense = expenseRepository.getExpense(groupId, expenseId);
+        ExpenseEntity expense = expenseRepository.getByGroupIdAndExpenseId(groupId, expenseId);
         return expense.toExpense();
     }
 
@@ -70,8 +73,17 @@ public class ExpenseService {
     public List<Expense> getExpenses(String groupId, long limit) {
         groupUtil.checkIdExists(groupId);
         
-        List<ExpenseEntity> expenses = expenseRepository.getExpenses(groupId, limit);
+        List<ExpenseEntity> expenses = expenseRepository.getExpensesByGroupId(groupId, limit);
         return expenses.stream().map(e -> e.toExpense()).collect(Collectors.toList());
+    }
+
+    public void deleteExpense(String groupId, int expenseId) {
+        groupUtil.checkIdExists(groupId);
+        expenseUtil.checkExpenseExists(expenseId);
+        expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
+
+        expenseRepository.deleteExpense(expenseId);
+        
     }
     
 }
