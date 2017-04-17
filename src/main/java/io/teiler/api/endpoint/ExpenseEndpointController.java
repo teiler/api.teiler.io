@@ -15,12 +15,10 @@ import com.google.gson.Gson;
 
 import io.teiler.api.service.ExpenseService;
 import io.teiler.server.dto.Expense;
-import io.teiler.server.dto.Person;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
-import io.teiler.server.util.exceptions.PeopleNameConflictException;
-import io.teiler.server.util.exceptions.PersonNotFoundException;
+import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
 /**
  * Controller for Expense-related endpoints.
@@ -89,17 +87,11 @@ public class ExpenseEndpointController implements EndpointController {
             return "";
         });
 
-//        exception(PersonNotFoundException.class, (e, request, response) -> {
-//            response.status(404);
-//            Error error = new Error(e.getMessage());
-//            response.body(gson.toJson(error));
-//        });
-//
-//        exception(PeopleNameConflictException.class, (e, request, response) -> {
-//            response.status(409);
-//            Error error = new Error(e.getMessage());
-//            response.body(gson.toJson(error));
-//        });
+        exception(TransactionNotFoundException.class, (e, request, response) -> {
+            response.status(404);
+            Error error = new Error(e.getMessage());
+            response.body(gson.toJson(error));
+        });
     }
 
 }
