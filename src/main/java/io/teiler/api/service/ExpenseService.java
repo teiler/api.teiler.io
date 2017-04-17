@@ -1,5 +1,8 @@
 package io.teiler.api.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,9 @@ public class ExpenseService {
     @Autowired
     private ProfiteerRepository profiteerRepository;
     
+    @Autowired
+    private GroupUtil groupUtil;
+    
     /**
      * Creates a new Expense.
      * @param expense {@link List} of {@link Share} related to the Expense
@@ -38,6 +44,34 @@ public class ExpenseService {
         }
         
         return expenseRepository.getById(expenseEntity.getId()).toExpense();
+    }
+
+    /**
+     * Returns an {@link Expense} with the given Id and Group-Id..
+     * 
+     * @param groupId Id of the Group
+     * @param expenseId Id of the Expense
+     * @return {@link List} of {@link Expense}
+     */
+    public Expense getExpense(String groupId, int expenseId) {
+        groupUtil.checkIdExists(groupId);
+        
+        ExpenseEntity expense = expenseRepository.getExpense(groupId, expenseId);
+        return expense.toExpense();
+    }
+
+    /**
+     * Returns a {@link List} of {@link Expense} in the Group with the given Id.
+     * 
+     * @param groupId Id of the Group
+     * @param limit Maximum amount of Expenses to fetch
+     * @return {@link List} of {@link Expense}
+     */
+    public List<Expense> getExpenses(String groupId, long limit) {
+        groupUtil.checkIdExists(groupId);
+        
+        List<ExpenseEntity> expenses = expenseRepository.getExpenses(groupId, limit);
+        return expenses.stream().map(e -> e.toExpense()).collect(Collectors.toList());
     }
     
 }

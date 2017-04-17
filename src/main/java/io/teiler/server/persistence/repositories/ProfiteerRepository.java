@@ -20,6 +20,12 @@ public class ProfiteerRepository {
     @Autowired
     private EntityManager entityManager;
     
+    /**
+     * Creates a new {@link ProfiteerEntity} and returns it.
+     * 
+     * @param share {@link Share}
+     * @return {@link ProfiteerEntity}
+     */
     @Transactional
     public ProfiteerEntity create(Share share) {
         ProfiteerEntity profiteerEntity = new ProfiteerEntity(share);
