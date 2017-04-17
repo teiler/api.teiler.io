@@ -72,14 +72,14 @@ public class ExpenseEndpointController implements EndpointController {
             return gson.toJson(expense);
         });
 
-//        put(URL_WITH_PERSON_ID, (req, res) -> {
-//            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-//            groupId = Normalize.normalizeGroupId(groupId);
-//            int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
-//            Person changedPerson = gson.fromJson(req.body(), Person.class);
-//            Person person = personService.editPerson(groupId, personId, changedPerson);
-//            return gson.toJson(person);
-//        });
+        put(URL_WITH_EXPENSE_ID, (req, res) -> {
+            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
+            groupId = Normalize.normalizeGroupId(groupId);
+            int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
+            Expense changedExpense = gson.fromJson(req.body(), Expense.class);
+            Expense expense = expenseService.editExpense(groupId, expenseId, changedExpense);
+            return gson.toJson(expense);
+        });
 
         delete(URL_WITH_EXPENSE_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
