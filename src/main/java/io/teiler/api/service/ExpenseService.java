@@ -50,7 +50,7 @@ public class ExpenseService {
     }
 
     /**
-     * Returns an {@link Expense} with the given Id and Group-Id..
+     * Returns an {@link Expense} with the given Id and Group-Id.
      * 
      * @param groupId Id of the Group
      * @param expenseId Id of the Expense
@@ -65,6 +65,7 @@ public class ExpenseService {
 
     /**
      * Returns a {@link List} of {@link Expense} in the Group with the given Id.
+     * <i>Note:</i> The Group of the Payer of the Expense has to to match the given Group.
      * 
      * @param groupId Id of the Group
      * @param limit Maximum amount of Expenses to fetch
@@ -77,13 +78,43 @@ public class ExpenseService {
         return expenses.stream().map(e -> e.toExpense()).collect(Collectors.toList());
     }
 
+    /**
+     * Updates and already created Expense with the given values.
+     * <i>Note:</i> The Expense has to exist within the given Group.
+     * 
+     * @param groupId Id of the Group
+     * @param expenseId Id of the Expense
+     * @param changedExpense {@link Expense} containing the new values
+     */
+    public Expense editExpense(String groupId, int expenseId, Expense changedExpense) {
+        groupUtil.checkIdExists(groupId);
+        expenseUtil.checkExpenseExists(expenseId);
+        expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
+        
+        ExpenseEntity expenseEntity = expenseRepository.editExpense(expenseId, changedExpense);
+
+        // TODO Add support for editing profiteers/shares as well
+//        for(Share changedShare : changedExpense.getShares()) {
+//            changedShare.setExpenseId(expenseEntity.getId());
+//            profiteerRepository.editProfiteer(expenseEntity.getId(), changedShare);
+//        }
+        
+        return expenseRepository.getById(expenseEntity.getId()).toExpense();
+    }
+
+    /**
+     * Deletes the Expense with the given Id and Group-Id.<br>
+     * <i>Note:</i> The Expense has to exist within the given Group.
+     * 
+     * @param groupId Id of the Group
+     * @param expenseId Id of the Expense
+     */
     public void deleteExpense(String groupId, int expenseId) {
         groupUtil.checkIdExists(groupId);
         expenseUtil.checkExpenseExists(expenseId);
         expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
 
         expenseRepository.deleteExpense(expenseId);
-        
     }
     
 }

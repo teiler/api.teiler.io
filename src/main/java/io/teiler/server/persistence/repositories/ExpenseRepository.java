@@ -52,7 +52,8 @@ public class ExpenseRepository {
 
     /**
      * Returns an {@link ExpenseEntity} with the given Id and Group-Id.
-     * The Id of the {@link ExpenseEntity} and the Group-Id of the Payer are to match exactly.
+     * <i>Note:</i> The Group of the Payer of the Expense has to to match the given Group.
+     * 
      * 
      * @param groupId Id of the Group of the Payer
      * @param expenseId Id of the Expense
@@ -67,6 +68,7 @@ public class ExpenseRepository {
 
     /**
      * Returns a {@link List} of {@link ExpenseEntity} in the Group with the given Id.
+     * <i>Note:</i> The Expense has to exist within the given Group.
      * 
      * @param groupId Id of the Group
      * @param limit Maximum amount of Expenses to fetch
@@ -82,7 +84,24 @@ public class ExpenseRepository {
     }
 
     /**
-     * Deletes the Expense with the given Id.
+     * Updates a already persisted {@link ExpenseEntity} with the given values.
+     * 
+     * @param expenseId Id of the Expense
+     * @param changedExpense {@link Expense} containing the new values
+     * @return {@link ExpenseEntity} containing the new values
+     */
+    @Transactional
+    public ExpenseEntity editExpense(int expenseId, Expense changedExpense) {
+        ExpenseEntity expense = new ExpenseEntity(changedExpense);
+        expense.setId(expenseId);
+        
+        entityManager.merge(expense);
+
+        return expense;
+    }
+
+    /**
+     * Deletes the {@link ExpenseEntity} with the given Id.
      * 
      * @param expenseId Id of the Expense
      */
