@@ -67,5 +67,10 @@ public class Expense extends Transaction {
     public void setShares(List<Share> shares) {
         this.shares = shares;
     }
+
+    @Override
+    public String toString() {
+        return "Expense [title=" + title + ", shares=" + shares + "]";
+    }
     
 }

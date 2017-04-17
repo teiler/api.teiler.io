@@ -97,5 +97,11 @@ public class Share {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "Share [profiteer=" + profiteer + ", factor=" + factor + ", updateTime=" + updateTime
+                + ", createTime=" + createTime + ", expenseId(transient)=" + expenseId + "]";
+    }
     
 }
