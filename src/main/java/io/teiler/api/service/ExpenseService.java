@@ -1,11 +1,5 @@
 package io.teiler.api.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Share;
 import io.teiler.server.persistence.entities.ExpenseEntity;
@@ -13,6 +7,10 @@ import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Expenses.
@@ -80,7 +78,7 @@ public class ExpenseService {
         groupUtil.checkIdExists(groupId);
         
         List<ExpenseEntity> expenses = expenseRepository.getExpensesByGroupId(groupId, limit);
-        return expenses.stream().map(e -> e.toExpense()).collect(Collectors.toList());
+        return expenses.stream().map(ExpenseEntity::toExpense).collect(Collectors.toList());
     }
 
     /**
@@ -127,9 +125,11 @@ public class ExpenseService {
         }
         
         // remove all the remaining profiteers as they were not included in the input and thus shall be removed
-        removedProfiteerPersonIds.forEach(removedProfiteerPersonId -> {
-            profiteerRepository.deleteProfiteerByExpenseIdAndProfiteerPersonId(expenseEntity.getId(), removedProfiteerPersonId);
-        });
+        removedProfiteerPersonIds.forEach(removedProfiteerPersonId ->
+            profiteerRepository
+                .deleteProfiteerByExpenseIdAndProfiteerPersonId(expenseEntity.getId(),
+                    removedProfiteerPersonId)
+        );
         
         // -----------------------------------
         //       End of cleanup-section.
