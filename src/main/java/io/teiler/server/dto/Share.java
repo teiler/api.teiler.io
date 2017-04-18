@@ -1,8 +1,8 @@
 package io.teiler.server.dto;
 
-import java.time.LocalDateTime;
-
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * TODO Think about this class' name for some time.
@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  * 
  * @author pbaechli
  */
-public class Share {
+public class Share implements Serializable {
 
     private transient Integer expenseId;
 
