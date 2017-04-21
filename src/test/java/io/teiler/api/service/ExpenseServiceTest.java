@@ -56,7 +56,7 @@ public class ExpenseServiceTest {
         TEST_SHARES = getTestShares();
         
         Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, TEST_PAYER, TEST_EXPENSE_TITLE, TEST_SHARES);
-        Expense expense = expenseService.createExpense(testExpense);
+        Expense expense = expenseService.createExpense(testExpense, testGroup.getId());
 
         Assert.assertEquals(TEST_EXPENSE_TITLE, expense.getTitle());
         Assert.assertEquals(TEST_EXPENSE_AMOUNT, expense.getAmount());

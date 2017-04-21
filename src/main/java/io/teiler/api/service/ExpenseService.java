@@ -28,6 +28,9 @@ public class ExpenseService {
     
     @Autowired
     private GroupUtil groupUtil;
+
+    @Autowired
+    private PersonUtil personUtil;
     
     @Autowired
     private ExpenseUtil expenseUtil;
@@ -38,9 +41,16 @@ public class ExpenseService {
      * 
      * @return Information about the Expense
      */
-    public Expense createExpense(Expense expense) {
+    public Expense createExpense(Expense expense, String groupId) {
+        groupUtil.checkIdExists(groupId);
+        personUtil.checkPersonBelongsToThisGroup(groupId, expense.getPayer().getId());
         expenseUtil.checkFactorsAddUp(expense.getShares());
-        
+
+        // Before we create anything, let's check all the profiteers
+        for(Share share : expense.getShares()) {
+            personUtil.checkPersonBelongsToThisGroup(groupId, share.getProfiteer().getId());
+        }
+
         ExpenseEntity expenseEntity = expenseRepository.create(expense);
         
         for(Share share : expense.getShares()) {
