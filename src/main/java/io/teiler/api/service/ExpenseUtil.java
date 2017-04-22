@@ -35,8 +35,8 @@ public class ExpenseUtil {
 
     /**
      * Checks whether an Expense exists.
-     * 
-     * @param personId Id of the Expense
+     *
+     * @param expenseId Id of the Expense
      * @throws TransactionNotFoundException Expense does not exist
      */
     public void checkExpenseExists(int expenseId) throws TransactionNotFoundException {
