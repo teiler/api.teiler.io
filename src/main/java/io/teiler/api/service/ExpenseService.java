@@ -6,6 +6,8 @@ import io.teiler.server.persistence.entities.ExpenseEntity;
 import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
+import io.teiler.server.util.exceptions.PayerNotFoundException;
+import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,12 +45,21 @@ public class ExpenseService {
      */
     public Expense createExpense(Expense expense, String groupId) {
         groupUtil.checkIdExists(groupId);
-        personUtil.checkPersonBelongsToThisGroup(groupId, expense.getPayer().getId());
+        try {
+            personUtil.checkPersonBelongsToThisGroup(groupId, expense.getPayer().getId());
+        } catch (PersonNotFoundException e) {
+            // Throw more focused message
+            throw new PayerNotFoundException();
+        }
         expenseUtil.checkFactorsAddUp(expense.getShares());
 
         // Before we create anything, let's check all the profiteers
         for(Share share : expense.getShares()) {
-            personUtil.checkPersonBelongsToThisGroup(groupId, share.getProfiteer().getId());
+            try {
+                personUtil.checkPersonBelongsToThisGroup(groupId, share.getProfiteer().getId());
+            } catch (PersonNotFoundException e) {
+                throw new ProfiteerNotFoundException();
+            }
         }
 
         ExpenseEntity expenseEntity = expenseRepository.create(expense);
@@ -104,7 +115,22 @@ public class ExpenseService {
         groupUtil.checkIdExists(groupId);
         expenseUtil.checkExpenseExists(expenseId);
         expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
+        try {
+            personUtil.checkPersonBelongsToThisGroup(groupId, changedExpense.getPayer().getId());
+        } catch (PersonNotFoundException e) {
+            // Throw more focused message
+            throw new PayerNotFoundException();
+        }
         expenseUtil.checkFactorsAddUp(changedExpense.getShares());
+
+        // Before we create anything, let's check all the profiteers
+        for (Share share : changedExpense.getShares()) {
+            try {
+                personUtil.checkPersonBelongsToThisGroup(groupId, share.getProfiteer().getId());
+            } catch (PersonNotFoundException e) {
+                throw new ProfiteerNotFoundException();
+            }
+        }
         
         expenseRepository.editExpense(expenseId, changedExpense);
         ExpenseEntity expenseEntity = expenseRepository.getById(expenseId);

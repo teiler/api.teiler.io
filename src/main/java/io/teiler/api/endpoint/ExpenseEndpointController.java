@@ -6,20 +6,18 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
 import com.google.gson.Gson;
-
 import io.teiler.api.service.ExpenseService;
 import io.teiler.server.dto.Expense;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
 import io.teiler.server.util.exceptions.FactorsNotAddingUpException;
+import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Expense-related endpoints.
@@ -29,17 +27,14 @@ import io.teiler.server.util.exceptions.TransactionNotFoundException;
 @Controller
 public class ExpenseEndpointController implements EndpointController {
 
-    private Gson gson = GsonUtil.getHomebrewGson();
-
-    @Autowired
-    private ExpenseService expenseService;
-
     private static final int DEFAULT_QUERY_LIMIT = 20;
     private static final String EXPENSE_ID_PARAM = ":expenseid";
     private static final String LIMIT_PARAM = "limit";
-
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/expenses";
     private static final String URL_WITH_EXPENSE_ID = BASE_URL + "/" + EXPENSE_ID_PARAM;
+    private Gson gson = GsonUtil.getHomebrewGson();
+    @Autowired
+    private ExpenseService expenseService;
 
     @Override
     public void register() {
@@ -89,6 +84,12 @@ public class ExpenseEndpointController implements EndpointController {
         });
 
         exception(TransactionNotFoundException.class, (e, request, response) -> {
+            response.status(404);
+            Error error = new Error(e.getMessage());
+            response.body(gson.toJson(error));
+        });
+
+        exception(PersonNotFoundException.class, (e, request, response) -> {
             response.status(404);
             Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
