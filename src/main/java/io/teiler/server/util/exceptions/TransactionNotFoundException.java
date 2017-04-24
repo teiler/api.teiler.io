@@ -5,7 +5,7 @@ package io.teiler.server.util.exceptions;
  * 
  * @author pbaechli
  */
-public class TransactionNotFoundException extends PersonNotFoundException {
+public class TransactionNotFoundException extends RuntimeException {
     
     private static final long serialVersionUID = 1L;
 
