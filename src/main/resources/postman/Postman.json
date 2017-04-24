@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Tylr",
-		"_postman_id": "9a03cee4-82ce-e7a1-8546-28d7b0485314",
+		"_postman_id": "cb1f7c54-49d8-42af-2265-bddbb4d44280",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -173,7 +173,7 @@
 							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
 							"tests[\"Number of profiteers is correct\"] = jsonData.profiteers.length == 2;",
 							"tests[\"Profiteer ids are correct\"] = jsonData.profiteers[0].profiteer.id == globals.person1Id && jsonData.profiteers[1].profiteer.id == globals.person2Id;",
-							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].factor == \"0.6\" && jsonData.profiteers[1].factor == \"0.4\";",
+							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].share == \"600\" && jsonData.profiteers[1].factor == \"400\";",
 							"tests[\"Contains expense id\"] = 'id' in jsonData;",
 							"tests[\"Contains payer\"] = 'payer' in jsonData;",
 							"tests[\"Contains profiteers\"] = 'profiteers' in jsonData;",
@@ -197,7 +197,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Getrocknete Bananen\",\r\n    \"amount\": \"1000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"0.6\"\r\n        },\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"0.4\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"title\": \"Getrocknete Bananen\",\r\n    \"amount\": \"1000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"600\"\r\n        },\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"400\"\r\n        }\r\n    ]\r\n}"
 				},
 				"description": ""
 			},
@@ -224,30 +224,16 @@
 				"url": "{{url}}/v1/groups/{{group}}/expenses?limit=5",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "Show expense",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"",
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"First person is still there and changed\"] = jsonData[0].name === \"Hansheiri Müller\"",
-							"tests[\"Second person is still there\"] = jsonData[1].name === \"Hans Müller\"",
-							"tests[\"Contains update time\"] = 'update-time' in jsonData[0];",
-							"tests[\"Contains create time\"] = 'create-time' in jsonData[0];"
-						]
-					}
-				}
-			],
 			"request": {
 				"url": "{{url}}/v1/groups/{{group}}/expenses/{{expenseId}}",
 				"method": "GET",
@@ -269,11 +255,11 @@
 							"",
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Expense title is correct\"] = jsonData.title === \"Luftgetrocknete Bananen\";",
-							"tests[\"Expense amount is correct\"] = jsonData.amount == \"950\";",
+							"tests[\"Expense amount is correct\"] = jsonData.amount == \"10000\";",
 							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
 							"tests[\"Number of profiteers is correct\"] = jsonData.profiteers.length == 2;",
 							"tests[\"Profiteer ids are correct\"] = jsonData.profiteers[0].profiteer.id == globals.person1Id && jsonData.profiteers[1].profiteer.id == globals.person2Id;",
-							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].factor == \"0.7\" && jsonData.profiteers[1].factor == \"0.3\";",
+							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].share == \"7000\" && jsonData.profiteers[1].share == \"3000\";",
 							"tests[\"Contains expense id\"] = 'id' in jsonData;",
 							"tests[\"Contains payer\"] = 'payer' in jsonData;",
 							"tests[\"Contains profiteers\"] = 'profiteers' in jsonData;",
@@ -297,7 +283,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"950\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"0.7\"\r\n        },\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"0.3\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"10000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"7000\"\r\n        },\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"3000\"\r\n        }\r\n    ]\r\n}"
 				},
 				"description": ""
 			},
@@ -315,11 +301,11 @@
 							"",
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Expense title is correct\"] = jsonData.title === \"Luftgetrocknete Bananen\";",
-							"tests[\"Expense amount is correct\"] = jsonData.amount == \"950\";",
+							"tests[\"Expense amount is correct\"] = jsonData.amount == \"10000\";",
 							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
 							"tests[\"Number of profiteers is correct\"] = jsonData.profiteers.length == 1;",
 							"tests[\"Profiteer ids are correct\"] = jsonData.profiteers[0].profiteer.id == globals.person1Id;",
-							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].factor == \"1.0\";",
+							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].share == \"10000\";",
 							"tests[\"Contains expense id\"] = 'id' in jsonData;",
 							"tests[\"Contains payer\"] = 'payer' in jsonData;",
 							"tests[\"Contains profiteers\"] = 'profiteers' in jsonData;",
@@ -343,7 +329,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"950\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"1.0\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"10000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"10000\"\r\n        }\r\n    ]\r\n}"
 				},
 				"description": ""
 			},
@@ -361,11 +347,11 @@
 							"",
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Expense title is correct\"] = jsonData.title === \"Luftgetrocknete Bananen\";",
-							"tests[\"Expense amount is correct\"] = jsonData.amount == \"950\";",
+							"tests[\"Expense amount is correct\"] = jsonData.amount == \"10000\";",
 							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
 							"tests[\"Number of profiteers is correct\"] = jsonData.profiteers.length == 2;",
 							"tests[\"Profiteer ids are correct\"] = jsonData.profiteers[0].profiteer.id == globals.person1Id && jsonData.profiteers[1].profiteer.id == globals.person2Id;",
-							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].factor == \"0.5\" && jsonData.profiteers[1].factor == \"0.5\";",
+							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].share == \"5000\" && jsonData.profiteers[1].share == \"5000\";",
 							"tests[\"Contains expense id\"] = 'id' in jsonData;",
 							"tests[\"Contains payer\"] = 'payer' in jsonData;",
 							"tests[\"Contains profiteers\"] = 'profiteers' in jsonData;",
@@ -389,7 +375,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"950\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"0.5\"\r\n        },\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"factor\": \"0.5\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"10000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"5000\"\r\n        },\r\n        {\r\n            \"profiteer\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"5000\"\r\n        }\r\n    ]\r\n}"
 				},
 				"description": ""
 			},
