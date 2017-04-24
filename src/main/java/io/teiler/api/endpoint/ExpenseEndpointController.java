@@ -12,7 +12,7 @@ import io.teiler.server.dto.Expense;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
-import io.teiler.server.util.exceptions.FactorsNotAddingUpException;
+import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 import java.util.List;
@@ -95,7 +95,7 @@ public class ExpenseEndpointController implements EndpointController {
             response.body(gson.toJson(error));
         });
         
-        exception(FactorsNotAddingUpException.class, (e, request, response) -> {
+        exception(SharesNotAddingUpException.class, (e, request, response) -> {
             response.status(406);
             Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
