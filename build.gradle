@@ -12,7 +12,7 @@ apply plugin: "eclipse"
 apply plugin: "idea"
 
 sourceCompatibility = 1.8
-sourceSets.main.java.srcDirs = [ "src/main/java", "src/main/resources", "src/querydsl/java" ]
+sourceSets.main.java.srcDirs = [ "src/main/java", "src/main/resources", "src/querydsl/java" , "src/dist/sql" ]
 sourceSets.test.java.srcDirs = [ "src/test/java" ]
 
 mainClassName = "io.teiler.server.Tylr"
