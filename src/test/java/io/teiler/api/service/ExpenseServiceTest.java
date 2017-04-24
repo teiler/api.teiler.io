@@ -279,4 +279,42 @@ public class ExpenseServiceTest {
         Assert.assertEquals(testProfiteers.size(), testEditedExpense.getShares().size());
     }
 
+    @Test
+    public void testLastExpensesOrderIsCorrect() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
+
+        List<Profiteer> testProfiteers = new LinkedList<>();
+        testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
+
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense2 = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE + " zwei", testProfiteers);
+
+        expenseService.createExpense(testExpense, testGroup.getId());
+        expenseService.createExpense(testExpense2, testGroup.getId());
+
+        List<Expense> expenses = expenseService.getLastExpenses(testGroup.getId(), 3);
+
+        Assert.assertEquals(TEST_EXPENSE_TITLE + " zwei", expenses.get(0).getTitle());
+    }
+
+    /* TODO @Patrick
+    @Test(expected = TransactionNotFoundException.class)
+    public void testDeleteExpense() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
+
+        List<Profiteer> testProfiteers = new LinkedList<>();
+        testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
+
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+
+        Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
+
+        expenseService.deleteExpense(testGroup.getId(), testExpenseResponse.getId());
+
+        expenseService.getExpense(testGroup.getId(), testExpenseResponse.getId());
+    }
+    */
+
 }
