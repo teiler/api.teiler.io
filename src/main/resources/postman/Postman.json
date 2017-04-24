@@ -347,7 +347,7 @@
 							"",
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Expense title is correct\"] = jsonData.title === \"Luftgetrocknete Bananen\";",
-							"tests[\"Expense amount is correct\"] = jsonData.amount == \"950\";",
+							"tests[\"Expense amount is correct\"] = jsonData.amount == \"10000\";",
 							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
 							"tests[\"Number of profiteers is correct\"] = jsonData.profiteers.length == 2;",
 							"tests[\"Profiteer ids are correct\"] = jsonData.profiteers[0].profiteer.id == globals.person1Id && jsonData.profiteers[1].profiteer.id == globals.person2Id;",
