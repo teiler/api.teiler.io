@@ -29,7 +29,6 @@ CREATE TABLE "person" (
 CREATE TABLE "transaction" (
   "id"  SERIAL,
   "title" VARCHAR(50) NOT NULL,
-  "amount" INTEGER NOT NULL,
   "type" VARCHAR(50) NOT NULL,
   "payer" INTEGER REFERENCES "person" ON DELETE CASCADE,
   "create_time" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
