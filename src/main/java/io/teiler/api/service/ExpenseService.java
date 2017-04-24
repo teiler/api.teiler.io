@@ -1,5 +1,11 @@
 package io.teiler.api.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Share;
 import io.teiler.server.persistence.entities.ExpenseEntity;
@@ -9,10 +15,6 @@ import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.PayerNotFoundException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Expenses.
@@ -51,7 +53,7 @@ public class ExpenseService {
             // Throw more focused message
             throw new PayerNotFoundException();
         }
-        expenseUtil.checkFactorsAddUp(expense.getShares());
+        expenseUtil.checkSharesAddUp(expense.getAmount(), expense.getShares());
 
         // Before we create anything, let's check all the profiteers
         for(Share share : expense.getShares()) {
@@ -121,7 +123,7 @@ public class ExpenseService {
             // Throw more focused message
             throw new PayerNotFoundException();
         }
-        expenseUtil.checkFactorsAddUp(changedExpense.getShares());
+        expenseUtil.checkSharesAddUp(changedExpense.getAmount(), changedExpense.getShares());
 
         // Before we create anything, let's check all the profiteers
         for (Share share : changedExpense.getShares()) {

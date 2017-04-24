@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import io.teiler.server.dto.Share;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
-import io.teiler.server.util.exceptions.FactorsNotAddingUpException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
 @Service
@@ -61,15 +61,16 @@ public class ExpenseUtil {
     }
     
     /**
-     * Checks whether the factors of the given shares add up to 1.0.
+     * Checks whether the given shares add up to the expected amount.
      * 
+     * @param expectedTotalAmount Expected amount of the summed up shares
      * @param shares {@link List} of {@link Share}
-     * @throws FactorsNotAddingUpException Factors do not add up
+     * @throws SharesNotAddingUpException Shares do not add up
      */
-    public void checkFactorsAddUp(List<Share> shares) throws FactorsNotAddingUpException {
-        double total = shares.stream().map(Share::getShare).mapToInt(Integer::intValue).sum();
-        if (total != 1.0) {
-            throw new FactorsNotAddingUpException();
+    public void checkSharesAddUp(Integer expectedTotalAmount, List<Share> shares) throws SharesNotAddingUpException {
+        Integer total = shares.stream().map(Share::getShare).mapToInt(Integer::intValue).sum();
+        if (total.compareTo(expectedTotalAmount) != 0) {
+            throw new SharesNotAddingUpException();
         }
     }
     
