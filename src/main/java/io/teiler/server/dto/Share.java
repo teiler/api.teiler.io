@@ -1,8 +1,8 @@
 package io.teiler.server.dto;
 
-import com.google.gson.annotations.SerializedName;
-import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * <br> 
