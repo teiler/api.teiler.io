@@ -16,7 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import io.teiler.server.dto.Share;
+import io.teiler.server.dto.Profiteer;
 import io.teiler.server.util.TimeUtil;
 
 /**
@@ -58,8 +58,8 @@ public class ProfiteerEntity {
     
     public ProfiteerEntity() { /* intentionally empty */ }
     
-    public ProfiteerEntity(Share share) {
-        this.person = new PersonEntity(share.getProfiteer());
+    public ProfiteerEntity(Profiteer share) {
+        this.person = new PersonEntity(share.getPerson());
         this.share = share.getShare();
         this.transactionId = share.getExpenseId();
         this.updateTime = TimeUtil.convertToTimestamp(share.getUpdateTime());
@@ -81,12 +81,12 @@ public class ProfiteerEntity {
     }
     
     /**
-     * Converts this {@link ProfiteerEntity} to a {@link Share}.
+     * Converts this {@link ProfiteerEntity} to a {@link Profiteer}.
      * 
-     * @return {@link Share}
+     * @return {@link Profiteer}
      */
-    public Share toShare() {
-        return new Share(
+    public Profiteer toShare() {
+        return new Profiteer(
             transactionId,
             person.toPerson(),
             share,

@@ -5,17 +5,16 @@ import java.time.LocalDateTime;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * <br> 
  * Represents the share a Person takes in an Expense.
  * 
  * @author pbaechli
  */
-public class Share {
+public class Profiteer {
 
     private transient Integer expenseId;
 
     @SerializedName("profiteer")
-    private Person profiteer;
+    private Person person;
     
     @SerializedName("share")
     private Integer share;
@@ -30,12 +29,12 @@ public class Share {
      * Usual constructor.
      * 
      * @param expenseId Id of the Expense in which share is being taken
-     * @param profiteer Person taking share in the Expense
+     * @param person Person taking share in the Expense
      * @param factor Factor by which share is being taken
      */
-    public Share(Integer expenseId, Person profiteer, Integer factor) {
+    public Profiteer(Integer expenseId, Person person, Integer factor) {
         this.expenseId = expenseId;
-        this.profiteer = profiteer;
+        this.person = person;
         this.share = factor;
     }
     
@@ -43,15 +42,15 @@ public class Share {
      * Constructor with all fields (useful for converting).
      * 
      * @param expense Id of the Expense in which share is being taken
-     * @param profiteer Person taking share in the Expense
+     * @param person Person taking share in the Expense
      * @param factor Factor by which share is being taken
      * @param updateTime {@link LocalDateTime} marking the last update of the Share
      * @param createTime {@link LocalDateTime} marking the creation of the Share
      */
-    public Share(Integer expenseId, Person profiteer, Integer factor, LocalDateTime updateTime,
+    public Profiteer(Integer expenseId, Person person, Integer factor, LocalDateTime updateTime,
             LocalDateTime createTime) {
         this.expenseId = expenseId;
-        this.profiteer = profiteer;
+        this.person = person;
         this.share = factor;
         this.updateTime = updateTime;
         this.createTime = createTime;
@@ -65,12 +64,12 @@ public class Share {
         this.expenseId = transactionId;
     }
 
-    public Person getProfiteer() {
-        return profiteer;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setProfiteer(Person profiteer) {
-        this.profiteer = profiteer;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Integer getShare() {
@@ -99,7 +98,7 @@ public class Share {
 
     @Override
     public String toString() {
-        return "Share [profiteer=" + profiteer + ", factor=" + share + ", updateTime=" + updateTime
+        return "Profiteer [person=" + person + ", share=" + share + ", updateTime=" + updateTime
                 + ", createTime=" + createTime + ", expenseId(transient)=" + expenseId + "]";
     }
     

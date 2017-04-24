@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQuery;
 
-import io.teiler.server.dto.Share;
+import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.entities.QProfiteerEntity;
 
@@ -26,11 +26,11 @@ public class ProfiteerRepository {
     /**
      * Creates a new {@link ProfiteerEntity} and returns it.
      * 
-     * @param share {@link Share}
+     * @param share {@link Profiteer}
      * @return {@link ProfiteerEntity}
      */
     @Transactional
-    public ProfiteerEntity create(Share share) {
+    public ProfiteerEntity create(Profiteer share) {
         ProfiteerEntity profiteerEntity = new ProfiteerEntity(share);
         entityManager.persist(profiteerEntity);
         return profiteerEntity;
@@ -67,11 +67,11 @@ public class ProfiteerRepository {
      * Updates a already persisted {@link ProfiteerEntity} with the given values.
      * 
      * @param profiteerId Id of the Profiteer
-     * @param changedShare {@link Share} containing the new values
+     * @param changedShare {@link Profiteer} containing the new values
      * @return {@link ProfiteerEntity} containing the new values
      */
     @Transactional
-    public ProfiteerEntity editProfiteer(int profiteerId, Share changedShare) {
+    public ProfiteerEntity editProfiteer(int profiteerId, Profiteer changedShare) {
         ProfiteerEntity profiteer = getById(profiteerId);
         profiteer.setShare(changedShare.getShare());
         entityManager.persist(profiteer);

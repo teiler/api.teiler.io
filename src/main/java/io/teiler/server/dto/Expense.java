@@ -16,7 +16,7 @@ public class Expense extends Transaction {
     private String title;
 
     @SerializedName("profiteers")
-    private List<Share> shares;
+    private List<Profiteer> shares;
 
     /**
      * Usual constructor.
@@ -25,10 +25,10 @@ public class Expense extends Transaction {
      * @param amount Amount of money involved in the Expense
      * @param payer Person who spent the money
      * @param title Title of the Expense
-     * @param shares {@link List} of {@link Share} related to the Expense
+     * @param shares {@link List} of {@link Profiteer} related to the Expense
      */
     public Expense(Integer id, Integer amount, Person payer, String title,
-            List<Share> shares) {
+            List<Profiteer> shares) {
         super(id, amount, payer, null, null);
         this.title = title;
         this.shares = shares;
@@ -43,10 +43,10 @@ public class Expense extends Transaction {
      * @param updateTime {@link LocalDateTime} marking the last update of the Expense
      * @param createTime {@link LocalDateTime} marking the creation of the Expense
      * @param title Title of the Expense
-     * @param shares {@link List} of {@link Share} related to the Expense
+     * @param shares {@link List} of {@link Profiteer} related to the Expense
      */
     public Expense(Integer id, Integer amount, Person payer, LocalDateTime updateTime,
-            LocalDateTime createTime, String title, List<Share> shares) {
+            LocalDateTime createTime, String title, List<Profiteer> shares) {
         super(id, amount, payer, updateTime, createTime);
         this.title = title;
         this.shares = shares;
@@ -60,11 +60,11 @@ public class Expense extends Transaction {
         this.title = title;
     }
 
-    public List<Share> getShares() {
+    public List<Profiteer> getShares() {
         return shares;
     }
 
-    public void setShares(List<Share> shares) {
+    public void setShares(List<Profiteer> shares) {
         this.shares = shares;
     }
 
