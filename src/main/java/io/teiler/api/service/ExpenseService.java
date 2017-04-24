@@ -41,8 +41,8 @@ public class ExpenseService {
     
     /**
      * Creates a new Expense.
-     * @param expense {@link List} of {@link Profiteer} related to the Expense
      * 
+     * @param expense {@link List} of {@link Profiteer} related to the Expense
      * @return Information about the Expense
      */
     public Expense createExpense(Expense expense, String groupId) {
@@ -91,22 +91,23 @@ public class ExpenseService {
     }
 
     /**
-     * Returns a {@link List} of {@link Expense} in the Group with the given Id.
+     * Returns a {@link List} of {@link Expense} in the Group with the given Id
+     * sorted descending by the <code>update-time</code>.<br>
      * <i>Note:</i> The Group of the Payer of the Expense has to to match the given Group.
      * 
      * @param groupId Id of the Group
      * @param limit Maximum amount of Expenses to fetch
      * @return {@link List} of {@link Expense}
      */
-    public List<Expense> getExpenses(String groupId, long limit) {
+    public List<Expense> getLastExpenses(String groupId, long limit) {
         groupUtil.checkIdExists(groupId);
         
-        List<ExpenseEntity> expenses = expenseRepository.getExpensesByGroupId(groupId, limit);
+        List<ExpenseEntity> expenses = expenseRepository.getExpensesByGroupIdAndOrderedByUpdateTimeDesc(groupId, limit);
         return expenses.stream().map(ExpenseEntity::toExpense).collect(Collectors.toList());
     }
 
     /**
-     * Updates and already created Expense with the given values.
+     * Updates and already created Expense with the given values.<br>
      * <i>Note:</i> The Expense has to exist within the given Group.
      * 
      * @param groupId Id of the Group

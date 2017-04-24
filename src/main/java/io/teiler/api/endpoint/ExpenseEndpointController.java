@@ -54,7 +54,7 @@ public class ExpenseEndpointController implements EndpointController {
             if (limitString != null) {
                 limit = Long.parseLong(limitString);
             }
-            List<Expense> expenses = expenseService.getExpenses(groupId, limit);
+            List<Expense> expenses = expenseService.getLastExpenses(groupId, limit);
             return gson.toJson(expenses);
         });
         
