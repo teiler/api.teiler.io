@@ -189,4 +189,94 @@ public class ExpenseServiceTest {
         expenseService.getExpense(testGroup.getId(), testDifferentExpenseResponse.getId());
     }
 
+    @Test
+    public void testEditExpenseTitle() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
+
+        List<Profiteer> testProfiteers = new LinkedList<>();
+        testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
+
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+
+        Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
+
+        testExpenseResponse.setTitle("Getrocknete Bananen");
+
+        Expense changedExpense = expenseService.editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
+
+        Assert.assertEquals("Getrocknete Bananen", changedExpense.getTitle());
+    }
+
+    @Test
+    public void testEditExpenseAmountAndShares() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
+
+        List<Profiteer> testProfiteers = new LinkedList<>();
+        testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
+
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+
+        Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
+
+        testExpenseResponse.setAmount(1000);
+        // The "get" part is a bit hacky but it's just too much code otherwise...
+        testProfiteers.get(0).setShare(1000);
+
+        testExpenseResponse.setShares(testProfiteers);
+
+        expenseService.editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
+    }
+
+    @Test(expected = SharesNotAddingUpException.class)
+    public void testEditExpenseAmountAndSharesWrongly() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
+
+        List<Profiteer> testProfiteers = new LinkedList<>();
+        testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
+
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+
+        Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
+
+        testExpenseResponse.setAmount(1000);
+        // The "get" part is a bit hacky but it's just too much code otherwise...
+        testProfiteers.get(0).setShare(1000+100);
+
+        testExpenseResponse.setShares(testProfiteers);
+
+        expenseService.editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
+    }
+
+    @Test
+    public void testEditExpenseNewProfiteer() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
+        Person testProfiteer1 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
+        Person testProfiteer2 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_2);
+
+        List<Profiteer> testProfiteers = new LinkedList<>();
+        testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
+        testProfiteers.add(new Profiteer(null, testProfiteer1, TEST_PROFITEER_1_SHARE));
+
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE + TEST_PROFITEER_1_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+
+        Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
+
+        testProfiteers.add(new Profiteer(null, testProfiteer2, TEST_PROFITEER_2_SHARE));
+        testExpenseResponse.setShares(testProfiteers);
+        testExpenseResponse.setAmount(testExpenseResponse.getAmount() + TEST_PROFITEER_2_SHARE);
+
+        Expense testEditedExpense = expenseService.editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
+
+        Assert.assertEquals(TEST_EXPENSE_TITLE, testEditedExpense.getTitle());
+        Assert.assertEquals(TEST_EXPENSE_AMOUNT, testEditedExpense.getAmount());
+        Assert.assertEquals(testPayerAndProfiteer.getId(), testEditedExpense.getPayer().getId());
+
+        Assert.assertFalse(testEditedExpense.getShares().isEmpty());
+        Assert.assertEquals(testProfiteers.size(), testEditedExpense.getShares().size());
+    }
+
 }
