@@ -2,26 +2,26 @@ package io.teiler.server.persistence.entities;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Formula;
 
 import io.teiler.server.dto.TransactionType;
 
@@ -45,10 +45,6 @@ public class TransactionEntity {
     @Column(name = "id")
     private Integer id;
 
-    @Transient
-    @Formula("SELECT SUM(p.share) FROM ProfiteerEntity p WHERE p.expenseId = id")
-    private Integer amount;
-    
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type", updatable = false, insertable = false)
@@ -65,6 +61,9 @@ public class TransactionEntity {
     @NotNull
     @Column(name = "create_time")
     private Timestamp createTime;
+    
+    @OneToMany(mappedBy = "transactionId", fetch = FetchType.EAGER, orphanRemoval = false)
+    private List<ProfiteerEntity> profiteers;
     
     public TransactionEntity() { /* intentionally empty */ }
     
@@ -91,11 +90,7 @@ public class TransactionEntity {
     }
 
     public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+        return profiteers.stream().map(ProfiteerEntity::getShare).mapToInt(Integer::intValue).sum();
     }
 
     public TransactionType getTransactionType() {
@@ -128,6 +123,14 @@ public class TransactionEntity {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+    
+    public List<ProfiteerEntity> getProfiteers() {
+        return profiteers;
+    }
+
+    public void setProfiteers(List<ProfiteerEntity> profiteers) {
+        this.profiteers = profiteers;
     }
     
 }
