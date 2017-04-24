@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Formula;
+
 import io.teiler.server.dto.TransactionType;
 
 /**
@@ -44,6 +46,7 @@ public class TransactionEntity {
     private Integer id;
 
     @Transient
+    @Formula("SELECT SUM(p.share) FROM ProfiteerEntity p WHERE p.expenseId = id")
     private Integer amount;
     
     @NotNull
