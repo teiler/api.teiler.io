@@ -1,7 +1,6 @@
 package io.teiler.api.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -33,7 +32,6 @@ public class ExpenseServiceTest {
     private static final Person TEST_PROFITEER_1 = TEST_PAYER;
     private static final Person TEST_PROFITEER_2 = new Person(-2, "Paul");
     private static final Person TEST_PROFITEER_3 = new Person(-3, "Peter");
-    private static List<Share> testShares = Collections.emptyList();
 
     @Autowired
     private ExpenseService expenseService;
@@ -53,7 +51,7 @@ public class ExpenseServiceTest {
         TEST_PROFITEER_3.setId(personService.createPerson(testGroup.getId(), TEST_PROFITEER_3.getName()).getId());
         
         // We have to set the shares here in order to have the correct Person-Ids in the Profiteers.
-        testShares = getTestShares();
+        List<Share> testShares = getTestShares();
         
         Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, TEST_PAYER, TEST_EXPENSE_TITLE,
             testShares);
