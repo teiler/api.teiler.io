@@ -1,14 +1,16 @@
 package io.teiler.api.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Share;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.FactorsNotAddingUpException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ExpenseUtil {
@@ -65,7 +67,7 @@ public class ExpenseUtil {
      * @throws FactorsNotAddingUpException Factors do not add up
      */
     public void checkFactorsAddUp(List<Share> shares) throws FactorsNotAddingUpException {
-        double total = shares.stream().map(Share::getFactor).mapToDouble(Double::doubleValue).sum();
+        double total = shares.stream().map(Share::getShare).mapToInt(Integer::intValue).sum();
         if (total != 1.0) {
             throw new FactorsNotAddingUpException();
         }

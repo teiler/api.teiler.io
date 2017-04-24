@@ -73,7 +73,7 @@ public class ProfiteerRepository {
     @Transactional
     public ProfiteerEntity editProfiteer(int profiteerId, Share changedShare) {
         ProfiteerEntity profiteer = getById(profiteerId);
-        profiteer.setFactor(changedShare.getFactor());
+        profiteer.setShare(changedShare.getShare());
         entityManager.persist(profiteer);
         return profiteer;
     }

@@ -18,7 +18,7 @@ public class Share {
     private Person profiteer;
     
     @SerializedName("factor")
-    private Double factor;
+    private Integer share;
 
     @SerializedName("update-time")
     private LocalDateTime updateTime;
@@ -33,10 +33,10 @@ public class Share {
      * @param profiteer Person taking share in the Expense
      * @param factor Factor by which share is being taken
      */
-    public Share(Integer expenseId, Person profiteer, Double factor) {
+    public Share(Integer expenseId, Person profiteer, Integer factor) {
         this.expenseId = expenseId;
         this.profiteer = profiteer;
-        this.factor = factor;
+        this.share = factor;
     }
     
     /**
@@ -48,11 +48,11 @@ public class Share {
      * @param updateTime {@link LocalDateTime} marking the last update of the Share
      * @param createTime {@link LocalDateTime} marking the creation of the Share
      */
-    public Share(Integer expenseId, Person profiteer, Double factor, LocalDateTime updateTime,
+    public Share(Integer expenseId, Person profiteer, Integer factor, LocalDateTime updateTime,
             LocalDateTime createTime) {
         this.expenseId = expenseId;
         this.profiteer = profiteer;
-        this.factor = factor;
+        this.share = factor;
         this.updateTime = updateTime;
         this.createTime = createTime;
     }
@@ -73,12 +73,12 @@ public class Share {
         this.profiteer = profiteer;
     }
 
-    public Double getFactor() {
-        return factor;
+    public Integer getShare() {
+        return share;
     }
 
-    public void setFactor(Double factor) {
-        this.factor = factor;
+    public void setShare(Integer share) {
+        this.share = share;
     }
     
     public LocalDateTime getUpdateTime() {
@@ -99,7 +99,7 @@ public class Share {
 
     @Override
     public String toString() {
-        return "Share [profiteer=" + profiteer + ", factor=" + factor + ", updateTime=" + updateTime
+        return "Share [profiteer=" + profiteer + ", factor=" + share + ", updateTime=" + updateTime
                 + ", createTime=" + createTime + ", expenseId(transient)=" + expenseId + "]";
     }
     

@@ -67,9 +67,9 @@ public class ExpenseServiceTest {
 
     private List<Share> getTestShares() {
         List<Share> shares = new ArrayList<>(3);
-        shares.add(new Share(null, TEST_PROFITEER_1, 0.3));
-        shares.add(new Share(null, TEST_PROFITEER_2, 0.3));
-        shares.add(new Share(null, TEST_PROFITEER_3, 0.4));
+        shares.add(new Share(null, TEST_PROFITEER_1, 300));
+        shares.add(new Share(null, TEST_PROFITEER_2, 300));
+        shares.add(new Share(null, TEST_PROFITEER_3, 400));
         return shares;
     }
 

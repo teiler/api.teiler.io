@@ -18,6 +18,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import io.teiler.server.dto.TransactionType;
@@ -42,8 +43,7 @@ public class TransactionEntity {
     @Column(name = "id")
     private Integer id;
 
-    @NotNull
-    @Column(name = "amount")
+    @Transient
     private Integer amount;
     
     @NotNull
