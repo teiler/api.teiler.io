@@ -45,8 +45,8 @@ public class ProfiteerEntity {
     private Integer expenseId;
     
     @NotNull
-    @Column(name = "factor", precision = 5, scale = 4)
-    private Double factor;
+    @Column(name = "share")
+    private Integer share;
     
     @NotNull
     @Column(name = "update_time")
@@ -60,7 +60,7 @@ public class ProfiteerEntity {
     
     public ProfiteerEntity(Share share) {
         this.person = new PersonEntity(share.getProfiteer());
-        this.factor = share.getFactor();
+        this.share = share.getShare();
         this.expenseId = share.getExpenseId();
         this.updateTime = TimeUtil.convertToTimestamp(share.getUpdateTime());
         this.createTime = TimeUtil.convertToTimestamp(share.getCreateTime());
@@ -89,7 +89,7 @@ public class ProfiteerEntity {
         return new Share(
             expenseId,
             person.toPerson(),
-            factor,
+            share,
             TimeUtil.convertToLocalDateTime(getUpdateTime()),
             TimeUtil.convertToLocalDateTime(getCreateTime()));
     }
@@ -118,12 +118,12 @@ public class ProfiteerEntity {
         this.expenseId = expenseId;
     }
 
-    public Double getFactor() {
-        return factor;
+    public Integer getShare() {
+        return share;
     }
 
-    public void setFactor(Double factor) {
-        this.factor = factor;
+    public void setShare(Integer share) {
+        this.share = share;
     }
 
     public Timestamp getUpdateTime() {
