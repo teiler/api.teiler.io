@@ -32,10 +32,10 @@ public class Profiteer {
      * @param person Person taking share in the Expense
      * @param factor Factor by which share is being taken
      */
-    public Profiteer(Integer expenseId, Person person, Integer factor) {
+    public Profiteer(Integer expenseId, Person person, Integer share) {
         this.expenseId = expenseId;
         this.person = person;
-        this.share = factor;
+        this.share = share;
     }
     
     /**
@@ -47,11 +47,11 @@ public class Profiteer {
      * @param updateTime {@link LocalDateTime} marking the last update of the Share
      * @param createTime {@link LocalDateTime} marking the creation of the Share
      */
-    public Profiteer(Integer expenseId, Person person, Integer factor, LocalDateTime updateTime,
+    public Profiteer(Integer expenseId, Person person, Integer share, LocalDateTime updateTime,
             LocalDateTime createTime) {
         this.expenseId = expenseId;
         this.person = person;
-        this.share = factor;
+        this.share = share;
         this.updateTime = updateTime;
         this.createTime = createTime;
     }

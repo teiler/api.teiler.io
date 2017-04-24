@@ -84,6 +84,7 @@ public class ExpenseService {
     public Expense getExpense(String groupId, int expenseId) {
         groupUtil.checkIdExists(groupId);
         expenseUtil.checkExpenseExists(expenseId);
+        expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
         
         ExpenseEntity expense = expenseRepository.getByGroupIdAndExpenseId(groupId, expenseId);
         return expense.toExpense();
