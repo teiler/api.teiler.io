@@ -8,8 +8,8 @@ import com.google.gson.annotations.SerializedName;
  * @author pbaechli
  */
 public enum TransactionType {
-    @SerializedName("expense")
-    expense,
+    @SerializedName("EXPENSE")
+    EXPENSE,
     @SerializedName("compensation")
     COMPENSATION,
 }
