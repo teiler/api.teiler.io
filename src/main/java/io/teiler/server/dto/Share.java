@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * TODO Think about this class' name for some time.
  * <br> 
  * Represents the share a Person takes in an Expense.
  * 

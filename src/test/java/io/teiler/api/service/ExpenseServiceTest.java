@@ -33,7 +33,7 @@ public class ExpenseServiceTest {
     private static final Person TEST_PROFITEER_1 = TEST_PAYER;
     private static final Person TEST_PROFITEER_2 = new Person(-2, "Paul");
     private static final Person TEST_PROFITEER_3 = new Person(-3, "Peter");
-    private static List<Share> TEST_SHARES = Collections.emptyList();
+    private static List<Share> testShares = Collections.emptyList();
 
     @Autowired
     private ExpenseService expenseService;
@@ -53,9 +53,10 @@ public class ExpenseServiceTest {
         TEST_PROFITEER_3.setId(personService.createPerson(testGroup.getId(), TEST_PROFITEER_3.getName()).getId());
         
         // We have to set the shares here in order to have the correct Person-Ids in the Profiteers.
-        TEST_SHARES = getTestShares();
+        testShares = getTestShares();
         
-        Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, TEST_PAYER, TEST_EXPENSE_TITLE, TEST_SHARES);
+        Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, TEST_PAYER, TEST_EXPENSE_TITLE,
+            testShares);
         Expense expense = expenseService.createExpense(testExpense, testGroup.getId());
 
         Assert.assertEquals(TEST_EXPENSE_TITLE, expense.getTitle());
@@ -63,7 +64,7 @@ public class ExpenseServiceTest {
         Assert.assertEquals(TEST_PAYER.getId(), expense.getPayer().getId());
         
         Assert.assertFalse(expense.getShares().isEmpty());
-        Assert.assertEquals(TEST_SHARES.size(), expense.getShares().size());
+        Assert.assertEquals(testShares.size(), expense.getShares().size());
     }
 
     private static List<Share> getTestShares() {
