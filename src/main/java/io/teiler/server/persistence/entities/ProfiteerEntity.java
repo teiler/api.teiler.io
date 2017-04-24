@@ -42,7 +42,7 @@ public class ProfiteerEntity {
     private PersonEntity person;
     
     @Column(name = "transaction")
-    private Integer expenseId;
+    private Integer transactionId;
     
     @NotNull
     @Column(name = "share")
@@ -61,7 +61,7 @@ public class ProfiteerEntity {
     public ProfiteerEntity(Share share) {
         this.person = new PersonEntity(share.getProfiteer());
         this.share = share.getShare();
-        this.expenseId = share.getExpenseId();
+        this.transactionId = share.getExpenseId();
         this.updateTime = TimeUtil.convertToTimestamp(share.getUpdateTime());
         this.createTime = TimeUtil.convertToTimestamp(share.getCreateTime());
     }
@@ -87,7 +87,7 @@ public class ProfiteerEntity {
      */
     public Share toShare() {
         return new Share(
-            expenseId,
+            transactionId,
             person.toPerson(),
             share,
             TimeUtil.convertToLocalDateTime(getUpdateTime()),
@@ -110,12 +110,12 @@ public class ProfiteerEntity {
         this.person = person;
     }
 
-    public Integer getExpenseId() {
-        return expenseId;
+    public Integer getTransactionId() {
+        return transactionId;
     }
 
-    public void setExpenseId(Integer expenseId) {
-        this.expenseId = expenseId;
+    public void setTransactionId(Integer transactionId) {
+        this.transactionId = transactionId;
     }
 
     public Integer getShare() {

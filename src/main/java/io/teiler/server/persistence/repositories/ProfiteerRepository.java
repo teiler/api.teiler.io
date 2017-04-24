@@ -50,7 +50,7 @@ public class ProfiteerRepository {
     
     /**
      * Returns the {@link ProfiteerEntity} with the given Person- and Expense-Id.
-     * <i>Note:</i> The Profiteer has to exist within the given GrouExpensep.
+     * <i>Note:</i> The Profiteer has to exist within the given Group.
      * 
      * @param expenseId Id of the Expense
      * @param profiteerPersonId Id of the Profiteer-Person
@@ -59,7 +59,7 @@ public class ProfiteerRepository {
     public ProfiteerEntity getByExpenseIdAndProfiteerPersonId(int expenseId, int profiteerPersonId) {
         return new JPAQuery<ProfiteerEntity>(entityManager).from(QProfiteerEntity.profiteerEntity)
             .where(QProfiteerEntity.profiteerEntity.person.id.eq(profiteerPersonId))
-            .where(QProfiteerEntity.profiteerEntity.expenseId.eq(expenseId))
+            .where(QProfiteerEntity.profiteerEntity.transactionId.eq(expenseId))
             .fetchOne();
     }
     
@@ -87,8 +87,8 @@ public class ProfiteerRepository {
     @Transactional
     public void deleteProfiteerByExpenseIdAndProfiteerPersonId(int expenseId, int profiteerPersonId) {
         entityManager
-            .createQuery("DELETE FROM ProfiteerEntity p WHERE p.expenseId = :expenseId AND p.person.id = :profiteerPersonId")
-            .setParameter("expenseId", expenseId)
+            .createQuery("DELETE FROM ProfiteerEntity p WHERE p.transactionId = :transactionId AND p.person.id = :profiteerPersonId")
+            .setParameter("transactionId", expenseId)
             .setParameter("profiteerPersonId", profiteerPersonId)
             .executeUpdate();
     }
