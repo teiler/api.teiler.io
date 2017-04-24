@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.teiler.server.dto.Share;
+import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
@@ -64,11 +64,11 @@ public class ExpenseUtil {
      * Checks whether the given shares add up to the expected amount.
      * 
      * @param expectedTotalAmount Expected amount of the summed up shares
-     * @param shares {@link List} of {@link Share}
+     * @param shares {@link List} of {@link Profiteer}
      * @throws SharesNotAddingUpException Shares do not add up
      */
-    public void checkSharesAddUp(Integer expectedTotalAmount, List<Share> shares) throws SharesNotAddingUpException {
-        Integer total = shares.stream().map(Share::getShare).mapToInt(Integer::intValue).sum();
+    public void checkSharesAddUp(Integer expectedTotalAmount, List<Profiteer> shares) throws SharesNotAddingUpException {
+        Integer total = shares.stream().map(Profiteer::getShare).mapToInt(Integer::intValue).sum();
         if (total.compareTo(expectedTotalAmount) != 0) {
             throw new SharesNotAddingUpException();
         }

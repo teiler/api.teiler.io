@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.teiler.server.dto.Expense;
-import io.teiler.server.dto.Share;
+import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.entities.ExpenseEntity;
 import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
@@ -41,7 +41,7 @@ public class ExpenseService {
     
     /**
      * Creates a new Expense.
-     * @param expense {@link List} of {@link Share} related to the Expense
+     * @param expense {@link List} of {@link Profiteer} related to the Expense
      * 
      * @return Information about the Expense
      */
@@ -56,9 +56,9 @@ public class ExpenseService {
         expenseUtil.checkSharesAddUp(expense.getAmount(), expense.getShares());
 
         // Before we create anything, let's check all the profiteers
-        for(Share share : expense.getShares()) {
+        for(Profiteer share : expense.getShares()) {
             try {
-                personUtil.checkPersonBelongsToThisGroup(groupId, share.getProfiteer().getId());
+                personUtil.checkPersonBelongsToThisGroup(groupId, share.getPerson().getId());
             } catch (PersonNotFoundException e) {
                 throw new ProfiteerNotFoundException();
             }
@@ -66,7 +66,7 @@ public class ExpenseService {
 
         ExpenseEntity expenseEntity = expenseRepository.create(expense);
         
-        for(Share share : expense.getShares()) {
+        for(Profiteer share : expense.getShares()) {
             share.setExpenseId(expenseEntity.getId());
             profiteerRepository.create(share);
         }
@@ -126,9 +126,9 @@ public class ExpenseService {
         expenseUtil.checkSharesAddUp(changedExpense.getAmount(), changedExpense.getShares());
 
         // Before we create anything, let's check all the profiteers
-        for (Share share : changedExpense.getShares()) {
+        for (Profiteer share : changedExpense.getShares()) {
             try {
-                personUtil.checkPersonBelongsToThisGroup(groupId, share.getProfiteer().getId());
+                personUtil.checkPersonBelongsToThisGroup(groupId, share.getPerson().getId());
             } catch (PersonNotFoundException e) {
                 throw new ProfiteerNotFoundException();
             }
@@ -144,16 +144,16 @@ public class ExpenseService {
         
         List<Integer> removedProfiteerPersonIds = expenseEntity.getProfiteers().stream().map(p -> p.getPerson().getId()).collect(Collectors.toList());
         
-        for (Share changedShare : changedExpense.getShares()) {
+        for (Profiteer changedShare : changedExpense.getShares()) {
             try {
-                expenseUtil.checkProfiteerExistsInThisExpense(expenseEntity.getId(), changedShare.getProfiteer().getId());
+                expenseUtil.checkProfiteerExistsInThisExpense(expenseEntity.getId(), changedShare.getPerson().getId());
                 
                 // does exist and was not removed => update the existing one
-                ProfiteerEntity profiteerEntity = profiteerRepository.getByExpenseIdAndProfiteerPersonId(expenseEntity.getId(), changedShare.getProfiteer().getId());
+                ProfiteerEntity profiteerEntity = profiteerRepository.getByExpenseIdAndProfiteerPersonId(expenseEntity.getId(), changedShare.getPerson().getId());
                 profiteerRepository.editProfiteer(profiteerEntity.getId(), changedShare);
                 
                 // remove this profiteer from the list of removed profiteers as it has not been removed
-                removedProfiteerPersonIds.remove(changedShare.getProfiteer().getId());
+                removedProfiteerPersonIds.remove(changedShare.getPerson().getId());
             }
             catch (ProfiteerNotFoundException e) {
                 // does not yet exist => create a new one

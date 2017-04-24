@@ -16,7 +16,7 @@ import io.teiler.server.Tylr;
 import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
-import io.teiler.server.dto.Share;
+import io.teiler.server.dto.Profiteer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -51,7 +51,7 @@ public class ExpenseServiceTest {
         TEST_PROFITEER_3.setId(personService.createPerson(testGroup.getId(), TEST_PROFITEER_3.getName()).getId());
         
         // We have to set the shares here in order to have the correct Person-Ids in the Profiteers.
-        List<Share> testShares = getTestShares();
+        List<Profiteer> testShares = getTestShares();
         
         Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, TEST_PAYER, TEST_EXPENSE_TITLE,
             testShares);
@@ -65,11 +65,11 @@ public class ExpenseServiceTest {
         Assert.assertEquals(testShares.size(), expense.getShares().size());
     }
 
-    private List<Share> getTestShares() {
-        List<Share> shares = new ArrayList<>(3);
-        shares.add(new Share(null, TEST_PROFITEER_1, 1200));
-        shares.add(new Share(null, TEST_PROFITEER_2, 1500));
-        shares.add(new Share(null, TEST_PROFITEER_3, 1500));
+    private List<Profiteer> getTestShares() {
+        List<Profiteer> shares = new ArrayList<>(3);
+        shares.add(new Profiteer(null, TEST_PROFITEER_1, 1200));
+        shares.add(new Profiteer(null, TEST_PROFITEER_2, 1500));
+        shares.add(new Profiteer(null, TEST_PROFITEER_3, 1500));
         return shares;
     }
 
