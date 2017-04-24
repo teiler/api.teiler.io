@@ -174,7 +174,7 @@ public class ExpenseServiceTest {
 
         Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
 
-        Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
+        expenseService.createExpense(testExpense, testGroup.getId());
 
         Group differentGroup = groupService.createGroup(TEST_GROUP_NAME);
         Person differentPerson = personService.createPerson(differentGroup.getId(), TEST_PAYER_AND_PROFITEER);
