@@ -51,9 +51,8 @@ public class ExpenseRepository {
     }
 
     /**
-     * Returns an {@link ExpenseEntity} with the given Id and Group-Id.
+     * Returns an {@link ExpenseEntity} with the given Id and Group-Id.<br>
      * <i>Note:</i> The Group of the Payer of the Expense has to to match the given Group.
-     * 
      * 
      * @param groupId Id of the Group of the Payer
      * @param expenseId Id of the Expense
@@ -67,19 +66,20 @@ public class ExpenseRepository {
     }
 
     /**
-     * Returns a {@link List} of {@link ExpenseEntity} in the Group with the given Id.
+     * Returns a {@link List} of {@link ExpenseEntity} in the Group with the given Id
+     * ordered by <code>update-time</code> descending.<br>
      * <i>Note:</i> The Expense has to exist within the given Group.
      * 
      * @param groupId Id of the Group
      * @param limit Maximum amount of Expenses to fetch
      * @return {@link List} of {@link ExpenseEntity}
      */
-    public List<ExpenseEntity> getExpensesByGroupId(String groupId, long limit) {
+    public List<ExpenseEntity> getExpensesByGroupIdAndOrderedByUpdateTimeDesc(String groupId, long limit) {
         return new JPAQuery<ExpenseEntity>(entityManager).from(QExpenseEntity.expenseEntity)
             .where(QExpenseEntity.expenseEntity.payer.groupId.eq(groupId))
             .where(QExpenseEntity.expenseEntity.profiteers.any().person.groupId.eq(groupId))
+            .orderBy(QExpenseEntity.expenseEntity.updateTime.desc())
             .limit(limit)
-            .orderBy(QExpenseEntity.expenseEntity.id.asc())
             .fetch();
     }
 
