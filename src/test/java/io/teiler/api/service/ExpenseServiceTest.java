@@ -67,7 +67,7 @@ public class ExpenseServiceTest {
         Assert.assertEquals(testShares.size(), expense.getShares().size());
     }
 
-    private static List<Share> getTestShares() {
+    private List<Share> getTestShares() {
         List<Share> shares = new ArrayList<>(3);
         shares.add(new Share(null, TEST_PROFITEER_1, 0.3));
         shares.add(new Share(null, TEST_PROFITEER_2, 0.3));
