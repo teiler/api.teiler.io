@@ -17,7 +17,7 @@ public class Share {
     @SerializedName("profiteer")
     private Person profiteer;
     
-    @SerializedName("factor")
+    @SerializedName("share")
     private Integer share;
 
     @SerializedName("update-time")
@@ -61,8 +61,8 @@ public class Share {
         return expenseId;
     }
 
-    public void setExpenseId(Integer expenseId) {
-        this.expenseId = expenseId;
+    public void setExpenseId(Integer transactionId) {
+        this.expenseId = transactionId;
     }
 
     public Person getProfiteer() {
