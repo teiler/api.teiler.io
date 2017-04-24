@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
  * @author pbaechli
  */
 @Entity
-@DiscriminatorValue("expense")
+@DiscriminatorValue("EXPENSE")
 public class ExpenseEntity extends TransactionEntity {
 
     @NotNull
@@ -36,7 +36,7 @@ public class ExpenseEntity extends TransactionEntity {
         super.setPayer(new PersonEntity(expense.getPayer()));
         super.setUpdateTime(TimeUtil.convertToTimestamp(expense.getUpdateTime()));
         super.setCreateTime(TimeUtil.convertToTimestamp(expense.getCreateTime()));
-        super.setTransactionType(TransactionType.expense);
+        super.setTransactionType(TransactionType.EXPENSE);
 
         this.title = expense.getTitle();
     }
