@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * 
  * @author pbaechli
  */
-public class Share implements Serializable {
+public class Share {
 
     private transient Integer expenseId;
 
