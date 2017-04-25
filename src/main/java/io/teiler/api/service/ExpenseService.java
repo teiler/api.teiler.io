@@ -139,7 +139,7 @@ public class ExpenseService {
         expenseRepository.editExpense(expenseId, changedExpense);
         ExpenseEntity expenseEntity = expenseRepository.getById(expenseId);
         
-        // -----------------------------------
+        // -------------- TODO ---------------
         //  The following section ought to be
         //             cleaned up.
         // -----------------------------------
