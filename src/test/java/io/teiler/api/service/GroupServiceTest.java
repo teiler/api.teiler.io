@@ -3,6 +3,7 @@ package io.teiler.api.service;
 import io.teiler.server.Tylr;
 import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
+import io.teiler.server.util.exceptions.CurrencyNotValidException;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.groupid.RandomGenerator;
 import java.lang.reflect.Field;
@@ -81,6 +82,15 @@ public class GroupServiceTest {
         groupService.editGroup(groupId, changedGroup);
         Group newGroup = groupService.viewGroup(groupId);
         Assert.assertEquals("Neu", newGroup.getName());
+    }
+
+    @Test(expected = CurrencyNotValidException.class)
+    public void testInvalidCurrencyIsDetected() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        // We have to use null since we can't really fake an invalid enum value
+        Group changedGroup = new Group(null, TEST_GROUP_NAME, null);
+        groupService.editGroup(groupId, changedGroup);
     }
 
     @Test
