@@ -27,7 +27,7 @@ public class GlobalEndpointController implements EndpointController {
 
     @Override
     public void register() {
-        before((req, res) -> LOGGER.debug("API call to '" + req.pathInfo() + "'"));
+        before((req, res) -> LOGGER.debug("API call [" + req.requestMethod() + "] to '" + req.pathInfo() + "'"));
         before((req, res) -> res.type("application/json"));
 
         exception(NotAuthorizedException.class, (e, request, response) -> {
