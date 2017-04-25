@@ -23,7 +23,7 @@ public class CompensationEntity extends TransactionEntity {
         super.setPayer(new PersonEntity(compensation.getPayer()));
         super.setUpdateTime(TimeUtil.convertToTimestamp(compensation.getUpdateTime()));
         super.setCreateTime(TimeUtil.convertToTimestamp(compensation.getCreateTime()));
-        super.setTransactionType(TransactionType.EXPENSE);
+        super.setTransactionType(TransactionType.COMPENSATION);
     }
 
     /**
