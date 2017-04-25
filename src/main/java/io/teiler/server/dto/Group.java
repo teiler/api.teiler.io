@@ -109,4 +109,11 @@ public class Group {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "Group [id=" + id + ", name=" + name + ", currency=" + currency + ", people="
+                + people + ", updateTime=" + updateTime + ", createTime=" + createTime + "]";
+    }
+    
 }
