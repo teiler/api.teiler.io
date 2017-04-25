@@ -3,8 +3,6 @@ var chakram = require('chakram'),
 
 var hostUrl = process.env.tylrurl;
 
-// var hostUrl = "https://api.teiler.io/";
-// var hostUrl = "http://localhost:4567/";
 var version = "v1/";
 var baseUrl = hostUrl + version;
 
