@@ -40,7 +40,7 @@ public class ExpenseEntity extends TransactionEntity {
         return new Expense(getId(), getAmount(), getPayer().toPerson(),
                 TimeUtil.convertToLocalDateTime(getUpdateTime()),
                 TimeUtil.convertToLocalDateTime(getCreateTime()), title,
-            getProfiteers().stream().map(ProfiteerEntity::toShare).collect(Collectors.toList()));
+            getProfiteers().stream().map(ProfiteerEntity::toProfiteer).collect(Collectors.toList()));
     }
 
     public String getTitle() {

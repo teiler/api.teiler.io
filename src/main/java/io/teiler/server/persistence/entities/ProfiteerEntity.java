@@ -85,7 +85,7 @@ public class ProfiteerEntity {
      * 
      * @return {@link Profiteer}
      */
-    public Profiteer toShare() {
+    public Profiteer toProfiteer() {
         return new Profiteer(
             transactionId,
             person.toPerson(),
