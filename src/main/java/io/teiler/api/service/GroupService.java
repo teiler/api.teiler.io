@@ -61,6 +61,7 @@ public class GroupService {
 
     public Group editGroup(String groupId, Group changedGroup) {
         groupUtil.checkIdExists(groupId);
+        groupUtil.checkCurrencyIsValid(changedGroup);
         return groupRepository.editGroup(groupId, changedGroup).toGroup();
     }
 
