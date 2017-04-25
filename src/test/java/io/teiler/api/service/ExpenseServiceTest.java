@@ -1,5 +1,17 @@
 package io.teiler.api.service;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import io.teiler.server.Tylr;
 import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Group;
@@ -9,16 +21,6 @@ import io.teiler.server.util.exceptions.PayerNotFoundException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
-import java.util.LinkedList;
-import java.util.List;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -298,7 +300,6 @@ public class ExpenseServiceTest {
         Assert.assertEquals(TEST_EXPENSE_TITLE + " zwei", expenses.get(0).getTitle());
     }
 
-    /* TODO @Patrick
     @Test(expected = TransactionNotFoundException.class)
     public void testDeleteExpense() {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
@@ -315,6 +316,5 @@ public class ExpenseServiceTest {
 
         expenseService.getExpense(testGroup.getId(), testExpenseResponse.getId());
     }
-    */
 
 }
