@@ -60,12 +60,12 @@ public class Expense extends Transaction {
         this.title = title;
     }
 
-    public List<Profiteer> getShares() {
+    public List<Profiteer> getProfiteers() {
         return profiteers;
     }
 
-    public void setShares(List<Profiteer> shares) {
-        this.profiteers = shares;
+    public void setProfiteers(List<Profiteer> profiteers) {
+        this.profiteers = profiteers;
     }
 
     @Override

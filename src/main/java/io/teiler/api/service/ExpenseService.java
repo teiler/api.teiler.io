@@ -53,10 +53,10 @@ public class ExpenseService {
             // Throw more focused message
             throw new PayerNotFoundException();
         }
-        expenseUtil.checkSharesAddUp(expense.getAmount(), expense.getShares());
+        expenseUtil.checkSharesAddUp(expense.getAmount(), expense.getProfiteers());
 
         // Before we create anything, let's check all the profiteers
-        for(Profiteer share : expense.getShares()) {
+        for(Profiteer share : expense.getProfiteers()) {
             try {
                 personUtil.checkPersonBelongsToThisGroup(groupId, share.getPerson().getId());
             } catch (PersonNotFoundException e) {
@@ -66,7 +66,7 @@ public class ExpenseService {
 
         ExpenseEntity expenseEntity = expenseRepository.create(expense);
         
-        for(Profiteer share : expense.getShares()) {
+        for(Profiteer share : expense.getProfiteers()) {
             share.setExpenseId(expenseEntity.getId());
             profiteerRepository.create(share);
         }
@@ -125,10 +125,10 @@ public class ExpenseService {
             // Throw more focused message
             throw new PayerNotFoundException();
         }
-        expenseUtil.checkSharesAddUp(changedExpense.getAmount(), changedExpense.getShares());
+        expenseUtil.checkSharesAddUp(changedExpense.getAmount(), changedExpense.getProfiteers());
 
         // Before we create anything, let's check all the profiteers
-        for (Profiteer share : changedExpense.getShares()) {
+        for (Profiteer share : changedExpense.getProfiteers()) {
             try {
                 personUtil.checkPersonBelongsToThisGroup(groupId, share.getPerson().getId());
             } catch (PersonNotFoundException e) {
@@ -146,7 +146,7 @@ public class ExpenseService {
         
         List<Integer> removedProfiteerPersonIds = expenseEntity.getProfiteers().stream().map(p -> p.getPerson().getId()).collect(Collectors.toList());
         
-        for (Profiteer changedShare : changedExpense.getShares()) {
+        for (Profiteer changedShare : changedExpense.getProfiteers()) {
             try {
                 expenseUtil.checkProfiteerExistsInThisExpense(expenseEntity.getId(), changedShare.getPerson().getId());
                 
