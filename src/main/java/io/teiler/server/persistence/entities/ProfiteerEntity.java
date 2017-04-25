@@ -127,19 +127,19 @@ public class ProfiteerEntity {
     }
 
     public Timestamp getUpdateTime() {
-        return updateTime;
+        return new Timestamp(updateTime.getTime());
     }
 
     public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = updateTime;
+        this.updateTime = updateTime != null ? new Timestamp(updateTime.getTime()) : null;
     }
 
     public Timestamp getCreateTime() {
-        return createTime;
+        return new Timestamp(createTime.getTime());
     }
 
     public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
+        this.createTime = updateTime != null ? new Timestamp(createTime.getTime()) : null;
     }
     
 }
