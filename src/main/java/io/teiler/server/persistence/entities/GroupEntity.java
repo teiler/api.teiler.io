@@ -153,19 +153,19 @@ public class GroupEntity {
     }
 
     public Timestamp getCreateTime() {
-        return createTime;
+        return new Timestamp(createTime.getTime());
     }
 
     public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
+        this.createTime = new Timestamp(createTime.getTime());
     }
 
     public Timestamp getUpdateTime() {
-        return updateTime;
+        return new Timestamp(updateTime.getTime());
     }
 
     public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = updateTime;
+        this.updateTime = new Timestamp(updateTime.getTime());
     }
     
 }
