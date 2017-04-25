@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.teiler.server.persistence.repositories.CompensationRepository;
+import io.teiler.server.persistence.repositories.ProfiteerRepository;
+import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
 @Service
@@ -11,6 +13,9 @@ public class CompensationUtil {
     
     @Autowired
     private CompensationRepository compensationRepository;
+    
+    @Autowired
+    private ProfiteerRepository profiteerRepository;
     
     public CompensationUtil() { /* intentionally empty */ }
 
@@ -36,6 +41,19 @@ public class CompensationUtil {
     public void checkCompensationExists(int compensationId) throws TransactionNotFoundException {
         if (compensationRepository.getById(compensationId) == null) {
             throw new TransactionNotFoundException();
+        }
+    }
+    
+    /**
+     * Checks whether a Profiteer-Person exists within an Compensation.
+     * 
+     * @param compensationId Id of the Compensation
+     * @param profiteerPersonId Id of the Profiteer-Person
+     * @throws ProfiteerNotFoundException Profiteer does not exist
+     */
+    public void checkProfiteerExistsInThisCompensation(int compensationId, int profiteerPersonId) throws ProfiteerNotFoundException {
+        if (profiteerRepository.getByTransactionIdAndProfiteerPersonId(compensationId, profiteerPersonId) == null) {
+            throw new ProfiteerNotFoundException();
         }
     }
     
