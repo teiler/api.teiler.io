@@ -14,6 +14,6 @@ ssh tylr@api.teiler.io << EOF
  sudo /etc/init.d/tylr-api start
 EOF
 
-npm install --dev
+npm install
 npm install -g mocha
 mocha src/test/chakram
