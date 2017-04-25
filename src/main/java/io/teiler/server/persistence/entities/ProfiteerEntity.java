@@ -61,7 +61,7 @@ public class ProfiteerEntity {
     public ProfiteerEntity(Profiteer share) {
         this.person = new PersonEntity(share.getPerson());
         this.share = share.getShare();
-        this.transactionId = share.getExpenseId();
+        this.transactionId = share.getTransactionId();
         this.updateTime = TimeUtil.convertToTimestamp(share.getUpdateTime());
         this.createTime = TimeUtil.convertToTimestamp(share.getCreateTime());
     }

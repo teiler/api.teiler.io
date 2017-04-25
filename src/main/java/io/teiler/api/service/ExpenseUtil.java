@@ -55,7 +55,7 @@ public class ExpenseUtil {
      * @throws ProfiteerNotFoundException Profiteer does not exist
      */
     public void checkProfiteerExistsInThisExpense(int expenseId, int profiteerPersonId) throws ProfiteerNotFoundException {
-        if (profiteerRepository.getByExpenseIdAndProfiteerPersonId(expenseId, profiteerPersonId) == null) {
+        if (profiteerRepository.getByTransactionIdAndProfiteerPersonId(expenseId, profiteerPersonId) == null) {
             throw new ProfiteerNotFoundException();
         }
     }
