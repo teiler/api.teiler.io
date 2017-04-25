@@ -143,10 +143,41 @@ public class CompensationService {
             throw new ProfiteerNotFoundException();
         }
 
-        CompensationEntity compensationEntity = compensationRepository.editCompensation(compensationId, changedCompensation);
-
-        ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(compensationEntity.getId(), changedProfiteer.getPerson().getId());
-        profiteerRepository.editProfiteer(profiteerEntity.getId(), changedProfiteer);
+        compensationRepository.editCompensation(compensationId, changedCompensation);
+        CompensationEntity compensationEntity = compensationRepository.getById(compensationId);
+        
+        // -------------- TODO ---------------
+        //  The following section ought to be
+        //             cleaned up.
+        // -----------------------------------
+        
+        try {
+            // first we check if the profiteer changed by looking him up in the group
+            compensationUtil.checkProfiteerExistsInThisCompensation(compensationEntity.getId(), changedProfiteer.getPerson().getId());
+            
+            if (compensationEntity.getProfiteers().get(0).getPerson().getId().compareTo(changedProfiteer.getPerson().getId()) == 0) {
+                // does exist and was not changed => update
+                ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(compensationEntity.getId(), changedProfiteer.getPerson().getId());
+                profiteerRepository.editProfiteer(profiteerEntity.getId(), changedProfiteer);
+            }
+            else {
+                // Throwing an exception for the catch-block four lines below. Weeeeee!
+                throw new ProfiteerNotFoundException();
+            }
+        }
+        catch (ProfiteerNotFoundException e) {
+            // does not yet exist => delete the existing one and create a new one
+            
+            // TODO We'd rather not work with zero-index, but I'm too tired to think of anything better
+            profiteerRepository.deleteProfiteerByTransactionIdAndProfiteerPersonId(compensationEntity.getId(), compensationEntity.getProfiteers().get(0).getPerson().getId());
+            
+            changedProfiteer.setTransactionId(compensationEntity.getId());
+            profiteerRepository.create(changedProfiteer);
+        }
+        
+        // -----------------------------------
+        //       End of cleanup-section.
+        // -----------------------------------
 
         return compensationRepository.getById(compensationEntity.getId()).toCompensation();
     }
