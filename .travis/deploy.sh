@@ -13,3 +13,7 @@ ssh tylr@api.teiler.io << EOF
  tar -xvf /home/tylr/tylr-api.tar -C /srv/http/tylr-api/  --overwrite --strip-components=1
  sudo /etc/init.d/tylr-api start
 EOF
+
+npm install --dev
+npm install -g mocha
+mocha src/test/chakram
