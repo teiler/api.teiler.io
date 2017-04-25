@@ -49,17 +49,17 @@ public class ProfiteerRepository {
     }
     
     /**
-     * Returns the {@link ProfiteerEntity} with the given Person- and Expense-Id.
+     * Returns the {@link ProfiteerEntity} with the given Person- and Transaction-Id.
      * <i>Note:</i> The Profiteer has to exist within the given Group.
      * 
-     * @param expenseId Id of the Expense
+     * @param transactionId Id of the Transaction
      * @param profiteerPersonId Id of the Profiteer-Person
      * @return {@link ProfiteerEntity}
      */
-    public ProfiteerEntity getByExpenseIdAndProfiteerPersonId(int expenseId, int profiteerPersonId) {
+    public ProfiteerEntity getByTransactionIdAndProfiteerPersonId(int transactionId, int profiteerPersonId) {
         return new JPAQuery<ProfiteerEntity>(entityManager).from(QProfiteerEntity.profiteerEntity)
             .where(QProfiteerEntity.profiteerEntity.person.id.eq(profiteerPersonId))
-            .where(QProfiteerEntity.profiteerEntity.transactionId.eq(expenseId))
+            .where(QProfiteerEntity.profiteerEntity.transactionId.eq(transactionId))
             .fetchOne();
     }
     
@@ -67,13 +67,13 @@ public class ProfiteerRepository {
      * Updates a already persisted {@link ProfiteerEntity} with the given values.
      * 
      * @param profiteerId Id of the Profiteer
-     * @param changedShare {@link Profiteer} containing the new values
+     * @param changedProfiteer {@link Profiteer} containing the new values
      * @return {@link ProfiteerEntity} containing the new values
      */
     @Transactional
-    public ProfiteerEntity editProfiteer(int profiteerId, Profiteer changedShare) {
+    public ProfiteerEntity editProfiteer(int profiteerId, Profiteer changedProfiteer) {
         ProfiteerEntity profiteer = getById(profiteerId);
-        profiteer.setShare(changedShare.getShare());
+        profiteer.setShare(changedProfiteer.getShare());
         entityManager.persist(profiteer);
         return profiteer;
     }
@@ -81,14 +81,14 @@ public class ProfiteerRepository {
     /**
      * Deletes the {@link ProfiteerEntity} with the given Id.
      * 
-     * @param expenseId Id of the Expense
+     * @param transactionId Id of the Transaction
      * @param profiteerId Id of the Profiteer-Person
      */
     @Transactional
-    public void deleteProfiteerByExpenseIdAndProfiteerPersonId(int expenseId, int profiteerPersonId) {
+    public void deleteProfiteerByTransactionIdAndProfiteerPersonId(int transactionId, int profiteerPersonId) {
         entityManager
             .createQuery("DELETE FROM ProfiteerEntity p WHERE p.transactionId = :transactionId AND p.person.id = :profiteerPersonId")
-            .setParameter("transactionId", expenseId)
+            .setParameter("transactionId", transactionId)
             .setParameter("profiteerPersonId", profiteerPersonId)
             .executeUpdate();
     }

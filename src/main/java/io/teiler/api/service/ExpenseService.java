@@ -67,7 +67,7 @@ public class ExpenseService {
         ExpenseEntity expenseEntity = expenseRepository.create(expense);
         
         for(Profiteer share : expense.getProfiteers()) {
-            share.setExpenseId(expenseEntity.getId());
+            share.setTransactionId(expenseEntity.getId());
             profiteerRepository.create(share);
         }
         
@@ -151,7 +151,7 @@ public class ExpenseService {
                 expenseUtil.checkProfiteerExistsInThisExpense(expenseEntity.getId(), changedShare.getPerson().getId());
                 
                 // does exist and was not removed => update the existing one
-                ProfiteerEntity profiteerEntity = profiteerRepository.getByExpenseIdAndProfiteerPersonId(expenseEntity.getId(), changedShare.getPerson().getId());
+                ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(expenseEntity.getId(), changedShare.getPerson().getId());
                 profiteerRepository.editProfiteer(profiteerEntity.getId(), changedShare);
                 
                 // remove this profiteer from the list of removed profiteers as it has not been removed
@@ -159,7 +159,7 @@ public class ExpenseService {
             }
             catch (ProfiteerNotFoundException e) {
                 // does not yet exist => create a new one
-                changedShare.setExpenseId(expenseEntity.getId());
+                changedShare.setTransactionId(expenseEntity.getId());
                 profiteerRepository.create(changedShare);
             }
         }
@@ -167,7 +167,7 @@ public class ExpenseService {
         // remove all the remaining profiteers as they were not included in the input and thus shall be removed
         removedProfiteerPersonIds.forEach(removedProfiteerPersonId ->
             profiteerRepository
-                .deleteProfiteerByExpenseIdAndProfiteerPersonId(expenseEntity.getId(),
+                .deleteProfiteerByTransactionIdAndProfiteerPersonId(expenseEntity.getId(),
                     removedProfiteerPersonId)
         );
         

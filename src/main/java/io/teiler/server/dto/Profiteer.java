@@ -5,13 +5,13 @@ import java.time.LocalDateTime;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Represents the share a Person takes in an Expense.
+ * Represents the share a Person takes in a Transaction.
  * 
  * @author pbaechli
  */
 public class Profiteer {
 
-    private transient Integer expenseId;
+    private transient Integer transactionId;
 
     @SerializedName("person")
     private Person person;
@@ -28,12 +28,12 @@ public class Profiteer {
     /**
      * Usual constructor.
      * 
-     * @param expenseId Id of the Expense in which share is being taken
-     * @param person Person taking share in the Expense
-     * @param factor Factor by which share is being taken
+     * @param transactionId Id of the Transaction in which share is being taken
+     * @param person Person taking share in the Transaction
+     * @param share Amount of money by which share is being taken
      */
-    public Profiteer(Integer expenseId, Person person, Integer share) {
-        this.expenseId = expenseId;
+    public Profiteer(Integer transactionId, Person person, Integer share) {
+        this.transactionId = transactionId;
         this.person = person;
         this.share = share;
     }
@@ -41,27 +41,27 @@ public class Profiteer {
     /**
      * Constructor with all fields (useful for converting).
      * 
-     * @param expense Id of the Expense in which share is being taken
-     * @param person Person taking share in the Expense
-     * @param factor Factor by which share is being taken
+     * @param transactionId Id of the Transaction in which share is being taken
+     * @param person Person taking share in the Transaction
+     * @param share Amount of money by which share is being taken
      * @param updateTime {@link LocalDateTime} marking the last update of the Share
      * @param createTime {@link LocalDateTime} marking the creation of the Share
      */
-    public Profiteer(Integer expenseId, Person person, Integer share, LocalDateTime updateTime,
+    public Profiteer(Integer transactionId, Person person, Integer share, LocalDateTime updateTime,
             LocalDateTime createTime) {
-        this.expenseId = expenseId;
+        this.transactionId = transactionId;
         this.person = person;
         this.share = share;
         this.updateTime = updateTime;
         this.createTime = createTime;
     }
 
-    public Integer getExpenseId() {
-        return expenseId;
+    public Integer getTransactionId() {
+        return transactionId;
     }
 
-    public void setExpenseId(Integer transactionId) {
-        this.expenseId = transactionId;
+    public void setTransactionId(Integer transactionId) {
+        this.transactionId = transactionId;
     }
 
     public Person getPerson() {
@@ -99,7 +99,7 @@ public class Profiteer {
     @Override
     public String toString() {
         return "Profiteer [person=" + person + ", share=" + share + ", updateTime=" + updateTime
-                + ", createTime=" + createTime + ", expenseId(transient)=" + expenseId + "]";
+                + ", createTime=" + createTime + ", transactionId(transient)=" + transactionId + "]";
     }
     
 }
