@@ -29,18 +29,18 @@ CREATE TABLE "person" (
 CREATE TABLE "transaction" (
   "id"  SERIAL,
   "title" VARCHAR(50) NOT NULL,
-  "amount" INTEGER NOT NULL,
-  "type" TRANSACTIONTYPE NOT NULL,
-  "payer" INTEGER NOT NULL REFERENCES "person" ON DELETE CASCADE,
+  "type" VARCHAR(50) NOT NULL,
+  "payer" INTEGER REFERENCES "person" ON DELETE CASCADE,
   "create_time" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
   "update_time" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "profiteer" (
+  "id"  SERIAL,
   "person" INTEGER REFERENCES "person" ON DELETE CASCADE,
-  "transaction" INTEGER REFERENCES "transaction",
-  "factor" DECIMAL(5) NOT NULL,
+  "transaction" INTEGER REFERENCES "transaction" ON DELETE CASCADE,
+  "share" INTEGER,
   "create_time" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
   "update_time" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() AT TIME ZONE 'utc'),
   PRIMARY KEY ("person", "transaction")
