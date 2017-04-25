@@ -46,6 +46,7 @@ describe("Create a group", function () {
 
 describe("Get a group", function () {
   var groupId;
+  var updateRef;
   before("create group", function () {
     var group = {
       name: "Hello World"
@@ -72,11 +73,14 @@ describe("Get a group", function () {
     expect(response).to.have.json("update-time", function (updateTime) {
       var check = Date.parse(updateTime);
       expect(check).not.to.be.NaN;
+      updateRef = updateTime;
     });
     expect(response).to.have.json("create-time", function (createTime) {
       var check = Date.parse(createTime);
       expect(check).not.to.be.NaN;
+      expect(updateRef).to.equal(createTime);
     });
+
     return chakram.wait();
   })
 
@@ -92,6 +96,7 @@ describe("Get a group", function () {
 
 describe("Edit a group", function () {
   var groupId;
+  var updateRef;
   before("create group", function () {
     var group = {
       name: "Hello World"
@@ -123,10 +128,12 @@ describe("Edit a group", function () {
     expect(response).to.have.json("update-time", function (updateTime) {
       var check = Date.parse(updateTime);
       expect(check).not.to.be.NaN;
+      updateRef = updateTime;
     });
     expect(response).to.have.json("create-time", function (createTime) {
       var check = Date.parse(createTime);
       expect(check).not.to.be.NaN;
+      expect(updateRef).not.to.be.equal(createTime);
     });
     return chakram.wait();
   })
@@ -138,9 +145,8 @@ describe("Edit a group", function () {
       expect(error[0]).to.equal("NOT_AUTHORIZED_TO_GROUP");
     });
     return chakram.wait();
-  })
+  });
 
-  /* Commenting out till pull/38
   it("should return Currency not valid", function () {
     var editedGroup = {
     name: "Hallo Welt",
@@ -148,13 +154,12 @@ describe("Edit a group", function () {
     };
 
     var response = chakram.put(baseUrl + "/groups/" + groupId, editedGroup);
-    expect(response).to.have.status(401);
+    expect(response).to.have.status(416);
     expect(response).to.have.json("error", function (error) {
       expect(error[0]).to.equal("CURRENCY_NOT_VALID");
     });
     return chakram.wait();
   })
-  */
 });
 
 describe("Delete group", function () {
