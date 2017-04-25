@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -62,7 +63,7 @@ public class TransactionEntity {
     @Column(name = "create_time")
     private Timestamp createTime;
     
-    @OneToMany(mappedBy = "transactionId", fetch = FetchType.EAGER, orphanRemoval = false)
+    @OneToMany(mappedBy = "transactionId", fetch = FetchType.EAGER, orphanRemoval = false, cascade = CascadeType.REMOVE)
     private List<ProfiteerEntity> profiteers;
     
     public TransactionEntity() { /* intentionally empty */ }
