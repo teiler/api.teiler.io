@@ -56,7 +56,6 @@ public class CompensationService {
 
         Profiteer profiteer = compensation.getProfiteer();
 
-        // Before we create anything, let's check the profiteer
         try {
             personUtil.checkPersonBelongsToThisGroup(groupId, profiteer.getPerson().getId());
         } catch (PersonNotFoundException e) {
@@ -124,16 +123,14 @@ public class CompensationService {
         }
 
         Profiteer changedProfiteer = changedCompensation.getProfiteer();
-        CompensationEntity compensationEntity = compensationRepository.getById(compensationId);
 
-        // Before we create anything, let's check the profiteer
         try {
             personUtil.checkPersonBelongsToThisGroup(groupId, changedProfiteer.getPerson().getId());
         } catch (PersonNotFoundException e) {
             throw new ProfiteerNotFoundException();
         }
 
-        compensationEntity = compensationRepository.editCompensation(compensationId, changedCompensation);
+        CompensationEntity compensationEntity = compensationRepository.editCompensation(compensationId, changedCompensation);
 
         ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(compensationEntity.getId(), changedProfiteer.getPerson().getId());
         profiteerRepository.editProfiteer(profiteerEntity.getId(), changedProfiteer);
