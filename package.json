@@ -1,0 +1,6 @@
+{
+  "name": "tylr-api",
+  "devDependencies": {
+    "chakram": "^1.5.0",
+  }
+}
