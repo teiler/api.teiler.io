@@ -1,7 +1,9 @@
 var chakram = require('chakram'),
     expect = chakram.expect;
 
-var hostUrl = "https://api.teiler.io/";
+var hostUrl = process.env.tylrurl;
+
+// var hostUrl = "https://api.teiler.io/";
 // var hostUrl = "http://localhost:4567/";
 var version = "v1/";
 var baseUrl = hostUrl + version;
@@ -20,8 +22,9 @@ describe("Root URL", function() {
 
 describe("Create a group", function () {
   it("should create group", function () {
-    var group = new Object();
-    group.name = "Hello World";
+    var group = {
+      name: "Hello World"
+    };
     var response = chakram.post(baseUrl + "/groups", group);
     expect(response).to.have.status(200);
     expect(response).to.have.header("content-type", "application/json");
@@ -46,8 +49,9 @@ describe("Create a group", function () {
 describe("Get a group", function () {
   var groupId;
   before("create group", function () {
-    var group = new Object();
-    group.name = "Hello World";
+    var group = {
+      name: "Hello World"
+    };
     return chakram.post(baseUrl + "/groups", group)
     .then(function (response) {
       groupId = response.body.id;
@@ -91,8 +95,9 @@ describe("Get a group", function () {
 describe("Edit a group", function () {
   var groupId;
   before("create group", function () {
-    var group = new Object();
-    group.name = "Hello World";
+    var group = {
+      name: "Hello World"
+    };
     return chakram.post(baseUrl + "/groups", group)
     .then(function (response) {
       groupId = response.body.id;
@@ -155,8 +160,9 @@ describe("Edit a group", function () {
 describe("Delete group", function () {
   var groupId;
   before("create group", function () {
-    var group = new Object();
-    group.name = "Hello World";
+    var group = {
+      name: "Hello World"
+    };
     return chakram.post(baseUrl + "/groups", group)
     .then(function (response) {
       groupId = response.body.id;
