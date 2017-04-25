@@ -16,7 +16,7 @@ public class Expense extends Transaction {
     private String title;
 
     @SerializedName("profiteers")
-    private List<Profiteer> shares;
+    private List<Profiteer> profiteers;
 
     /**
      * Usual constructor.
@@ -25,13 +25,13 @@ public class Expense extends Transaction {
      * @param amount Amount of money involved in the Expense
      * @param payer Person who spent the money
      * @param title Title of the Expense
-     * @param shares {@link List} of {@link Profiteer} related to the Expense
+     * @param profiteers {@link List} of {@link Profiteer} related to the Expense
      */
     public Expense(Integer id, Integer amount, Person payer, String title,
-            List<Profiteer> shares) {
+            List<Profiteer> profiteers) {
         super(id, amount, payer, null, null);
         this.title = title;
-        this.shares = shares;
+        this.profiteers = profiteers;
     }
 
     /**
@@ -49,7 +49,7 @@ public class Expense extends Transaction {
             LocalDateTime createTime, String title, List<Profiteer> shares) {
         super(id, amount, payer, updateTime, createTime);
         this.title = title;
-        this.shares = shares;
+        this.profiteers = shares;
     }
 
     public String getTitle() {
@@ -61,16 +61,16 @@ public class Expense extends Transaction {
     }
 
     public List<Profiteer> getShares() {
-        return shares;
+        return profiteers;
     }
 
     public void setShares(List<Profiteer> shares) {
-        this.shares = shares;
+        this.profiteers = shares;
     }
 
     @Override
     public String toString() {
-        return "Expense [title=" + title + ", shares=" + shares + "]";
+        return "Expense [title=" + title + ", profiteers=" + profiteers + "]";
     }
     
 }
