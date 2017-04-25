@@ -21,7 +21,6 @@ script:
 - ./gradlew assemble
 - ./gradlew check
 - sonar-scanner
-- .travis/test-prod.sh
 
 after_success: "./gradlew build"
 
