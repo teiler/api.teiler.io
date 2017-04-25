@@ -1,8 +1,8 @@
 var chakram = require('chakram'),
     expect = chakram.expect;
 
-// var hostUrl = "https://api.teiler.io/";
-var hostUrl = "http://localhost:4567/";
+var hostUrl = "https://api.teiler.io/";
+// var hostUrl = "http://localhost:4567/";
 var version = "v1/";
 var baseUrl = hostUrl + version;
 
@@ -136,6 +136,7 @@ describe("Edit a group", function () {
     return chakram.wait();
   })
 
+  /* Commenting out till pull/38
   it("should return Currency not valid", function () {
     var editedGroup = new Object();
     editedGroup.name = "Hallo Welt";
@@ -145,6 +146,35 @@ describe("Edit a group", function () {
     expect(response).to.have.status(401);
     expect(response).to.have.json("error", function (error) {
       expect(error[0]).to.equal("CURRENCY_NOT_VALID");
+    });
+    return chakram.wait();
+  })
+  */
+});
+
+describe("Delete group", function () {
+  var groupId;
+  before("create group", function () {
+    var group = new Object();
+    group.name = "Hello World";
+    return chakram.post(baseUrl + "/groups", group)
+    .then(function (response) {
+      groupId = response.body.id;
+    })
+  });
+
+  it("should delete group", function () {
+    var response = chakram.delete(baseUrl + "/groups/" + groupId);
+    expect(response).to.have.status(200);
+    expect(response).to.have.header("content-type", "application/json");
+    return chakram.wait();
+  })
+
+  it("should return Not authorized to group", function () {
+    var response = chakram.delete(baseUrl + "/groups/ABC");
+    expect(response).to.have.status(401);
+    expect(response).to.have.json("error", function (error) {
+      expect(error[0]).to.equal("NOT_AUTHORIZED_TO_GROUP");
     });
     return chakram.wait();
   })
