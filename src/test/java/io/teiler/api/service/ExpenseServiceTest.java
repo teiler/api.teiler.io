@@ -64,8 +64,8 @@ public class ExpenseServiceTest {
         Assert.assertEquals(TEST_PAYER_AND_PROFITEER_SHARE, testExpenseResponse.getAmount());
         Assert.assertEquals(testPayerAndProfiteer.getId(), testExpenseResponse.getPayer().getId());
 
-        Assert.assertFalse(testExpenseResponse.getShares().isEmpty());
-        Assert.assertEquals(testProfiteers.size(), testExpenseResponse.getShares().size());
+        Assert.assertFalse(testExpenseResponse.getProfiteers().isEmpty());
+        Assert.assertEquals(testProfiteers.size(), testExpenseResponse.getProfiteers().size());
     }
 
     @Test
@@ -88,8 +88,8 @@ public class ExpenseServiceTest {
         Assert.assertEquals(TEST_EXPENSE_AMOUNT, testExpenseResponse.getAmount());
         Assert.assertEquals(testPayerAndProfiteer.getId(), testExpenseResponse.getPayer().getId());
         
-        Assert.assertFalse(testExpenseResponse.getShares().isEmpty());
-        Assert.assertEquals(testProfiteers.size(), testExpenseResponse.getShares().size());
+        Assert.assertFalse(testExpenseResponse.getProfiteers().isEmpty());
+        Assert.assertEquals(testProfiteers.size(), testExpenseResponse.getProfiteers().size());
     }
 
 
@@ -162,8 +162,8 @@ public class ExpenseServiceTest {
         Assert.assertEquals(TEST_EXPENSE_AMOUNT, viewResponse.getAmount());
         Assert.assertEquals(testPayerAndProfiteer.getId(), viewResponse.getPayer().getId());
 
-        Assert.assertFalse(viewResponse.getShares().isEmpty());
-        Assert.assertEquals(testProfiteers.size(), viewResponse.getShares().size());
+        Assert.assertFalse(viewResponse.getProfiteers().isEmpty());
+        Assert.assertEquals(testProfiteers.size(), viewResponse.getProfiteers().size());
     }
 
     @Test(expected = TransactionNotFoundException.class)
@@ -226,7 +226,7 @@ public class ExpenseServiceTest {
         // The "get" part is a bit hacky but it's just too much code otherwise...
         testProfiteers.get(0).setShare(1000);
 
-        testExpenseResponse.setShares(testProfiteers);
+        testExpenseResponse.setProfiteers(testProfiteers);
 
         expenseService.editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
     }
@@ -247,7 +247,7 @@ public class ExpenseServiceTest {
         // The "get" part is a bit hacky but it's just too much code otherwise...
         testProfiteers.get(0).setShare(1000+100);
 
-        testExpenseResponse.setShares(testProfiteers);
+        testExpenseResponse.setProfiteers(testProfiteers);
 
         expenseService.editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
     }
@@ -268,7 +268,7 @@ public class ExpenseServiceTest {
         Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
 
         testProfiteers.add(new Profiteer(null, testProfiteer2, TEST_PROFITEER_2_SHARE));
-        testExpenseResponse.setShares(testProfiteers);
+        testExpenseResponse.setProfiteers(testProfiteers);
         testExpenseResponse.setAmount(testExpenseResponse.getAmount() + TEST_PROFITEER_2_SHARE);
 
         Expense testEditedExpense = expenseService.editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
@@ -277,8 +277,8 @@ public class ExpenseServiceTest {
         Assert.assertEquals(TEST_EXPENSE_AMOUNT, testEditedExpense.getAmount());
         Assert.assertEquals(testPayerAndProfiteer.getId(), testEditedExpense.getPayer().getId());
 
-        Assert.assertFalse(testEditedExpense.getShares().isEmpty());
-        Assert.assertEquals(testProfiteers.size(), testEditedExpense.getShares().size());
+        Assert.assertFalse(testEditedExpense.getProfiteers().isEmpty());
+        Assert.assertEquals(testProfiteers.size(), testEditedExpense.getProfiteers().size());
     }
 
     @Test
