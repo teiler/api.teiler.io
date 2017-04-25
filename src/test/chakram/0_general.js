@@ -105,9 +105,10 @@ describe("Edit a group", function () {
   });
 
   it("should edit group", function () {
-    var editedGroup = new Object();
-    editedGroup.name = "Hallo Welt";
-    editedGroup.currency = "eur";
+    var editedGroup = {
+      name: "Hallo Welt",
+      currency: "eur"
+    };
 
     var response = chakram.put(baseUrl + "/groups/" + groupId, editedGroup);
     expect(response).to.have.status(200);
@@ -143,9 +144,10 @@ describe("Edit a group", function () {
 
   /* Commenting out till pull/38
   it("should return Currency not valid", function () {
-    var editedGroup = new Object();
-    editedGroup.name = "Hallo Welt";
-    editedGroup.currency = "abc";
+    var editedGroup = {
+    name: "Hallo Welt",
+    currency: "abc"
+    };
 
     var response = chakram.put(baseUrl + "/groups/" + groupId, editedGroup);
     expect(response).to.have.status(401);
