@@ -1,19 +1,20 @@
 package io.teiler.api.endpoint;
 
 import static spark.Spark.delete;
+import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
 import com.google.gson.Gson;
-
 import io.teiler.api.service.GroupService;
 import io.teiler.server.dto.Group;
+import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
+import io.teiler.server.util.exceptions.CurrencyNotValidException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Group-related endpoints.
@@ -60,6 +61,12 @@ public class GroupEndpointController implements EndpointController {
             groupId = Normalize.normalizeGroupId(groupId);
             groupService.deleteGroup(groupId);
             return "";
+        });
+
+        exception(CurrencyNotValidException.class, (e, request, response) -> {
+            response.status(416);
+            Error error = new Error(e.getMessage());
+            response.body(gson.toJson(error));
         });
     }
 
