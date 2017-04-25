@@ -13,7 +13,7 @@ public class Profiteer {
 
     private transient Integer expenseId;
 
-    @SerializedName("profiteer")
+    @SerializedName("person")
     private Person person;
     
     @SerializedName("share")
