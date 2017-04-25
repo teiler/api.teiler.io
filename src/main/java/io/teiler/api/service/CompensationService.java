@@ -13,6 +13,7 @@ import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.CompensationRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.PayerNotFoundException;
+import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 
@@ -40,7 +41,8 @@ public class CompensationService {
     private CompensationUtil compensationUtil;
 
     /**
-     * Creates a new {@link Compensation}.
+     * Creates a new {@link Compensation}.<br>
+     * <i>Note:</i> The Payer and Profiteer may not be the same Person.
      * 
      * @param compensation {@link Compensation} containing the information to be persisted
      * @return {@link Compensation} containing the data freshly fetched from the database
@@ -55,6 +57,11 @@ public class CompensationService {
         }
 
         Profiteer profiteer = compensation.getProfiteer();
+
+        // Check whether the Payer and the Profiteer are the same Person
+        if (compensation.getPayer().getId().compareTo(profiteer.getPerson().getId()) == 0) {
+            throw new PayerProfiteerConflictException();
+        }
 
         try {
             personUtil.checkPersonBelongsToThisGroup(groupId, profiteer.getPerson().getId());
@@ -104,7 +111,8 @@ public class CompensationService {
 
     /**
      * Updates and already created Compensation with the given values.<br>
-     * <i>Note:</i> The Compensation has to exist within the given Group.
+     * <i>Note:</i> The Compensation has to exist within the given Group
+     * and the Payer and Profiteer may not be the same Person.
      * 
      * @param groupId Id of the Group
      * @param compensationId Id of the Compensation
@@ -123,6 +131,11 @@ public class CompensationService {
         }
 
         Profiteer changedProfiteer = changedCompensation.getProfiteer();
+        
+        // Check whether the Payer and the Profiteer are the same Person
+        if (changedCompensation.getPayer().getId().compareTo(changedProfiteer.getPerson().getId()) == 0) {
+            throw new PayerProfiteerConflictException();
+        }
 
         try {
             personUtil.checkPersonBelongsToThisGroup(groupId, changedProfiteer.getPerson().getId());
