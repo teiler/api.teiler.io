@@ -131,7 +131,7 @@ public class ProfiteerEntity {
     }
 
     public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = new Timestamp(updateTime.getTime());
+        this.updateTime = updateTime != null ? new Timestamp(updateTime.getTime()) : null;
     }
 
     public Timestamp getCreateTime() {
@@ -139,7 +139,7 @@ public class ProfiteerEntity {
     }
 
     public void setCreateTime(Timestamp createTime) {
-        this.createTime = new Timestamp(createTime.getTime());
+        this.createTime = updateTime != null ? new Timestamp(createTime.getTime()) : null;
     }
     
 }
