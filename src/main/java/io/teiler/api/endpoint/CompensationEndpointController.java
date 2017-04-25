@@ -97,6 +97,12 @@ public class CompensationEndpointController implements EndpointController {
             Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
         });
+        
+        exception(PersonNotFoundException.class, (e, request, response) -> {
+            response.status(409);
+            Error error = new Error(e.getMessage());
+            response.body(gson.toJson(error));
+        });
     }
 
 }
