@@ -121,7 +121,7 @@ public class PersonEntity {
     }
 
     public void setCreateTime(Timestamp createTime) {
-        this.createTime = new Timestamp(createTime.getTime());
+        this.createTime = updateTime != null ? new Timestamp(createTime.getTime()) : null;
     }
 
     public Timestamp getUpdateTime() {
@@ -129,7 +129,7 @@ public class PersonEntity {
     }
 
     public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = new Timestamp(updateTime.getTime());
+        this.updateTime = updateTime != null ? new Timestamp(updateTime.getTime()) : null;
     }
     
 }
