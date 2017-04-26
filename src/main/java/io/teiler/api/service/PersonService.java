@@ -14,6 +14,7 @@ import io.teiler.server.persistence.repositories.PersonRepository;
  * Provides service-methods for Groups.
  *
  * @author lroellin
+ * @author pbaechli
  */
 @Service
 public class PersonService {
@@ -60,16 +61,25 @@ public class PersonService {
         personUtil.checkPersonExists(personId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
         personUtil.checkNamesAreUnique(groupId, changedPerson.getName());
+        
+        /* TODO
+         *   - If personId = changedPerson.id -> return person with personId
+         *   - If active-flag changed -> throw exception (active flag has to
+         *      be set through the corresponding service) 
+         */
 
         return personRepository.editPerson(personId, changedPerson).toPerson();
     }
 
-    public void deletePerson(String groupId, int personId) {
+    public void deactivatePerson(String groupId, int personId) {
         groupUtil.checkIdExists(groupId);
         personUtil.checkPersonExists(personId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
-
-        personRepository.deletePerson(personId);
+        
+        PersonEntity person = personRepository.getById(personId);
+        person.setActive(false);
+        
+        personRepository.editPerson(personId, person.toPerson());
     }
     
 }
