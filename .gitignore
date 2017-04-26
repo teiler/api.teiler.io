@@ -9,6 +9,7 @@ src/querydsl
 /.idea
 /log/**
 /tylr-api-*.log.gz
+node_modules
 
 .DS_Store
 
