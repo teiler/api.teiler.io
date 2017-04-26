@@ -18,8 +18,8 @@ before_install:
 - chmod +x ./gradlew
 
 script:
-- "./gradlew assemble"
-- "./gradlew check"
+- ./gradlew assemble
+- ./gradlew check
 - sonar-scanner
 
 after_success: "./gradlew build"
