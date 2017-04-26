@@ -140,8 +140,9 @@ public class CompensationService {
         catch (ProfiteerNotFoundException e) {
             // does not yet exist => delete the existing one and create a new one
             
-            // TODO We'd rather not work with zero-index, but I'm too tired to think of anything better
-            profiteerRepository.deleteProfiteerByTransactionIdAndProfiteerPersonId(compensationEntity.getId(), compensationEntity.getProfiteers().get(0).getPerson().getId());
+            profiteerRepository
+                .deleteProfiteerByTransactionIdAndProfiteerPersonId(compensationEntity.getId(),
+                    compensationEntity.getProfiteer().getPerson().getId());
             
             changedProfiteer.setTransactionId(compensationEntity.getId());
             profiteerRepository.create(changedProfiteer);
