@@ -1,5 +1,11 @@
 package io.teiler.api.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.entities.ExpenseEntity;
@@ -7,10 +13,6 @@ import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Expenses.
@@ -28,9 +30,6 @@ public class ExpenseService {
     
     @Autowired
     private GroupUtil groupUtil;
-
-    @Autowired
-    private PersonUtil personUtil;
     
     @Autowired
     private ExpenseUtil expenseUtil;

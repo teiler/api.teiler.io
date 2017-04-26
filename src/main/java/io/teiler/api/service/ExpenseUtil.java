@@ -1,21 +1,20 @@
 package io.teiler.api.service;
 
-import io.teiler.server.dto.Profiteer;
-import io.teiler.server.persistence.repositories.ExpenseRepository;
-import io.teiler.server.persistence.repositories.ProfiteerRepository;
-import io.teiler.server.util.exceptions.SharesNotAddingUpException;
-import io.teiler.server.util.exceptions.TransactionNotFoundException;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import io.teiler.server.dto.Profiteer;
+import io.teiler.server.persistence.repositories.ExpenseRepository;
+import io.teiler.server.util.exceptions.SharesNotAddingUpException;
+import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
 @Service
 public class ExpenseUtil {
     
     @Autowired
     private ExpenseRepository expenseRepository;
-    @Autowired
-    private ProfiteerRepository profiteerRepository;
 
     public ExpenseUtil() { /* intentionally empty */ }
 

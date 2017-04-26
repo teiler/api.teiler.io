@@ -30,9 +30,6 @@ public class CompensationService {
     private GroupUtil groupUtil;
 
     @Autowired
-    private PersonUtil personUtil;
-
-    @Autowired
     private CompensationUtil compensationUtil;
 
     @Autowired

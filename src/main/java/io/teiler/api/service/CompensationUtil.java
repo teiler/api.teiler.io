@@ -1,22 +1,19 @@
 package io.teiler.api.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.repositories.CompensationRepository;
-import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class CompensationUtil {
     
     @Autowired
     private CompensationRepository compensationRepository;
-    
-    @Autowired
-    private ProfiteerRepository profiteerRepository;
     
     public CompensationUtil() { /* intentionally empty */ }
 
