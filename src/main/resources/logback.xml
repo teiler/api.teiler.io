@@ -13,7 +13,7 @@
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>log/tylr-api.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>tylr-api-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <fileNamePattern>log/tylr-api-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <maxFileSize>20MB</maxFileSize>
             <maxHistory>100</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
