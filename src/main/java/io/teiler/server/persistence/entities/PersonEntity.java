@@ -48,6 +48,9 @@ public class PersonEntity {
     // Only used in queries
     @Column(name = "`group`")
     private String groupId;
+    
+    @Column(name = "active")
+    private Boolean active;
 
     @NotNull
     @SerializedName("update-time")
@@ -114,6 +117,14 @@ public class PersonEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Timestamp getCreateTime() {
