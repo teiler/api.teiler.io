@@ -1,5 +1,7 @@
 package io.teiler.server.persistence.repositories;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
@@ -82,7 +84,7 @@ public class ProfiteerRepository {
      * Deletes the {@link ProfiteerEntity} with the given Id.
      * 
      * @param transactionId Id of the Transaction
-     * @param profiteerId Id of the Profiteer-Person
+     * @param profiteerPersonId Id of the Profiteer-Person
      */
     @Transactional
     public void deleteProfiteerByTransactionIdAndProfiteerPersonId(int transactionId, int profiteerPersonId) {
@@ -91,6 +93,16 @@ public class ProfiteerRepository {
             .setParameter("transactionId", transactionId)
             .setParameter("profiteerPersonId", profiteerPersonId)
             .executeUpdate();
+    }
+    
+    /**
+     * Deletes the {@link ProfiteerEntity} with the given Ids.
+     * 
+     * @param transactionId Id of the Transaction
+     * @param profiteerPersonIds Id of the Profiteer-Person
+     */
+    public void deleteProfiteerByTransactionIdAndProfiteerPersonIdList(int transactionId, List<Integer> profiteerPersonIds) {
+        profiteerPersonIds.forEach(id -> deleteProfiteerByTransactionIdAndProfiteerPersonId(transactionId, id));
     }
     
 }
