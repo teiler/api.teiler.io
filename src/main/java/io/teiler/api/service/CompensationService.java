@@ -1,11 +1,5 @@
 package io.teiler.api.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.entities.CompensationEntity;
@@ -13,9 +7,12 @@ import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.CompensationRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.PayerNotFoundException;
-import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Compensations.
@@ -57,11 +54,7 @@ public class CompensationService {
         }
 
         Profiteer profiteer = compensation.getProfiteer();
-
-        // Check whether the Payer and the Profiteer are the same Person
-        if (compensation.getPayer().getId().compareTo(profiteer.getPerson().getId()) == 0) {
-            throw new PayerProfiteerConflictException();
-        }
+        compensationUtil.checkPayerAndProfiteerAreNotEqual(compensation, profiteer);
 
         try {
             personUtil.checkPersonBelongsToThisGroup(groupId, profiteer.getPerson().getId());
@@ -131,11 +124,7 @@ public class CompensationService {
         }
 
         Profiteer changedProfiteer = changedCompensation.getProfiteer();
-        
-        // Check whether the Payer and the Profiteer are the same Person
-        if (changedCompensation.getPayer().getId().compareTo(changedProfiteer.getPerson().getId()) == 0) {
-            throw new PayerProfiteerConflictException();
-        }
+        compensationUtil.checkPayerAndProfiteerAreNotEqual(changedCompensation, changedProfiteer);
 
         try {
             personUtil.checkPersonBelongsToThisGroup(groupId, changedProfiteer.getPerson().getId());
@@ -181,6 +170,7 @@ public class CompensationService {
 
         return compensationRepository.getById(compensationEntity.getId()).toCompensation();
     }
+
 
     /**
      * Deletes the Compensation with the given Id and Group-Id.<br>
