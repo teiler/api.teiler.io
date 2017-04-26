@@ -112,17 +112,10 @@ public class ExpenseService {
         expenseUtil.checkSharesAddUp(changedExpense.getAmount(), changedExpense.getProfiteers());
 
         // Before we create anything, let's check all the profiteers
-        for (Profiteer share : changedExpense.getProfiteers()) {
-            transactionUtil.checkProfiteerBelongsToThisGroup(groupId, share.getPerson().getId());
-        }
+        changedExpense.getProfiteers().forEach(p -> transactionUtil.checkProfiteerBelongsToThisGroup(groupId, p.getPerson().getId()));
         
         expenseRepository.editExpense(expenseId, changedExpense);
         ExpenseEntity expenseEntity = expenseRepository.getById(expenseId);
-        
-        // -------------- TODO ---------------
-        //  The following section ought to be
-        //             cleaned up.
-        // -----------------------------------
         
         List<Integer> removedProfiteerPersonIds = expenseEntity.getProfiteers().stream().map(p -> p.getPerson().getId()).collect(Collectors.toList());
         
@@ -135,7 +128,7 @@ public class ExpenseService {
                 ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(expenseEntity.getId(), changedShare.getPerson().getId());
                 profiteerRepository.editProfiteer(profiteerEntity.getId(), changedShare);
                 
-                // remove this profiteer from the list of removed profiteers as it has not been removed
+                // remove this profiteer from the list of removed profiteers as it has not been removed from the expense
                 removedProfiteerPersonIds.remove(changedShare.getPerson().getId());
             }
             catch (ProfiteerNotFoundException e) {
@@ -146,15 +139,7 @@ public class ExpenseService {
         }
         
         // remove all the remaining profiteers as they were not included in the input and thus shall be removed
-        removedProfiteerPersonIds.forEach(removedProfiteerPersonId ->
-            profiteerRepository
-                .deleteProfiteerByTransactionIdAndProfiteerPersonId(expenseEntity.getId(),
-                    removedProfiteerPersonId)
-        );
-        
-        // -----------------------------------
-        //       End of cleanup-section.
-        // -----------------------------------
+        profiteerRepository.deleteProfiteerByTransactionIdAndProfiteerPersonIdList(expenseEntity.getId(), removedProfiteerPersonIds);
         
         return expenseRepository.getById(expenseEntity.getId()).toExpense();
     }
