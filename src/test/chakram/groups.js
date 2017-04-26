@@ -7,11 +7,12 @@ var version = "v1/";
 var baseUrl = hostUrl + version;
 
 describe("Create a group", function () {
-  it("should create group", function () {
+  it("should create a group", function () {
+    var updateRef;
     var group = {
       name: "Hello World"
     };
-    var response = chakram.post(baseUrl + "/groups", group);
+    var response = chakram.post(baseUrl + "groups", group);
     expect(response).to.have.status(200);
     expect(response).to.have.header("content-type", "application/json");
     expect(response).to.have.json("id", function (id) {
@@ -23,10 +24,12 @@ describe("Create a group", function () {
     expect(response).to.have.json("update-time", function (updateTime) {
       var check = Date.parse(updateTime);
       expect(check).not.to.be.NaN;
+      updateRef = updateTime;
     });
     expect(response).to.have.json("create-time", function (createTime) {
       var check = Date.parse(createTime);
       expect(check).not.to.be.NaN;
+      expect(updateRef).to.equal(createTime);
     });
     return chakram.wait();
   })
@@ -34,19 +37,18 @@ describe("Create a group", function () {
 
 describe("Get a group", function () {
   var groupId;
-  var updateRef;
   before("create group", function () {
     var group = {
       name: "Hello World"
     };
-    return chakram.post(baseUrl + "/groups", group)
+    return chakram.post(baseUrl + "groups", group)
     .then(function (response) {
       groupId = response.body.id;
     })
   });
 
   it("should get group", function () {
-    var response = chakram.get(baseUrl + "/groups/" + groupId);
+    var response = chakram.get(baseUrl + "groups/" + groupId);
     expect(response).to.have.status(200);
     expect(response).to.have.header("content-type", "application/json");
     expect(response).to.have.json("id", function (id) {
@@ -61,19 +63,17 @@ describe("Get a group", function () {
     expect(response).to.have.json("update-time", function (updateTime) {
       var check = Date.parse(updateTime);
       expect(check).not.to.be.NaN;
-      updateRef = updateTime;
     });
     expect(response).to.have.json("create-time", function (createTime) {
       var check = Date.parse(createTime);
       expect(check).not.to.be.NaN;
-      expect(updateRef).to.equal(createTime);
     });
 
     return chakram.wait();
-  })
+  });
 
   it("should return Not authorized to group", function () {
-      var response = chakram.get(baseUrl + "/groups/ABC");
+      var response = chakram.get(baseUrl + "groups/ABC");
       expect(response).to.have.status(401);
       expect(response).to.have.json("error", function (error) {
         expect(error[0]).to.equal("NOT_AUTHORIZED_TO_GROUP");
@@ -84,24 +84,24 @@ describe("Get a group", function () {
 
 describe("Edit a group", function () {
   var groupId;
-  var updateRef;
   before("create group", function () {
     var group = {
       name: "Hello World"
     };
-    return chakram.post(baseUrl + "/groups", group)
+    return chakram.post(baseUrl + "groups", group)
     .then(function (response) {
       groupId = response.body.id;
     })
   });
 
   it("should edit group", function () {
+    var updateRef;
     var editedGroup = {
       name: "Hallo Welt",
       currency: "eur"
     };
 
-    var response = chakram.put(baseUrl + "/groups/" + groupId, editedGroup);
+    var response = chakram.put(baseUrl + "groups/" + groupId, editedGroup);
     expect(response).to.have.status(200);
     expect(response).to.have.header("content-type", "application/json");
     expect(response).to.have.json("id", function (id) {
@@ -127,7 +127,7 @@ describe("Edit a group", function () {
   })
 
   it("should return Not authorized to group", function () {
-    var response = chakram.put(baseUrl + "/groups/ABC");
+    var response = chakram.put(baseUrl + "groups/ABC");
     expect(response).to.have.status(401);
     expect(response).to.have.json("error", function (error) {
       expect(error[0]).to.equal("NOT_AUTHORIZED_TO_GROUP");
@@ -141,7 +141,7 @@ describe("Edit a group", function () {
     currency: "abc"
     };
 
-    var response = chakram.put(baseUrl + "/groups/" + groupId, editedGroup);
+    var response = chakram.put(baseUrl + "groups/" + groupId, editedGroup);
     expect(response).to.have.status(416);
     expect(response).to.have.json("error", function (error) {
       expect(error[0]).to.equal("CURRENCY_NOT_VALID");
@@ -156,21 +156,21 @@ describe("Delete group", function () {
     var group = {
       name: "Hello World"
     };
-    return chakram.post(baseUrl + "/groups", group)
+    return chakram.post(baseUrl + "groups", group)
     .then(function (response) {
       groupId = response.body.id;
     })
   });
 
   it("should delete group", function () {
-    var response = chakram.delete(baseUrl + "/groups/" + groupId);
+    var response = chakram.delete(baseUrl + "groups/" + groupId);
     expect(response).to.have.status(200);
     expect(response).to.have.header("content-type", "application/json");
     return chakram.wait();
   })
 
   it("should return Not authorized to group", function () {
-    var response = chakram.delete(baseUrl + "/groups/ABC");
+    var response = chakram.delete(baseUrl + "groups/ABC");
     expect(response).to.have.status(401);
     expect(response).to.have.json("error", function (error) {
       expect(error[0]).to.equal("NOT_AUTHORIZED_TO_GROUP");
