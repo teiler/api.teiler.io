@@ -137,7 +137,6 @@ public class CompensationService {
         return compensationRepository.getById(compensationEntity.getId()).toCompensation();
     }
 
-
     /**
      * Deletes the Compensation with the given Id and Group-Id.<br>
      * <i>Note:</i> The Compensation has to exist within the given Group.
