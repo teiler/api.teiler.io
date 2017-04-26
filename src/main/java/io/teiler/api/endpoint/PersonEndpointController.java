@@ -19,8 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 /**
- * Controller for Group-related endpoints.
+ * Controller for Person-related endpoints.
+ * 
  * @author lroellin
+ * @author pbaechli
  */
 @Controller
 public class PersonEndpointController implements EndpointController {
@@ -72,7 +74,7 @@ public class PersonEndpointController implements EndpointController {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             groupId = Normalize.normalizeGroupId(groupId);
             int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
-            personService.deletePerson(groupId, personId);
+            personService.deactivatePerson(groupId, personId);
             return "";
         });
 
