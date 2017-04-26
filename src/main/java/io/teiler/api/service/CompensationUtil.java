@@ -5,7 +5,6 @@ import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.repositories.CompensationRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
-import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,19 +56,6 @@ public class CompensationUtil {
         throws PayerProfiteerConflictException {
         if (compensation.getPayer().getId().compareTo(profiteer.getPerson().getId()) == 0) {
             throw new PayerProfiteerConflictException();
-        }
-    }
-
-    /**
-     * Checks whether a Profiteer-Person exists within an Compensation.
-     * 
-     * @param compensationId Id of the Compensation
-     * @param profiteerPersonId Id of the Profiteer-Person
-     * @throws ProfiteerNotFoundException Profiteer does not exist
-     */
-    public void checkProfiteerExistsInThisCompensation(int compensationId, int profiteerPersonId) throws ProfiteerNotFoundException {
-        if (profiteerRepository.getByTransactionIdAndProfiteerPersonId(compensationId, profiteerPersonId) == null) {
-            throw new ProfiteerNotFoundException();
         }
     }
     
