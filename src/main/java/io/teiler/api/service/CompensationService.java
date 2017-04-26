@@ -126,8 +126,9 @@ public class CompensationService {
         try {
             // first we check if the profiteer changed by looking him up in the group
             compensationUtil.checkProfiteerExistsInThisCompensation(compensationEntity.getId(), changedProfiteer.getPerson().getId());
-            
-            if (compensationEntity.getProfiteers().get(0).getPerson().getId().compareTo(changedProfiteer.getPerson().getId()) == 0) {
+
+            if (compensationEntity.getProfiteer().getPerson().getId()
+                .compareTo(changedProfiteer.getPerson().getId()) == 0) {
                 // does exist and was not changed => update
                 ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(compensationEntity.getId(), changedProfiteer.getPerson().getId());
                 profiteerRepository.editProfiteer(profiteerEntity.getId(), changedProfiteer);
@@ -139,7 +140,7 @@ public class CompensationService {
         }
         catch (ProfiteerNotFoundException e) {
             // does not yet exist => delete the existing one and create a new one
-            
+
             profiteerRepository
                 .deleteProfiteerByTransactionIdAndProfiteerPersonId(compensationEntity.getId(),
                     compensationEntity.getProfiteer().getPerson().getId());
