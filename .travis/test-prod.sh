@@ -1,4 +1,4 @@
-#`!/bin/sh
+#!/bin/sh
 
 set -e
 set -x
@@ -6,4 +6,4 @@ set -x
 [ -d node_modules ] && rm -rf node_modules
 npm install
 npm install -g mocha
-mocha src/test/chakram
+env tylrurl="https://api.teiler.io/" mocha src/test/chakram
