@@ -1,16 +1,13 @@
 package io.teiler.api.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
-import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ExpenseUtil {
@@ -44,19 +41,6 @@ public class ExpenseUtil {
     public void checkExpenseExists(int expenseId) throws TransactionNotFoundException {
         if (expenseRepository.getById(expenseId) == null) {
             throw new TransactionNotFoundException();
-        }
-    }
-    
-    /**
-     * Checks whether a Profiteer-Person exists within an Expense.
-     * 
-     * @param expenseId Id of the Expense
-     * @param profiteerPersonId Id of the Profiteer-Person
-     * @throws ProfiteerNotFoundException Profiteer does not exist
-     */
-    public void checkProfiteerExistsInThisExpense(int expenseId, int profiteerPersonId) throws ProfiteerNotFoundException {
-        if (profiteerRepository.getByTransactionIdAndProfiteerPersonId(expenseId, profiteerPersonId) == null) {
-            throw new ProfiteerNotFoundException();
         }
     }
     

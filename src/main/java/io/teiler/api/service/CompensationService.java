@@ -125,7 +125,8 @@ public class CompensationService {
         
         try {
             // first we check if the profiteer changed by looking him up in the group
-            compensationUtil.checkProfiteerExistsInThisCompensation(compensationEntity.getId(), changedProfiteer.getPerson().getId());
+            transactionUtil.checkProfiteerExistsInThisTransaction(compensationEntity.getId(),
+                changedProfiteer.getPerson().getId());
 
             if (compensationEntity.getProfiteer().getPerson().getId()
                 .compareTo(changedProfiteer.getPerson().getId()) == 0) {

@@ -129,7 +129,8 @@ public class ExpenseService {
         
         for (Profiteer changedShare : changedExpense.getProfiteers()) {
             try {
-                expenseUtil.checkProfiteerExistsInThisExpense(expenseEntity.getId(), changedShare.getPerson().getId());
+                transactionUtil.checkProfiteerExistsInThisTransaction(expenseEntity.getId(),
+                    changedShare.getPerson().getId());
                 
                 // does exist and was not removed => update the existing one
                 ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(expenseEntity.getId(), changedShare.getPerson().getId());

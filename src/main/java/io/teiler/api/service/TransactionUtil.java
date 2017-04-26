@@ -1,5 +1,6 @@
 package io.teiler.api.service;
 
+import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.PayerNotFoundException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
@@ -11,6 +12,9 @@ public class TransactionUtil {
 
     @Autowired
     private PersonUtil personUtil;
+
+    @Autowired
+    private ProfiteerRepository profiteerRepository;
 
     public TransactionUtil() { /* intentionally empty */ }
 
@@ -42,6 +46,21 @@ public class TransactionUtil {
         try {
             personUtil.checkPersonBelongsToThisGroup(groupId, profiteerId);
         } catch (PersonNotFoundException e) {
+            throw new ProfiteerNotFoundException();
+        }
+    }
+
+    /**
+     * Checks whether a Profiteer-Person exists within a transaction.
+     *
+     * @param transactionId Id of the Compensation
+     * @param profiteerPersonId Id of the Profiteer-Person
+     * @throws ProfiteerNotFoundException Profiteer does not exist
+     */
+    public void checkProfiteerExistsInThisTransaction(int transactionId, int profiteerPersonId)
+        throws ProfiteerNotFoundException {
+        if (profiteerRepository
+            .getByTransactionIdAndProfiteerPersonId(transactionId, profiteerPersonId) == null) {
             throw new ProfiteerNotFoundException();
         }
     }
