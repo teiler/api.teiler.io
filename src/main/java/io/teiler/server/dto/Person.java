@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
  * Class holding all information about a group.
  * 
  * @author lroellin
+ * @author pbaechli
  */
 public class Person {
 
@@ -15,6 +16,9 @@ public class Person {
 
     @SerializedName("name")
     private String name;
+    
+    @SerializedName("active")
+    private boolean active;
 
     @SerializedName("update-time")
     private LocalDateTime updateTime;
@@ -31,6 +35,7 @@ public class Person {
     public Person(Integer id, String name) {
         this.id = id;
         this.name = name;
+        this.active = true;
     }
 
     /**
@@ -38,12 +43,14 @@ public class Person {
      * 
      * @param id Id of the Person
      * @param name Name of the Person
+     * @param active Whether the Person is active or not
      * @param updateTime {@link LocalDateTime} marking the last update of the Person
      * @param createTime {@link LocalDateTime} marking the creation of the Person
      */
-    public Person(Integer id, String name, LocalDateTime updateTime, LocalDateTime createTime) {
+    public Person(Integer id, String name, boolean active, LocalDateTime updateTime, LocalDateTime createTime) {
         this.id = id;
         this.name = name;
+        this.active = active;
         this.updateTime = updateTime;
         this.createTime = createTime;
     }
@@ -62,6 +69,14 @@ public class Person {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public LocalDateTime getUpdateTime() {
@@ -82,8 +97,8 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person [id=" + id + ", name=" + name + ", updateTime=" + updateTime
-                + ", createTime=" + createTime + "]";
+        return "Person [id=" + id + ", name=" + name + ", active=" + active + ", updateTime="
+                + updateTime + ", createTime=" + createTime + "]";
     }
     
 }
