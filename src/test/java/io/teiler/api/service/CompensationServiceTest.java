@@ -70,24 +70,6 @@ public class CompensationServiceTest {
         compensationService.createCompensation(testCompensation, testGroup.getId());
     }
 
-    // TODO Might be converted into a test to check that the amount and one and only share are the same.
-//    @Test(expected = SharesNotAddingUpException.class)
-//    public void testCreateExpenseSharesDontAddUp() {
-//        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
-//        Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER);
-//        Person testProfiteer1 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
-//        Person testProfiteer2 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_2);
-//
-//        List<Profiteer> testProfiteers = new LinkedList<>();
-//        testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE + 100));
-//        testProfiteers.add(new Profiteer(null, testProfiteer1, TEST_PROFITEER_1_SHARE + 100));
-//        testProfiteers.add(new Profiteer(null, testProfiteer2, TEST_PROFITEER_2_SHARE + 100));
-//
-//        Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
-//
-//        compensationService.createExpense(testExpense, testGroup.getId());
-//    }
-
     @Test(expected = PayerNotFoundException.class)
     public void testCreateCompensationWithPayerFromDifferentGroup() {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
@@ -178,28 +160,6 @@ public class CompensationServiceTest {
         Assert.assertEquals(Integer.valueOf(1000), testComensationEditResponse.getAmount());
         Assert.assertEquals(Integer.valueOf(1000), testComensationEditResponse.getProfiteer().getShare());
     }
-
-    // TODO Might be converted into a test to check that the amount and one and only share are the same.
-//    @Test(expected = SharesNotAddingUpException.class)
-//    public void testEditExpenseAmountAndSharesWrongly() {
-//        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
-//        Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER);
-//
-//        List<Profiteer> testProfiteers = new LinkedList<>();
-//        testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
-//
-//        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
-//
-//        Expense testExpenseResponse = compensationService.createExpense(testExpense, testGroup.getId());
-//
-//        testExpenseResponse.setAmount(1000);
-//        // The "get" part is a bit hacky but it's just too much code otherwise...
-//        testProfiteers.get(0).setShare(1000+100);
-//
-//        testExpenseResponse.setProfiteers(testProfiteers);
-//
-//        compensationService.editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
-//    }
 
     @Test
     public void testEditCompensationChangeProfiteer() {
