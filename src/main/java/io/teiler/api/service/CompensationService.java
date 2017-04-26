@@ -115,33 +115,24 @@ public class CompensationService {
         compensationRepository.editCompensation(compensationId, changedCompensation);
         CompensationEntity compensationEntity = compensationRepository.getById(compensationId);
         
-        // -------------- TODO ---------------
-        //  The following section ought to be
-        //             cleaned up.
-        // -----------------------------------
-        
         try {
             // first we check if the profiteer changed by looking him up in the group
-            transactionUtil.checkProfiteerExistsInThisTransaction(compensationEntity.getId(),
-                changedProfiteer.getPerson().getId());
+            transactionUtil.checkProfiteerExistsInThisTransaction(
+                    compensationEntity.getId(), changedProfiteer.getPerson().getId());
 
             // profiteer was not changed => update
-            ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(compensationEntity.getId(), changedProfiteer.getPerson().getId());
+            ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(
+                    compensationEntity.getId(), changedProfiteer.getPerson().getId());
             profiteerRepository.editProfiteer(profiteerEntity.getId(), changedProfiteer);
         }
         catch (ProfiteerNotFoundException e) {
             // does not yet exist => delete the existing one and create a new one
-            profiteerRepository
-                .deleteProfiteerByTransactionIdAndProfiteerPersonId(compensationEntity.getId(),
-                    compensationEntity.getProfiteer().getPerson().getId());
+            profiteerRepository.deleteProfiteerByTransactionIdAndProfiteerPersonId(
+                    compensationEntity.getId(), compensationEntity.getProfiteer().getPerson().getId());
             
             changedProfiteer.setTransactionId(compensationEntity.getId());
             profiteerRepository.create(changedProfiteer);
         }
-        
-        // -----------------------------------
-        //       End of cleanup-section.
-        // -----------------------------------
 
         return compensationRepository.getById(compensationEntity.getId()).toCompensation();
     }
