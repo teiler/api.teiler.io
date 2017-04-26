@@ -46,7 +46,13 @@ public class CompensationUtil {
         }
     }
 
-
+    /**
+     * Checks whether the Payer and the Profiteer are equal
+     *
+     * @param compensation The compensation to check
+     * @param profiteer The profiteer to check
+     * @throws PayerProfiteerConflictException Profiteer and payer are equal in that compensation
+     */
     public void checkPayerAndProfiteerAreNotEqual(Compensation compensation, Profiteer profiteer)
         throws PayerProfiteerConflictException {
         if (compensation.getPayer().getId().compareTo(profiteer.getPerson().getId()) == 0) {

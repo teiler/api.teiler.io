@@ -6,8 +6,6 @@ import io.teiler.server.persistence.entities.CompensationEntity;
 import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.CompensationRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
-import io.teiler.server.util.exceptions.PayerNotFoundException;
-import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +35,9 @@ public class CompensationService {
     @Autowired
     private CompensationUtil compensationUtil;
 
+    @Autowired
+    private TransactionUtil transactionUtil;
+
     /**
      * Creates a new {@link Compensation}.<br>
      * <i>Note:</i> The Payer and Profiteer may not be the same Person.
@@ -46,21 +47,11 @@ public class CompensationService {
      */
     public Compensation createCompensation(Compensation compensation, String groupId) {
         groupUtil.checkIdExists(groupId);
-
-        try {
-            personUtil.checkPersonBelongsToThisGroup(groupId, compensation.getPayer().getId());
-        } catch (PersonNotFoundException e) {
-            throw new PayerNotFoundException(); // Throw more focused message
-        }
+        transactionUtil.checkPayerBelongsToThisGroup(groupId, compensation.getPayer().getId());
 
         Profiteer profiteer = compensation.getProfiteer();
         compensationUtil.checkPayerAndProfiteerAreNotEqual(compensation, profiteer);
-
-        try {
-            personUtil.checkPersonBelongsToThisGroup(groupId, profiteer.getPerson().getId());
-        } catch (PersonNotFoundException e) {
-            throw new ProfiteerNotFoundException();
-        }
+        transactionUtil.checkProfiteerBelongsToThisGroup(groupId, profiteer.getPerson().getId());
 
         CompensationEntity compensationEntity = compensationRepository.create(compensation);
 
@@ -116,21 +107,13 @@ public class CompensationService {
         groupUtil.checkIdExists(groupId);
         compensationUtil.checkCompensationExists(compensationId);
         compensationUtil.checkCompensationBelongsToThisGroup(groupId, compensationId);
-
-        try {
-            personUtil.checkPersonBelongsToThisGroup(groupId, changedCompensation.getPayer().getId());
-        } catch (PersonNotFoundException e) {
-            throw new PayerNotFoundException(); // Throw more focused message
-        }
+        transactionUtil
+            .checkPayerBelongsToThisGroup(groupId, changedCompensation.getPayer().getId());
 
         Profiteer changedProfiteer = changedCompensation.getProfiteer();
         compensationUtil.checkPayerAndProfiteerAreNotEqual(changedCompensation, changedProfiteer);
-
-        try {
-            personUtil.checkPersonBelongsToThisGroup(groupId, changedProfiteer.getPerson().getId());
-        } catch (PersonNotFoundException e) {
-            throw new ProfiteerNotFoundException();
-        }
+        transactionUtil
+            .checkProfiteerBelongsToThisGroup(groupId, changedProfiteer.getPerson().getId());
 
         compensationRepository.editCompensation(compensationId, changedCompensation);
         CompensationEntity compensationEntity = compensationRepository.getById(compensationId);
