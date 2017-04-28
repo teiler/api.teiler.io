@@ -28,18 +28,15 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class PersonEndpointController implements EndpointController {
 
-    private Gson gson = GsonUtil.getHomebrewGson();
-
-    @Autowired
-    private PersonService personService;
-
+    public static final String ACTIVE_PARAM = "active";
     private static final int DEFAULT_QUERY_LIMIT = 20;
     private static final String PERSON_ID_PARAM = ":personid";
     private static final String LIMIT_PARAM = "limit";
-    public static final String ACTIVE_PARAM = "active";
-
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/people";
     private static final String URL_WITH_PERSON_ID = BASE_URL + "/:personid";
+    private Gson gson = GsonUtil.getHomebrewGson();
+    @Autowired
+    private PersonService personService;
 
     @Override
     public void register() {
@@ -76,6 +73,8 @@ public class PersonEndpointController implements EndpointController {
             groupId = Normalize.normalizeGroupId(groupId);
             int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             Person changedPerson = gson.fromJson(req.body(), Person.class);
+            // GSON doesn't go through the normal constructor so we set it manually
+            changedPerson.setActive(true);
             Person person = personService.editPerson(groupId, personId, changedPerson);
             return gson.toJson(person);
         });
