@@ -15,7 +15,6 @@ import io.teiler.server.util.Normalize;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -61,10 +60,7 @@ public class PersonEndpointController implements EndpointController {
             if(activeString != null) {
                 activeOnly = Boolean.parseBoolean(activeString);
             }
-            List<Person> people = personService.getPeople(groupId, limit);
-            if(activeOnly) {
-                people = people.stream().filter(Person::isActive).collect(Collectors.toList());
-            }
+            List<Person> people = personService.getPeople(groupId, limit, activeOnly);
             return gson.toJson(people);
         });
 

@@ -1,14 +1,12 @@
 package io.teiler.api.service;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
+import java.util.LinkedList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Groups.
@@ -46,12 +44,15 @@ public class PersonService {
         return personEntity.toPerson();
     }
 
-    public List<Person> getPeople(String groupId, long limit) {
+    public List<Person> getPeople(String groupId, long limit, boolean activeOnly) {
         groupUtil.checkIdExists(groupId);
 
         List<Person> people = new LinkedList<>();
         for (PersonEntity personEntity : personRepository.getPeople(groupId, limit)) {
             people.add(personEntity.toPerson());
+        }
+        if (activeOnly) {
+            people = personUtil.filterInactivePeople(people);
         }
         return people;
     }
