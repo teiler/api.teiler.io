@@ -127,9 +127,19 @@ public class PersonServiceTest {
     public void testOrphanedPersonGetsDeleted() {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
-        Person hans = personService.createPerson(groupId, "Hans");
+        Person hans = personService.createPerson(groupId, FIRST_PERSON_NAME);
         groupService.deleteGroup(groupId);
         personUtil.checkPersonExists(hans.getId());
+    }
+
+    @Test
+    public void testDeactivatedPeopleAreDeactivated() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person hans = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.deactivatePerson(groupId, hans.getId());
+        Person deactivatedHans = personService.getPerson(groupId, hans.getId());
+        Assert.assertFalse(deactivatedHans.isActive());
     }
 
 }

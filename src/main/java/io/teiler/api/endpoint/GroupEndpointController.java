@@ -9,10 +9,12 @@ import static spark.Spark.put;
 import com.google.gson.Gson;
 import io.teiler.api.service.GroupService;
 import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
 import io.teiler.server.util.exceptions.CurrencyNotValidException;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -45,6 +47,15 @@ public class GroupEndpointController implements EndpointController {
             String groupId = req.params(GROUP_ID_PARAM);
             groupId = Normalize.normalizeGroupId(groupId);
             Group requestGroup = groupService.viewGroup(groupId);
+            String activeString = req.queryParams(PersonEndpointController.ACTIVE_PARAM);
+            Boolean activeOnly = true;
+            if(activeString != null) {
+                activeOnly = Boolean.parseBoolean(activeString);
+            }
+            if(activeOnly) {
+                requestGroup.setPeople(requestGroup.getPeople().stream().filter(Person::isActive).collect(Collectors.toList()));
+            }
+
             return gson.toJson(requestGroup);
         });
 

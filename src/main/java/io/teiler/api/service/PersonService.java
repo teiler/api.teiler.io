@@ -56,6 +56,12 @@ public class PersonService {
         return people;
     }
 
+    public Person getPerson(String groupId, int personId) {
+        groupUtil.checkIdExists(groupId);
+        personUtil.checkPersonBelongsToThisGroup(groupId, personId);
+        return personRepository.getById(personId).toPerson();
+    }
+
     public Person editPerson(String groupId, int personId, Person changedPerson) {
         groupUtil.checkIdExists(groupId);
         personUtil.checkPersonExists(personId);
