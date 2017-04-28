@@ -1,18 +1,14 @@
 package io.teiler.server.persistence.repositories;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import com.querydsl.jpa.impl.JPAQuery;
-
 import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.entities.QProfiteerEntity;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /**
  * Provides database-related operations for Profiteers.
@@ -88,11 +84,8 @@ public class ProfiteerRepository {
      */
     @Transactional
     public void deleteProfiteerByTransactionIdAndProfiteerPersonId(int transactionId, int profiteerPersonId) {
-        entityManager
-            .createQuery("DELETE FROM ProfiteerEntity p WHERE p.transactionId = :transactionId AND p.person.id = :profiteerPersonId")
-            .setParameter("transactionId", transactionId)
-            .setParameter("profiteerPersonId", profiteerPersonId)
-            .executeUpdate();
+        ProfiteerEntity deleteEntity = getByTransactionIdAndProfiteerPersonId(transactionId, profiteerPersonId);
+        entityManager.remove(deleteEntity);
     }
     
     /**
@@ -101,6 +94,7 @@ public class ProfiteerRepository {
      * @param transactionId Id of the Transaction
      * @param profiteerPersonIds Id of the Profiteer-Person
      */
+    @Transactional
     public void deleteProfiteerByTransactionIdAndProfiteerPersonIdList(int transactionId, List<Integer> profiteerPersonIds) {
         profiteerPersonIds.forEach(id -> deleteProfiteerByTransactionIdAndProfiteerPersonId(transactionId, id));
     }
