@@ -15,6 +15,7 @@ import io.teiler.server.util.Normalize;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -35,6 +36,7 @@ public class PersonEndpointController implements EndpointController {
     private static final int DEFAULT_QUERY_LIMIT = 20;
     private static final String PERSON_ID_PARAM = ":personid";
     private static final String LIMIT_PARAM = "limit";
+    public static final String ACTIVE_PARAM = "active";
 
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/people";
     private static final String URL_WITH_PERSON_ID = BASE_URL + "/:personid";
@@ -57,7 +59,15 @@ public class PersonEndpointController implements EndpointController {
             if (limitString != null) {
                 limit = Long.parseLong(limitString);
             }
+            String activeString = req.queryParams(ACTIVE_PARAM);
+            Boolean activeOnly = true;
+            if(activeString != null) {
+                activeOnly = Boolean.parseBoolean(activeString);
+            }
             List<Person> people = personService.getPeople(groupId, limit);
+            if(activeOnly) {
+                people = people.stream().filter(Person::isActive).collect(Collectors.toList());
+            }
             return gson.toJson(people);
         });
 
