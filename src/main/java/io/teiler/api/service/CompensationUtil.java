@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.teiler.server.dto.Compensation;
-import io.teiler.server.dto.Profiteer;
+import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.repositories.CompensationRepository;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
@@ -43,15 +43,15 @@ public class CompensationUtil {
     }
 
     /**
-     * Checks whether the Payer and the Profiteer are equal
+     * Checks whether the Payer and the Profiteer are equal.
      *
      * @param compensation The compensation to check
      * @param profiteer The profiteer to check
      * @throws PayerProfiteerConflictException Profiteer and payer are equal in that compensation
      */
-    public void checkPayerAndProfiteerAreNotEqual(Compensation compensation, Profiteer profiteer)
+    public void checkPayerAndProfiteerAreNotEqual(Compensation compensation, Person profiteer)
         throws PayerProfiteerConflictException {
-        if (compensation.getPayer().getId().compareTo(profiteer.getPerson().getId()) == 0) {
+        if (compensation.getPayer().getId().equals(profiteer.getId())) {
             throw new PayerProfiteerConflictException();
         }
     }
