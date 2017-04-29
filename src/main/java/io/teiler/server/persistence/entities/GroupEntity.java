@@ -89,7 +89,7 @@ public class GroupEntity {
     public void updateTimeStamps() {
         updateTime = new Timestamp(Instant.now().toEpochMilli());
         if (createTime == null) {
-            createTime = new Timestamp(Instant.now().toEpochMilli());
+            createTime = updateTime;
         }
     }
 

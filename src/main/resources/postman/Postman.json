@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Tylr",
-		"_postman_id": "b91df451-ef18-68a9-7d24-8e8a6e4022fd",
+		"_postman_id": "d935c4c5-5f9a-b4c9-b90a-427eae2af07c",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -197,7 +197,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Getrocknete Bananen\",\r\n    \"amount\": \"1000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"600\"\r\n        },\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"400\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"title\": \"Getrocknete Bananen\",\r\n    \"amount\": \"1000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}}\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person1Id}}\r\n            }, \r\n            \"share\": \"600\"\r\n        },\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person2Id}}\r\n            }, \r\n            \"share\": \"400\"\r\n        }\r\n    ]\r\n}"
 				},
 				"description": ""
 			},
@@ -259,7 +259,7 @@
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Expense title is correct\"] = jsonData.title === \"Luftgetrocknete Bananen\";",
 							"tests[\"Expense amount is correct\"] = jsonData.amount == \"10000\";",
-							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
+							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person2Id;",
 							"tests[\"Number of profiteers is correct\"] = jsonData.profiteers.length == 2;",
 							"tests[\"Profiteer ids are correct\"] = jsonData.profiteers[0].person.id == globals.person1Id && jsonData.profiteers[1].person.id == globals.person2Id;",
 							"tests[\"Profiteer factors are correct\"] = jsonData.profiteers[0].share == \"7000\" && jsonData.profiteers[1].share == \"3000\";",
@@ -286,7 +286,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"10000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"7000\"\r\n        },\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"3000\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\n    \"title\": \"Luftgetrocknete Bananen\",\n    \"amount\": \"10000\",\n    \"payer\": {\n        \"id\": {{person2Id}}\n    }, \n    \"profiteers\": [\n        {\n            \"person\": {\n                \"id\": {{person1Id}}\n            }, \n            \"share\": \"7000\"\n        },\n        {\n            \"person\": {\n                \"id\": {{person2Id}}\n            }, \n            \"share\": \"3000\"\n        }\n    ]\n}"
 				},
 				"description": ""
 			},
@@ -332,7 +332,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"10000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"10000\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"10000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}}\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person1Id}}\r\n            }, \r\n            \"share\": \"10000\"\r\n        }\r\n    ]\r\n}"
 				},
 				"description": ""
 			},
@@ -378,7 +378,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"10000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n        \"name\": \"\"\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person1Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"5000\"\r\n        },\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person2Id}},\r\n        \t\t\"name\": \"\"\r\n            }, \r\n            \"share\": \"5000\"\r\n        }\r\n    ]\r\n}"
+					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"10000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}}\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person1Id}}\r\n            }, \r\n            \"share\": \"5000\"\r\n        },\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person2Id}}\r\n            }, \r\n            \"share\": \"5000\"\r\n        }\r\n    ]\r\n}"
 				},
 				"description": ""
 			},
@@ -399,6 +399,163 @@
 			],
 			"request": {
 				"url": "{{url}}/v1/groups/{{group}}/expenses/{{expenseId}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new compensation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Compensation amount is correct\"] = jsonData.amount == \"1000\";",
+							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person1Id;",
+							"tests[\"Profiteer id is correct\"] = jsonData.profiteer.id == globals.person2Id;",
+							"tests[\"Contains compensation id\"] = 'id' in jsonData;",
+							"tests[\"Contains payer\"] = 'payer' in jsonData;",
+							"tests[\"Contains profiteer\"] = 'profiteer' in jsonData;",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData;",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData;",
+							"",
+							"postman.setGlobalVariable(\"compensationId\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/compensations",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": \"1000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}}\r\n    }, \r\n    \"profiteer\": {\r\n    \t\"id\": {{person2Id}}\r\n    }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Show compensations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Number of compensations is correct\"] = jsonData.length == 1;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/compensations?limit=5",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Show compensation",
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/compensations/{{compensationId}}",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit compensation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Compensation amount is correct\"] = jsonData.amount == \"5000\";",
+							"tests[\"Payer id is correct\"] = jsonData.payer.id == globals.person2Id;",
+							"tests[\"Profiteer id is correct\"] = jsonData.profiteer.id == globals.person1Id",
+							"tests[\"Contains compensation id\"] = 'id' in jsonData;",
+							"tests[\"Contains payer\"] = 'payer' in jsonData;",
+							"tests[\"Contains profiteer\"] = 'profiteer' in jsonData;",
+							"tests[\"Contains update time\"] = 'update-time' in jsonData;",
+							"tests[\"Contains create time\"] = 'create-time' in jsonData;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/compensations/{{compensationId}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 5000,\n    \"payer\": {\n            \"id\": {{person2Id}}\n    }, \n    \"profiteer\": {\n        \"id\": {{person1Id}}\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete compensation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/v1/groups/{{group}}/compensations/{{compensationId}}",
 				"method": "DELETE",
 				"header": [
 					{
@@ -472,7 +629,7 @@
 				}
 			],
 			"request": {
-				"url": "{{url}}/v1/groups/{{group}}/people?limit=5",
+				"url": "{{url}}/v1/groups/{{group}}/people?limit=5&active=false",
 				"method": "GET",
 				"header": [],
 				"body": {

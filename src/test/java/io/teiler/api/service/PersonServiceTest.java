@@ -62,7 +62,7 @@ public class PersonServiceTest {
         String groupId = testGroup.getId();
         personService.createPerson(groupId, FIRST_PERSON_NAME);
         personService.createPerson(groupId, SECOND_PERSON_NAME);
-        Group getGroup = groupService.viewGroup(groupId);
+        Group getGroup = groupService.viewGroup(groupId, true);
         Assert.assertEquals("Hans", getGroup.getPeople().get(0).getName());
     }
 
@@ -72,7 +72,7 @@ public class PersonServiceTest {
         String groupId = testGroup.getId();
         personService.createPerson(groupId, FIRST_PERSON_NAME);
         personService.createPerson(groupId, SECOND_PERSON_NAME);
-        List<Person> people = personService.getPeople(groupId, 20);
+        List<Person> people = personService.getPeople(groupId, 20, true);
         Assert.assertEquals(2, people.size());
     }
 
@@ -82,7 +82,7 @@ public class PersonServiceTest {
         String groupId = testGroup.getId();
         personService.createPerson(groupId, FIRST_PERSON_NAME);
         personService.createPerson(groupId, SECOND_PERSON_NAME);
-        List<Person> people = personService.getPeople(groupId, 20);
+        List<Person> people = personService.getPeople(groupId, 20, true);
         Assert.assertEquals("Hans", people.get(0).getName());
     }
 
@@ -127,9 +127,41 @@ public class PersonServiceTest {
     public void testOrphanedPersonGetsDeleted() {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
-        Person hans = personService.createPerson(groupId, "Hans");
+        Person hans = personService.createPerson(groupId, FIRST_PERSON_NAME);
         groupService.deleteGroup(groupId);
         personUtil.checkPersonExists(hans.getId());
+    }
+
+    @Test
+    public void testDeactivatedPeopleAreDeactivated() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person hans = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.deactivatePerson(groupId, hans.getId());
+        Person deactivatedHans = personService.getPerson(groupId, hans.getId());
+        Assert.assertFalse(deactivatedHans.isActive());
+    }
+
+    @Test
+    public void testActiveOnlyFiltersWhenPositive() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person firstPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.createPerson(groupId, SECOND_PERSON_NAME);
+        personService.deactivatePerson(groupId, firstPerson.getId());
+        List<Person> people = personService.getPeople(groupId, 20, true);
+        Assert.assertEquals(1, people.size());
+    }
+
+    @Test
+    public void testActiveOnlyFiltersWhenNegative() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person firstPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.createPerson(groupId, SECOND_PERSON_NAME);
+        personService.deactivatePerson(groupId, firstPerson.getId());
+        List<Person> people = personService.getPeople(groupId, 20, false);
+        Assert.assertEquals(2, people.size());
     }
 
 }

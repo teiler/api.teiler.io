@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
  * Provides database-related operations for Groups.
  * 
  * @author lroellin
+ * @author pbaechli
  */
 @Repository
 public class PersonRepository {
@@ -106,12 +107,15 @@ public class PersonRepository {
      */
     @Transactional
     public PersonEntity editPerson(int personId, Person changedPerson) {
-        PersonEntity person = getById(personId);
-        person.setName(changedPerson.getName());
-        entityManager.persist(person);
-        return person;
-    }
+        PersonEntity existingPerson = getById(personId);
 
+        PersonEntity updatedPerson = new PersonEntity(changedPerson);
+        updatedPerson.setId(existingPerson.getId());
+        updatedPerson.setGroupId(existingPerson.getGroupId());
+
+        return entityManager.merge(updatedPerson);
+    }
+    
     /**
      * Deletes the Person with the given Id.
      * 
