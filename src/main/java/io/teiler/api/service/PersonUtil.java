@@ -1,19 +1,20 @@
 package io.teiler.api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PersonUtil {
     
-    public PersonUtil() { /* intentionally empty */ }
-
     @Autowired
     private PersonRepository personRepository;
+
+    public PersonUtil() { /* intentionally empty */ }
 
     /**
      * Checks whether the name of a Person is unique within a Group.
@@ -51,6 +52,10 @@ public class PersonUtil {
         if (personRepository.getById(personId) == null) {
             throw new PersonNotFoundException();
         }
+    }
+
+    public java.util.List<Person> filterInactivePeople(java.util.List<Person> people) {
+        return people.stream().filter(Person::isActive).collect(Collectors.toList());
     }
     
 }
