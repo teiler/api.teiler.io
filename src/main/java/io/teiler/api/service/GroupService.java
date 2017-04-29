@@ -27,6 +27,8 @@ public class GroupService {
     @Autowired
     private GroupUtil groupUtil;
     @Autowired
+    private PersonUtil personUtil;
+    @Autowired
     private GroupRepository groupRepository;
     private IdGenerator idGenerator = new RandomGeneratorWithAlphabet();
 
@@ -34,12 +36,17 @@ public class GroupService {
      * Returns information about a Group.
      * 
      * @param id Id of Group
+     * @param activeOnly Only active people
      * @return Information about the Group
      * @throws NotAuthorizedException See {@link GroupUtil#fetchGroup(String)}
      */
-    public Group viewGroup(String id) {
+    public Group viewGroup(String id, Boolean activeOnly) {
         groupUtil.checkIdExists(id);
-        return groupUtil.fetchGroup(id);
+        Group group = groupUtil.fetchGroup(id);
+        if (activeOnly) {
+            group.setPeople(personUtil.filterInactivePeople(group.getPeople()));
+        }
+        return group;
     }
 
     /**

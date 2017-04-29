@@ -44,7 +44,12 @@ public class GroupEndpointController implements EndpointController {
         get(URL_WITH_GROUP_ID, (req, res) -> {
             String groupId = req.params(GROUP_ID_PARAM);
             groupId = Normalize.normalizeGroupId(groupId);
-            Group requestGroup = groupService.viewGroup(groupId);
+            String activeString = req.queryParams(PersonEndpointController.ACTIVE_PARAM);
+            Boolean activeOnly = true;
+            if(activeString != null) {
+                activeOnly = Boolean.parseBoolean(activeString);
+            }
+            Group requestGroup = groupService.viewGroup(groupId, activeOnly);
             return gson.toJson(requestGroup);
         });
 

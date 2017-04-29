@@ -43,13 +43,13 @@ public class Expense extends Transaction {
      * @param updateTime {@link LocalDateTime} marking the last update of the Expense
      * @param createTime {@link LocalDateTime} marking the creation of the Expense
      * @param title Title of the Expense
-     * @param shares {@link List} of {@link Profiteer} related to the Expense
+     * @param profiteers {@link List} of {@link Profiteer} related to the Expense
      */
     public Expense(Integer id, Integer amount, Person payer, LocalDateTime updateTime,
-            LocalDateTime createTime, String title, List<Profiteer> shares) {
+            LocalDateTime createTime, String title, List<Profiteer> profiteers) {
         super(id, amount, payer, updateTime, createTime);
         this.title = title;
-        this.profiteers = shares;
+        this.profiteers = profiteers;
     }
 
     public String getTitle() {

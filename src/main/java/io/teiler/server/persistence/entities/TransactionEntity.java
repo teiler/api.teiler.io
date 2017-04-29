@@ -1,9 +1,9 @@
 package io.teiler.server.persistence.entities;
 
+import io.teiler.server.dto.TransactionType;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -23,8 +23,6 @@ import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import io.teiler.server.dto.TransactionType;
 
 /**
  * Entity representing an entry of the <code>transaction</code>-table.
@@ -78,7 +76,7 @@ public class TransactionEntity {
     public void updateTimeStamps() {
         updateTime = new Timestamp(Instant.now().toEpochMilli());
         if (createTime == null) {
-            createTime = new Timestamp(Instant.now().toEpochMilli());
+            createTime = updateTime;
         }
     }
 
