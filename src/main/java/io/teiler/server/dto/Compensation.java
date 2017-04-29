@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
 public class Compensation extends Transaction {
 
     @SerializedName("profiteer")
-    private Profiteer profiteer;
+    private Person profiteer;
 
     /**
      * Usual constructor.
@@ -22,7 +22,7 @@ public class Compensation extends Transaction {
      * @param payer Person who spent the money
      * @param profiteer {@link Profiteer} related to the Compensation
      */
-    public Compensation(Integer id, Integer amount, Person payer, Profiteer profiteer) {
+    public Compensation(Integer id, Integer amount, Person payer, Person profiteer) {
         super(id, amount, payer, null, null);
         this.profiteer = profiteer;
     }
@@ -38,16 +38,16 @@ public class Compensation extends Transaction {
      * @param profiteer {@link Profiteer} related to the Compensation
      */
     public Compensation(Integer id, Integer amount, Person payer, LocalDateTime updateTime,
-            LocalDateTime createTime, Profiteer profiteer) {
+            LocalDateTime createTime, Person profiteer) {
         super(id, amount, payer, updateTime, createTime);
         this.profiteer = profiteer;
     }
 
-    public Profiteer getProfiteer() {
+    public Person getProfiteer() {
         return profiteer;
     }
 
-    public void setProfiteer(Profiteer profiteer) {
+    public void setProfiteer(Person profiteer) {
         this.profiteer = profiteer;
     }
 
