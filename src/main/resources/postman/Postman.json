@@ -332,7 +332,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"10000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}},\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person1Id}},\r\n            }, \r\n            \"share\": \"10000\"\r\n        }\r\n    ]\r\n}"
+          "raw": "{\r\n    \"title\": \"Luftgetrocknete Bananen\",\r\n    \"amount\": \"10000\",\r\n    \"payer\": {\r\n        \"id\": {{person1Id}}\r\n    }, \r\n    \"profiteers\": [\r\n        {\r\n            \"person\": {\r\n                \"id\": {{person1Id}}\r\n            }, \r\n            \"share\": \"10000\"\r\n        }\r\n    ]\r\n}"
 				},
 				"description": ""
 			},
@@ -489,7 +489,7 @@
 		{
 			"name": "Show compensation",
 			"request": {
-				"url": "{{url}}/v1/groups/{{group}}/expenses/{{compensationId}}",
+        "url": "{{url}}/v1/groups/{{group}}/compensations/{{compensationId}}",
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -524,7 +524,7 @@
 				}
 			],
 			"request": {
-				"url": "{{url}}/v1/groups/{{group}}/compensation/{{compensationId}}",
+        "url": "{{url}}/v1/groups/{{group}}/compensations/{{compensationId}}",
 				"method": "PUT",
 				"header": [
 					{
