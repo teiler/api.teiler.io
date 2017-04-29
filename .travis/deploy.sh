@@ -15,5 +15,6 @@ ssh tylr@api.teiler.io << EOF
  sudo /etc/init.d/tylr-api start
 EOF
 
-sleep 20s # sadly we need to wait until the server has been started
+# TODO check if we can test whether it's already working before starting
+sleep 30s # sadly we need to wait until the server has been started
 ./.travis/test-prod.sh
