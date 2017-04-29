@@ -1,16 +1,19 @@
 package io.teiler.api.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Compensation;
+import io.teiler.server.dto.Person;
 import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.entities.CompensationEntity;
 import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.CompensationRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Compensations.
@@ -46,13 +49,14 @@ public class CompensationService {
         groupUtil.checkIdExists(groupId);
         transactionUtil.checkPayerBelongsToThisGroup(groupId, compensation.getPayer().getId());
 
-        Profiteer profiteer = compensation.getProfiteer();
-        compensationUtil.checkPayerAndProfiteerAreNotEqual(compensation, profiteer);
-        transactionUtil.checkProfiteerBelongsToThisGroup(groupId, profiteer.getPerson().getId());
+        Person profiteerPerson = compensation.getProfiteer();
+        compensationUtil.checkPayerAndProfiteerAreNotEqual(compensation, profiteerPerson);
+        transactionUtil.checkProfiteerBelongsToThisGroup(groupId, profiteerPerson.getId());
 
         CompensationEntity compensationEntity = compensationRepository.create(compensation);
-
-        profiteer.setTransactionId(compensationEntity.getId());
+        
+        Profiteer profiteer = new Profiteer(
+                compensationEntity.getId(), profiteerPerson, compensation.getAmount());
         profiteerRepository.create(profiteer);
 
         return compensationRepository.getById(compensationEntity.getId()).toCompensation();
@@ -107,10 +111,10 @@ public class CompensationService {
         transactionUtil
             .checkPayerBelongsToThisGroup(groupId, changedCompensation.getPayer().getId());
 
-        Profiteer changedProfiteer = changedCompensation.getProfiteer();
-        compensationUtil.checkPayerAndProfiteerAreNotEqual(changedCompensation, changedProfiteer);
+        Person changedProfiteerPerson = changedCompensation.getProfiteer();
+        compensationUtil.checkPayerAndProfiteerAreNotEqual(changedCompensation, changedProfiteerPerson);
         transactionUtil
-            .checkProfiteerBelongsToThisGroup(groupId, changedProfiteer.getPerson().getId());
+            .checkProfiteerBelongsToThisGroup(groupId, changedProfiteerPerson.getId());
 
         compensationRepository.editCompensation(compensationId, changedCompensation);
         CompensationEntity compensationEntity = compensationRepository.getById(compensationId);
@@ -118,20 +122,24 @@ public class CompensationService {
         try {
             // first we check if the profiteer changed by looking him up in the group
             transactionUtil.checkProfiteerExistsInThisTransaction(
-                    compensationEntity.getId(), changedProfiteer.getPerson().getId());
+                    compensationEntity.getId(), changedProfiteerPerson.getId());
 
             // profiteer was not changed => update
             ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(
-                    compensationEntity.getId(), changedProfiteer.getPerson().getId());
-            profiteerRepository.editProfiteer(profiteerEntity.getId(), changedProfiteer);
+                    compensationEntity.getId(), changedProfiteerPerson.getId());
+            
+            Profiteer changeddProfiteer = new Profiteer(
+                    compensationEntity.getId(), changedProfiteerPerson, changedCompensation.getAmount());
+            profiteerRepository.editProfiteer(profiteerEntity.getId(), changeddProfiteer);
         }
         catch (ProfiteerNotFoundException e) {
             // does not yet exist => delete the existing one and create a new one
             profiteerRepository.deleteProfiteerByTransactionIdAndProfiteerPersonId(
                     compensationEntity.getId(), compensationEntity.getProfiteer().getPerson().getId());
             
-            changedProfiteer.setTransactionId(compensationEntity.getId());
-            profiteerRepository.create(changedProfiteer);
+            Profiteer changeddProfiteer = new Profiteer(
+                    compensationEntity.getId(), changedProfiteerPerson, changedCompensation.getAmount());
+            profiteerRepository.create(changeddProfiteer);
         }
 
         return compensationRepository.getById(compensationEntity.getId()).toCompensation();

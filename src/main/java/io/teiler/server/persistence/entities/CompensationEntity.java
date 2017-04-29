@@ -34,7 +34,7 @@ public class CompensationEntity extends TransactionEntity {
         return new Compensation(getId(), getAmount(), getPayer().toPerson(),
                 TimeUtil.convertToLocalDateTime(getUpdateTime()),
                 TimeUtil.convertToLocalDateTime(getCreateTime()),
-            getProfiteer().toProfiteer());
+            getProfiteer().toProfiteer().getPerson());
     }
 
     public ProfiteerEntity getProfiteer() {
