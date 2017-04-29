@@ -12,8 +12,6 @@ import io.teiler.server.persistence.entities.ExpenseEntity;
 import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
-import io.teiler.server.util.exceptions.PayerNotFoundException;
-import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 
 /**
@@ -32,12 +30,12 @@ public class ExpenseService {
     
     @Autowired
     private GroupUtil groupUtil;
-
-    @Autowired
-    private PersonUtil personUtil;
     
     @Autowired
     private ExpenseUtil expenseUtil;
+
+    @Autowired
+    private TransactionUtil transactionUtil;
     
     /**
      * Creates a new Expense.
@@ -47,27 +45,18 @@ public class ExpenseService {
      */
     public Expense createExpense(Expense expense, String groupId) {
         groupUtil.checkIdExists(groupId);
-        try {
-            personUtil.checkPersonBelongsToThisGroup(groupId, expense.getPayer().getId());
-        } catch (PersonNotFoundException e) {
-            // Throw more focused message
-            throw new PayerNotFoundException();
-        }
+        transactionUtil.checkPayerBelongsToThisGroup(groupId, expense.getPayer().getId());
         expenseUtil.checkSharesAddUp(expense.getAmount(), expense.getProfiteers());
 
         // Before we create anything, let's check all the profiteers
         for(Profiteer share : expense.getProfiteers()) {
-            try {
-                personUtil.checkPersonBelongsToThisGroup(groupId, share.getPerson().getId());
-            } catch (PersonNotFoundException e) {
-                throw new ProfiteerNotFoundException();
-            }
+            transactionUtil.checkProfiteerBelongsToThisGroup(groupId, share.getPerson().getId());
         }
 
         ExpenseEntity expenseEntity = expenseRepository.create(expense);
         
         for(Profiteer share : expense.getProfiteers()) {
-            share.setExpenseId(expenseEntity.getId());
+            share.setTransactionId(expenseEntity.getId());
             profiteerRepository.create(share);
         }
         
@@ -119,61 +108,38 @@ public class ExpenseService {
         groupUtil.checkIdExists(groupId);
         expenseUtil.checkExpenseExists(expenseId);
         expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
-        try {
-            personUtil.checkPersonBelongsToThisGroup(groupId, changedExpense.getPayer().getId());
-        } catch (PersonNotFoundException e) {
-            // Throw more focused message
-            throw new PayerNotFoundException();
-        }
+        transactionUtil.checkPayerBelongsToThisGroup(groupId, changedExpense.getPayer().getId());
         expenseUtil.checkSharesAddUp(changedExpense.getAmount(), changedExpense.getProfiteers());
 
         // Before we create anything, let's check all the profiteers
-        for (Profiteer share : changedExpense.getProfiteers()) {
-            try {
-                personUtil.checkPersonBelongsToThisGroup(groupId, share.getPerson().getId());
-            } catch (PersonNotFoundException e) {
-                throw new ProfiteerNotFoundException();
-            }
-        }
+        changedExpense.getProfiteers().forEach(p -> transactionUtil.checkProfiteerBelongsToThisGroup(groupId, p.getPerson().getId()));
         
         expenseRepository.editExpense(expenseId, changedExpense);
         ExpenseEntity expenseEntity = expenseRepository.getById(expenseId);
-        
-        // -----------------------------------
-        //  The following section ought to be
-        //             cleaned up.
-        // -----------------------------------
         
         List<Integer> removedProfiteerPersonIds = expenseEntity.getProfiteers().stream().map(p -> p.getPerson().getId()).collect(Collectors.toList());
         
         for (Profiteer changedShare : changedExpense.getProfiteers()) {
             try {
-                expenseUtil.checkProfiteerExistsInThisExpense(expenseEntity.getId(), changedShare.getPerson().getId());
+                transactionUtil.checkProfiteerExistsInThisTransaction(expenseEntity.getId(),
+                    changedShare.getPerson().getId());
                 
                 // does exist and was not removed => update the existing one
-                ProfiteerEntity profiteerEntity = profiteerRepository.getByExpenseIdAndProfiteerPersonId(expenseEntity.getId(), changedShare.getPerson().getId());
+                ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(expenseEntity.getId(), changedShare.getPerson().getId());
                 profiteerRepository.editProfiteer(profiteerEntity.getId(), changedShare);
                 
-                // remove this profiteer from the list of removed profiteers as it has not been removed
+                // remove this profiteer from the list of removed profiteers as it has not been removed from the expense
                 removedProfiteerPersonIds.remove(changedShare.getPerson().getId());
             }
             catch (ProfiteerNotFoundException e) {
                 // does not yet exist => create a new one
-                changedShare.setExpenseId(expenseEntity.getId());
+                changedShare.setTransactionId(expenseEntity.getId());
                 profiteerRepository.create(changedShare);
             }
         }
         
         // remove all the remaining profiteers as they were not included in the input and thus shall be removed
-        removedProfiteerPersonIds.forEach(removedProfiteerPersonId ->
-            profiteerRepository
-                .deleteProfiteerByExpenseIdAndProfiteerPersonId(expenseEntity.getId(),
-                    removedProfiteerPersonId)
-        );
-        
-        // -----------------------------------
-        //       End of cleanup-section.
-        // -----------------------------------
+        profiteerRepository.deleteProfiteerByTransactionIdAndProfiteerPersonIdList(expenseEntity.getId(), removedProfiteerPersonIds);
         
         return expenseRepository.getById(expenseEntity.getId()).toExpense();
     }

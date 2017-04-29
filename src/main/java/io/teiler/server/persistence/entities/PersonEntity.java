@@ -23,6 +23,7 @@ import io.teiler.server.util.TimeUtil;
  * Entity representing an entry of the <code>group</code>-table.
  *
  * @author lroellin
+ * @author pbaechli
  */
 @Entity
 @Table(name = "`person`")
@@ -45,9 +46,12 @@ public class PersonEntity {
     @Column(name = "name")
     private String name;
 
-    // Only used in queries
     @Column(name = "`group`")
     private String groupId;
+    
+    @NotNull
+    @Column(name = "active")
+    private Boolean active;
 
     @NotNull
     @SerializedName("update-time")
@@ -69,6 +73,7 @@ public class PersonEntity {
     public PersonEntity(Person person) {
         this.id = person.getId();
         this.name = person.getName();
+        this.active = person.isActive();
         this.updateTime = TimeUtil.convertToTimestamp(person.getUpdateTime());
         this.createTime = TimeUtil.convertToTimestamp(person.getCreateTime());
     }
@@ -94,10 +99,11 @@ public class PersonEntity {
      */
     public Person toPerson() {
         return new Person(
-            this.getId(),
-            this.getName(),
-            TimeUtil.convertToLocalDateTime(this.getUpdateTime()),
-            TimeUtil.convertToLocalDateTime(this.getCreateTime()));
+            getId(),
+            getName(),
+            getActive(),
+            TimeUtil.convertToLocalDateTime(getUpdateTime()),
+            TimeUtil.convertToLocalDateTime(getCreateTime()));
     }
 
     public Integer getId() {
@@ -114,6 +120,22 @@ public class PersonEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Timestamp getCreateTime() {

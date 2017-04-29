@@ -31,12 +31,12 @@ public class GroupServiceTest {
 
     @Test(expected = NotAuthorizedException.class)
     public void testReturnNotAuthorizedWhenViewingGroupWithoutValidId() {
-        groupService.viewGroup("");
+        groupService.viewGroup("", true);
     }
 
     @Test(expected = NotAuthorizedException.class)
     public void testReturnNotAuthorizedWhenViewingGroupWithInvalidId() {
-        groupService.viewGroup("abcdef");
+        groupService.viewGroup("abcdef", true);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class GroupServiceTest {
     public void testIdMatchesRequest() {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
-        Group getGroup = groupService.viewGroup(groupId);
+        Group getGroup = groupService.viewGroup(groupId, true);
         Assert.assertEquals(groupId, getGroup.getId());
     }
 
@@ -80,7 +80,7 @@ public class GroupServiceTest {
         String groupId = testGroup.getId();
         Group changedGroup = new Group(null, "Neu", Currency.CHF);
         groupService.editGroup(groupId, changedGroup);
-        Group newGroup = groupService.viewGroup(groupId);
+        Group newGroup = groupService.viewGroup(groupId, true);
         Assert.assertEquals("Neu", newGroup.getName());
     }
 
@@ -99,7 +99,7 @@ public class GroupServiceTest {
         String groupId = testGroup.getId();
         Group changedGroup = new Group(null, TEST_GROUP_NAME, Currency.EUR);
         groupService.editGroup(groupId, changedGroup);
-        Group newGroup = groupService.viewGroup(groupId);
+        Group newGroup = groupService.viewGroup(groupId, true);
         Assert.assertEquals(Currency.EUR, newGroup.getCurrency());
     }
 
@@ -108,7 +108,7 @@ public class GroupServiceTest {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
         groupService.deleteGroup(groupId);
-        groupService.viewGroup(groupId);
+        groupService.viewGroup(groupId, true);
     }
 
     @Test
@@ -122,5 +122,6 @@ public class GroupServiceTest {
         Assert.assertEquals("You can't change mathematical facts.",
             ENTROPY_BITS_IN_ONE_CHARACTER_EXPECTED, field.getInt(null));
     }
-    
+
+
 }

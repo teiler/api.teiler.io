@@ -1,19 +1,18 @@
 package io.teiler.api.service;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
+import java.util.LinkedList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Groups.
  *
  * @author lroellin
+ * @author pbaechli
  */
 @Service
 public class PersonService {
@@ -45,14 +44,23 @@ public class PersonService {
         return personEntity.toPerson();
     }
 
-    public List<Person> getPeople(String groupId, long limit) {
+    public List<Person> getPeople(String groupId, long limit, boolean activeOnly) {
         groupUtil.checkIdExists(groupId);
 
         List<Person> people = new LinkedList<>();
         for (PersonEntity personEntity : personRepository.getPeople(groupId, limit)) {
             people.add(personEntity.toPerson());
         }
+        if (activeOnly) {
+            people = personUtil.filterInactivePeople(people);
+        }
         return people;
+    }
+
+    public Person getPerson(String groupId, int personId) {
+        groupUtil.checkIdExists(groupId);
+        personUtil.checkPersonBelongsToThisGroup(groupId, personId);
+        return personRepository.getById(personId).toPerson();
     }
 
     public Person editPerson(String groupId, int personId, Person changedPerson) {
@@ -60,16 +68,25 @@ public class PersonService {
         personUtil.checkPersonExists(personId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
         personUtil.checkNamesAreUnique(groupId, changedPerson.getName());
+        
+        /* TODO
+         *   - If personId = changedPerson.id -> return person with personId
+         *   - If active-flag changed -> throw exception (active flag has to
+         *      be set through the corresponding service) 
+         */
 
         return personRepository.editPerson(personId, changedPerson).toPerson();
     }
 
-    public void deletePerson(String groupId, int personId) {
+    public void deactivatePerson(String groupId, int personId) {
         groupUtil.checkIdExists(groupId);
         personUtil.checkPersonExists(personId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
-
-        personRepository.deletePerson(personId);
+        
+        PersonEntity person = personRepository.getById(personId);
+        person.setActive(false);
+        
+        personRepository.editPerson(personId, person.toPerson());
     }
     
 }
