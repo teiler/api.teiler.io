@@ -48,40 +48,48 @@ describe("Create a Person", function () {
 });
 
 describe("Get people", function () {
-  var groupId;
-  before("create group", function () {
+  var firstPerson, secondPerson;
+  var peopleResponse;
+
+  before("create group with two people", function () {
+    var groupID;
+
     var group = {
       name: "Hello World"
     };
-    return chakram.post(baseUrl + "groups", group)
-    .then(function (response) {
-      groupId = response.body.id;
-    })
-  });
-  var personId1, personId2;
-  before("create people", function () {
-    var person1 = {
+
+    firstPerson = {
       name: "Hans Müller"
     };
-    var person2 = {
+    secondPerson = {
       name: "Heiri Müller"
     };
-    chakram.post(baseUrl + "groups/" + groupId + "/people", person1)
-    .then(function (response) {
-      personId1 = response.body.id
-    });
-    chakram.post(baseUrl + "groups/" + groupId + "/people", person2)
-    .then(function (response) {
-      personId2 = response.body.id
+
+    peopleResponse = chakram.post(baseUrl + "groups", group)
+    .then(function (groupResponse) {
+      groupID = groupResponse.body.id;
+      
+      return chakram.post(baseUrl + "groups/" + groupID + "/people", firstPerson);
+    })
+    .then(function (createPersonResponse) {
+      return chakram.post(baseUrl + "groups/" + groupID + "/people", secondPerson);
+    })
+    .then(function (createPersonResponse) {
+      return chakram.get(baseUrl + "groups/" + groupID + "/people");
     });
   });
 
-  it("should get both people", function () {
-    var response = chakram.get(baseUrl + "groups/" + groupId + "/people");
-    expect(response).to.have.status(200);
-    expect(response).to.have.header("content-type", "application/json");
+  it("should return 200 on success", function () {
+      return expect(peopleResponse).to.have.status(200);
+  });
 
-    // TODO more tests (later Beni, later)
-    return chakram.wait();
-  })
+  it("should return a json header", function () {
+      return expect(peopleResponse).to.have.header("content-type", "application/json");
+  });
+
+  it("should return two people", function() {
+    return expect(peopleResponse).to.have.json(function(json) {
+      expect(json.length).to.equal(2);
+    });
+  });
 });
