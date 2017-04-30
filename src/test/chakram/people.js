@@ -7,32 +7,47 @@ var version = "v1/";
 var baseUrl = hostUrl + version;
 
 describe("Create a Person", function () {
-  var groupId;
-  var updateRef;
-  before("create group", function () {
-    var group = {
+  var group, person;
+  var response;
+
+
+  before("create group and add a person", function () {
+    group = {
       name: "Hello World"
     };
-    return chakram.post(baseUrl + "groups", group)
+    person = {
+      name: "Hans Müller"
+    };
+
+    response =  chakram.post(baseUrl + "groups", group)
     .then(function (response) {
-      groupId = response.body.id;
+      return chakram.post(baseUrl + "groups/" + response.body.id + "/people",
+        person);
     })
   });
 
-  it("should create a person", function () {
-    var person = {
-      name: "Hans Müller"
-    };
-    var response = chakram.post(baseUrl + "groups/" + groupId + "/people",
-        person);
-    expect(response).to.have.status(200);
-    expect(response).to.have.header("content-type", "application/json");
-    expect(response).to.have.json("id", function (id) {
+  it("should return 200 on success", function () {
+      return expect(response).to.have.status(200);
+  });
+
+  it("should return a json header", function () {
+      return expect(response).to.have.header("content-type", "application/json");
+  });
+
+  it("should have returned an id", function () {
+    return expect(response).to.have.json("id", function (id) {
       expect(id).to.be.a.number;
     });
-    expect(response).to.have.json("name", function (url) {
-      expect(url).to.equal("Hans Müller");
+  });
+
+  it("should have returned the correct name", function () {
+    return expect(response).to.have.json("name", function (url) {
+      expect(url).to.equal(person.name);
     });
+  });
+
+  it("should have set the correct times", function () {
+    var updateRef;
     expect(response).to.have.json("update-time", function (updateTime) {
       var check = Date.parse(updateTime);
       expect(check).not.to.be.NaN;
@@ -43,8 +58,7 @@ describe("Create a Person", function () {
       expect(check).not.to.be.NaN;
       expect(updateRef).to.equal(createTime);
     });
-    return chakram.wait();
-  })
+  });
 });
 
 describe("Get people", function () {
@@ -68,7 +82,7 @@ describe("Get people", function () {
     peopleResponse = chakram.post(baseUrl + "groups", group)
     .then(function (groupResponse) {
       groupID = groupResponse.body.id;
-      
+
       return chakram.post(baseUrl + "groups/" + groupID + "/people", firstPerson);
     })
     .then(function (createPersonResponse) {
