@@ -46,12 +46,13 @@ public class GroupService {
         if (activeOnly) {
             group.setPeople(personUtil.filterInactivePeople(group.getPeople()));
         }
+        LOGGER.debug("View Group: {}", group);
         return group;
     }
 
     /**
      * Creates a new Group.
-     * 
+     *
      * @param name Name of the new Group
      * @return Information about the Group
      */
@@ -60,7 +61,7 @@ public class GroupService {
         Group newGroup = new Group(null, name, Currency.CHF);
 
         newGroup.setId(createNewId());
-        LOGGER.debug("New Group: " + newGroup.getName() + ", " + newGroup.getId());
+        LOGGER.debug("New Group: {}", newGroup);
 
         GroupEntity groupEntity = groupRepository.create(newGroup);
         return groupEntity.toGroup();
@@ -69,11 +70,13 @@ public class GroupService {
     public Group editGroup(String groupId, Group changedGroup) {
         groupUtil.checkIdExists(groupId);
         groupUtil.checkCurrencyIsValid(changedGroup);
+        LOGGER.debug("Edit Group: {}", changedGroup);
         return groupRepository.editGroup(groupId, changedGroup).toGroup();
     }
 
     public void deleteGroup(String groupId) {
         groupUtil.checkIdExists(groupId);
+        LOGGER.debug("Delete Group: {}", groupId);
         groupRepository.deleteGroup(groupId);
     }
 

@@ -150,5 +150,9 @@ public class PersonEntity {
     public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime != null ? new Timestamp(updateTime.getTime()) : null;
     }
-    
+
+    @Override
+    public String toString() {
+        return this.toPerson().toString();
+    }
 }
