@@ -1,15 +1,13 @@
 package io.teiler.server.persistence.entities;
 
+import io.teiler.server.dto.Expense;
+import io.teiler.server.dto.TransactionType;
+import io.teiler.server.util.TimeUtil;
 import java.util.stream.Collectors;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
-
-import io.teiler.server.dto.Expense;
-import io.teiler.server.dto.TransactionType;
-import io.teiler.server.util.TimeUtil;
 
 /**
  * Entity representing an Expense-entry of the <code>transaction</code>-table.
@@ -49,6 +47,11 @@ public class ExpenseEntity extends TransactionEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        return this.toExpense().toString();
     }
 
 }
