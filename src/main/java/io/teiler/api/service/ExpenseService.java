@@ -1,11 +1,5 @@
 package io.teiler.api.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.entities.ExpenseEntity;
@@ -13,6 +7,12 @@ import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Expenses.
@@ -21,6 +21,8 @@ import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
  */
 @Service
 public class ExpenseService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExpenseService.class);
 
     @Autowired
     private ExpenseRepository expenseRepository;
@@ -59,7 +61,8 @@ public class ExpenseService {
             share.setTransactionId(expenseEntity.getId());
             profiteerRepository.create(share);
         }
-        
+
+        LOGGER.debug("Create expense: {}", expense);
         return expenseRepository.getById(expenseEntity.getId()).toExpense();
     }
 
@@ -76,6 +79,7 @@ public class ExpenseService {
         expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
         
         ExpenseEntity expense = expenseRepository.getByGroupIdAndExpenseId(groupId, expenseId);
+        LOGGER.debug("View expense: {}", expense);
         return expense.toExpense();
     }
 
@@ -92,6 +96,7 @@ public class ExpenseService {
         groupUtil.checkIdExists(groupId);
         
         List<ExpenseEntity> expenses = expenseRepository.getExpensesByGroupIdAndOrderedByUpdateTimeDesc(groupId, limit);
+        LOGGER.debug("Get last expenses: {}, limit: {}", expenses, limit);
         return expenses.stream().map(ExpenseEntity::toExpense).collect(Collectors.toList());
     }
 
@@ -113,7 +118,8 @@ public class ExpenseService {
 
         // Before we create anything, let's check all the profiteers
         changedExpense.getProfiteers().forEach(p -> transactionUtil.checkProfiteerBelongsToThisGroup(groupId, p.getPerson().getId()));
-        
+
+        LOGGER.debug("Edit expense: {}", changedExpense);
         expenseRepository.editExpense(expenseId, changedExpense);
         ExpenseEntity expenseEntity = expenseRepository.getById(expenseId);
         
@@ -125,6 +131,7 @@ public class ExpenseService {
                     changedShare.getPerson().getId());
                 
                 // does exist and was not removed => update the existing one
+                LOGGER.debug("-- Updating Profiteer: {}", changedShare);
                 ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(expenseEntity.getId(), changedShare.getPerson().getId());
                 profiteerRepository.editProfiteer(profiteerEntity.getId(), changedShare);
                 
@@ -132,6 +139,7 @@ public class ExpenseService {
                 removedProfiteerPersonIds.remove(changedShare.getPerson().getId());
             }
             catch (ProfiteerNotFoundException e) {
+                LOGGER.debug("-- Adding Profiteer: {}", changedShare);
                 // does not yet exist => create a new one
                 changedShare.setTransactionId(expenseEntity.getId());
                 profiteerRepository.create(changedShare);
@@ -139,6 +147,7 @@ public class ExpenseService {
         }
         
         // remove all the remaining profiteers as they were not included in the input and thus shall be removed
+        LOGGER.debug("-- Deleting Profiteers: {}", removedProfiteerPersonIds);
         profiteerRepository.deleteProfiteerByTransactionIdAndProfiteerPersonIdList(expenseEntity.getId(), removedProfiteerPersonIds);
         
         return expenseRepository.getById(expenseEntity.getId()).toExpense();
@@ -155,7 +164,7 @@ public class ExpenseService {
         groupUtil.checkIdExists(groupId);
         expenseUtil.checkExpenseExists(expenseId);
         expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
-
+        LOGGER.debug("Delete expense: {}", expenseId);
         expenseRepository.deleteExpense(expenseId);
     }
     

@@ -167,5 +167,10 @@ public class GroupEntity {
     public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime != null ? new Timestamp(updateTime.getTime()) : null;
     }
+
+    @Override
+    public String toString() {
+        return this.toGroup().toString();
+    }
     
 }

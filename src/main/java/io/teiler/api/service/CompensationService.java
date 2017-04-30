@@ -1,11 +1,5 @@
 package io.teiler.api.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.dto.Person;
 import io.teiler.server.dto.Profiteer;
@@ -14,6 +8,12 @@ import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.CompensationRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Compensations.
@@ -22,6 +22,8 @@ import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
  */
 @Service
 public class CompensationService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompensationService.class);
 
     @Autowired
     private CompensationRepository compensationRepository;
@@ -59,6 +61,7 @@ public class CompensationService {
                 compensationEntity.getId(), profiteerPerson, compensation.getAmount());
         profiteerRepository.create(profiteer);
 
+        LOGGER.debug("Create compensation{}", compensation);
         return compensationRepository.getById(compensationEntity.getId()).toCompensation();
     }
 
@@ -75,6 +78,7 @@ public class CompensationService {
         compensationUtil.checkCompensationBelongsToThisGroup(groupId, compensationId);
 
         CompensationEntity compensation = compensationRepository.getByGroupIdAndCompensationId(groupId, compensationId);
+        LOGGER.debug("View compensation: {}", compensation);
         return compensation.toCompensation();
     }
 
@@ -90,8 +94,10 @@ public class CompensationService {
     public List<Compensation> getLastCompensations(String groupId, long limit) {
         groupUtil.checkIdExists(groupId);
 
-        List<CompensationEntity> compensation = compensationRepository.getCompensationsByGroupIdAndOrderedByUpdateTimeDesc(groupId, limit);
-        return compensation.stream().map(CompensationEntity::toCompensation).collect(Collectors.toList());
+        List<CompensationEntity> compensations = compensationRepository
+            .getCompensationsByGroupIdAndOrderedByUpdateTimeDesc(groupId, limit);
+        LOGGER.debug("Get last compensations: {}, limit: {}", compensations, limit);
+        return compensations.stream().map(CompensationEntity::toCompensation).collect(Collectors.toList());
     }
 
     /**
@@ -116,6 +122,7 @@ public class CompensationService {
         transactionUtil
             .checkProfiteerBelongsToThisGroup(groupId, changedProfiteerPerson.getId());
 
+        LOGGER.debug("Edit compensation{}", changedCompensation);
         compensationRepository.editCompensation(compensationId, changedCompensation);
         CompensationEntity compensationEntity = compensationRepository.getById(compensationId);
         
@@ -125,21 +132,25 @@ public class CompensationService {
                     compensationEntity.getId(), changedProfiteerPerson.getId());
 
             // profiteer was not changed => update
+            LOGGER.debug("-- Updating Profiteer: {}", changedProfiteerPerson);
             ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(
                     compensationEntity.getId(), changedProfiteerPerson.getId());
-            
-            Profiteer changeddProfiteer = new Profiteer(
+
+            Profiteer changedProfiteer = new Profiteer(
                     compensationEntity.getId(), changedProfiteerPerson, changedCompensation.getAmount());
-            profiteerRepository.editProfiteer(profiteerEntity.getId(), changeddProfiteer);
+            profiteerRepository.editProfiteer(profiteerEntity.getId(), changedProfiteer);
         }
         catch (ProfiteerNotFoundException e) {
             // does not yet exist => delete the existing one and create a new one
+
+            LOGGER.debug("-- Removing Profiteer: {}", compensationEntity.getProfiteer());
             profiteerRepository.deleteProfiteerByTransactionIdAndProfiteerPersonId(
                     compensationEntity.getId(), compensationEntity.getProfiteer().getPerson().getId());
-            
-            Profiteer changeddProfiteer = new Profiteer(
+
+            LOGGER.debug("-- Adding Profiteer: {}", changedProfiteerPerson);
+            Profiteer changedProfiteer = new Profiteer(
                     compensationEntity.getId(), changedProfiteerPerson, changedCompensation.getAmount());
-            profiteerRepository.create(changeddProfiteer);
+            profiteerRepository.create(changedProfiteer);
         }
 
         return compensationRepository.getById(compensationEntity.getId()).toCompensation();
@@ -156,7 +167,7 @@ public class CompensationService {
         groupUtil.checkIdExists(groupId);
         compensationUtil.checkCompensationExists(compensationId);
         compensationUtil.checkCompensationBelongsToThisGroup(groupId, compensationId);
-
+        LOGGER.debug("Delete compensation: {}", compensationId);
         compensationRepository.deleteCompensation(compensationId);
     }
 
