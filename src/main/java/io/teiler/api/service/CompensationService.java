@@ -61,7 +61,7 @@ public class CompensationService {
                 compensationEntity.getId(), profiteerPerson, compensation.getAmount());
         profiteerRepository.create(profiteer);
 
-        LOGGER.debug("Create compensation{}", compensation);
+        LOGGER.debug("Create compensation {}", compensation);
         return compensationRepository.getById(compensationEntity.getId()).toCompensation();
     }
 
@@ -122,7 +122,7 @@ public class CompensationService {
         transactionUtil
             .checkProfiteerBelongsToThisGroup(groupId, changedProfiteerPerson.getId());
 
-        LOGGER.debug("Edit compensation{}", changedCompensation);
+        LOGGER.debug("Edit compensation {}", changedCompensation);
         compensationRepository.editCompensation(compensationId, changedCompensation);
         CompensationEntity compensationEntity = compensationRepository.getById(compensationId);
         
