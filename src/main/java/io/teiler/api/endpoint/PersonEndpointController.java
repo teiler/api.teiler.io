@@ -13,6 +13,7 @@ import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import io.teiler.server.util.exceptions.PersonInactiveException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,12 @@ public class PersonEndpointController implements EndpointController {
 
         exception(PeopleNameConflictException.class, (e, request, response) -> {
             response.status(409);
+            Error error = new Error(e.getMessage());
+            response.body(gson.toJson(error));
+        });
+
+        exception(PersonInactiveException.class, (e, request, response) -> {
+            response.status(410);
             Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
         });
