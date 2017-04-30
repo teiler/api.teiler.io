@@ -50,10 +50,12 @@ public class CompensationService {
     public Compensation createCompensation(Compensation compensation, String groupId) {
         groupUtil.checkIdExists(groupId);
         transactionUtil.checkPayerBelongsToThisGroup(groupId, compensation.getPayer().getId());
+        transactionUtil.checkPayerIsActive(compensation.getPayer().getId());
 
         Person profiteerPerson = compensation.getProfiteer();
         compensationUtil.checkPayerAndProfiteerAreNotEqual(compensation, profiteerPerson);
         transactionUtil.checkProfiteerBelongsToThisGroup(groupId, profiteerPerson.getId());
+        transactionUtil.checkProfiteerIsActive(profiteerPerson.getId());
 
         CompensationEntity compensationEntity = compensationRepository.create(compensation);
         

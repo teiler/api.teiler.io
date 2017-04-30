@@ -1,7 +1,16 @@
 package io.teiler.api.service;
 
+import io.teiler.server.Tylr;
+import io.teiler.server.dto.Compensation;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.util.exceptions.PayerInactiveException;
+import io.teiler.server.util.exceptions.PayerNotFoundException;
+import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
+import io.teiler.server.util.exceptions.ProfiteerInactiveException;
+import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import io.teiler.server.util.exceptions.TransactionNotFoundException;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,15 +19,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import io.teiler.server.Tylr;
-import io.teiler.server.dto.Compensation;
-import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
-import io.teiler.server.util.exceptions.PayerNotFoundException;
-import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
-import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -195,6 +195,30 @@ public class CompensationServiceTest {
         compensationService.deleteCompensation(testGroup.getId(), testCompensationResponse.getId());
 
         compensationService.getCompensation(testGroup.getId(), testCompensationResponse.getId());
+    }
+
+    @Test(expected = PayerInactiveException.class)
+    public void testCreateCompensationWithInactivePayer() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER);
+        Person testProfiteerPerson = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
+        personService.deactivatePerson(testGroup.getId(), testPayer.getId());
+
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer,
+            testProfiteerPerson);
+        compensationService.createCompensation(testCompensation, testGroup.getId());
+    }
+
+    @Test(expected = ProfiteerInactiveException.class)
+    public void testCreateCompensationWithInactiveProfiteer() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER);
+        Person testProfiteerPerson = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
+        personService.deactivatePerson(testGroup.getId(), testProfiteerPerson.getId());
+
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer,
+            testProfiteerPerson);
+        compensationService.createCompensation(testCompensation, testGroup.getId());
     }
 
 }
