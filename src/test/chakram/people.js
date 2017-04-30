@@ -8,7 +8,8 @@ var baseUrl = hostUrl + version;
 
 describe("Create a Person", function () {
   var group, person;
-  var response;
+  var groupID;
+  var postResponse;
 
 
   before("create group and add a person", function () {
@@ -19,45 +20,53 @@ describe("Create a Person", function () {
       name: "Hans Müller"
     };
 
-    response =  chakram.post(baseUrl + "groups", group)
+    postResponse =  chakram.post(baseUrl + "groups", group)
     .then(function (response) {
-      return chakram.post(baseUrl + "groups/" + response.body.id + "/people",
-        person);
-    })
+      groupID = response.body.id;
+      return chakram.post(baseUrl + "groups/" + groupID + "/people", person);
+    });
   });
 
   it("should return 200 on success", function () {
-      return expect(response).to.have.status(200);
+      return expect(postResponse).to.have.status(200);
   });
 
   it("should return a json header", function () {
-      return expect(response).to.have.header("content-type", "application/json");
+      return expect(postResponse).to.have.header("content-type", "application/json");
   });
 
   it("should have returned an id", function () {
-    return expect(response).to.have.json("id", function (id) {
+    return expect(postResponse).to.have.json("id", function (id) {
       expect(id).to.be.a.number;
     });
   });
 
   it("should have returned the correct name", function () {
-    return expect(response).to.have.json("name", function (url) {
+    return expect(postResponse).to.have.json("name", function (url) {
       expect(url).to.equal(person.name);
     });
   });
 
   it("should have set the correct times", function () {
     var updateRef;
-    expect(response).to.have.json("update-time", function (updateTime) {
+    expect(postResponse).to.have.json("update-time", function (updateTime) {
       var check = Date.parse(updateTime);
       expect(check).not.to.be.NaN;
       updateRef = updateTime;
     });
-    expect(response).to.have.json("create-time", function (createTime) {
+    expect(postResponse).to.have.json("create-time", function (createTime) {
       var check = Date.parse(createTime);
       expect(check).not.to.be.NaN;
       expect(updateRef).to.equal(createTime);
     });
+  });
+
+  it("should return an error if a person with the same name exists", function () {
+    var response = chakram.post(baseUrl + "groups/" + groupID + "/people", person);
+    expect(response).to.have.status(409);
+    return expect(response).to.have.json("error", function (error) {
+      expect(error[0]).to.equal("PEOPLE_NAME_CONFLICT");
+    });  
   });
 });
 
