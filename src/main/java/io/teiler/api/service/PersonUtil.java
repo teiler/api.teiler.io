@@ -65,7 +65,7 @@ public class PersonUtil {
     }
 
     public void checkPersonIsActive(int personId) throws PersonInactiveException {
-        if (personRepository.getById(personId).getActive() == false) {
+        if (!personRepository.getById(personId).getActive()) {
             throw new PersonInactiveException();
         }
     }
