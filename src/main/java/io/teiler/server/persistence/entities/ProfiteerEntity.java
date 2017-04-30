@@ -139,5 +139,9 @@ public class ProfiteerEntity {
     public void setCreateTime(Timestamp createTime) {
         this.createTime = updateTime != null ? new Timestamp(createTime.getTime()) : null;
     }
-    
+
+    @Override
+    public String toString() {
+        return this.toProfiteer().toString();
+    }
 }

@@ -42,4 +42,9 @@ public class CompensationEntity extends TransactionEntity {
         return getProfiteers().get(0);
     }
 
+    @Override
+    public String toString() {
+        return this.toCompensation().toString();
+    }
+
 }

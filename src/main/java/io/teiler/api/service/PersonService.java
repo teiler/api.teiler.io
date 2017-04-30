@@ -5,6 +5,8 @@ import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import java.util.LinkedList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersonService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
     /* Spring Components (Services/Controller) */
     @Autowired
     private GroupUtil groupUtil;
@@ -39,6 +42,7 @@ public class PersonService {
         personUtil.checkNamesAreUnique(groupId, name);
 
         Person newPerson = new Person(null, name);
+        LOGGER.debug("Create person: {}", newPerson);
         PersonEntity personEntity = personRepository.create(groupId, newPerson);
 
         return personEntity.toPerson();
@@ -54,13 +58,16 @@ public class PersonService {
         if (activeOnly) {
             people = personUtil.filterInactivePeople(people);
         }
+        LOGGER.debug("View people: {}", people);
         return people;
     }
 
     public Person getPerson(String groupId, int personId) {
         groupUtil.checkIdExists(groupId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
-        return personRepository.getById(personId).toPerson();
+        Person person = personRepository.getById(personId).toPerson();
+        LOGGER.debug("View person: {}", person);
+        return person;
     }
 
     public Person editPerson(String groupId, int personId, Person changedPerson) {
@@ -75,6 +82,7 @@ public class PersonService {
          *      be set through the corresponding service) 
          */
 
+        LOGGER.debug("Edit person: {}", changedPerson);
         return personRepository.editPerson(personId, changedPerson).toPerson();
     }
 
@@ -85,7 +93,7 @@ public class PersonService {
         
         PersonEntity person = personRepository.getById(personId);
         person.setActive(false);
-        
+        LOGGER.debug("Deactivate Person: {}", personId);
         personRepository.editPerson(personId, person.toPerson());
     }
     
