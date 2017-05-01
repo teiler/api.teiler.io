@@ -1,4 +1,4 @@
-package io.teiler.server.endpoint;
+package io.teiler.server.endpoints;
 
 import static spark.Spark.delete;
 import static spark.Spark.exception;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import com.google.gson.Gson;
 
 import io.teiler.server.dto.Compensation;
-import io.teiler.server.service.CompensationService;
+import io.teiler.server.services.CompensationService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
