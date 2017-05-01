@@ -23,7 +23,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import io.teiler.server.util.service.enums.TransactionType;
+import io.teiler.server.util.enums.TransactionType;
 
 /**
  * Entity representing an entry of the <code>transaction</code>-table.

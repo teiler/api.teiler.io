@@ -3,7 +3,7 @@ package io.teiler.server.persistence.entities;
 import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
 import io.teiler.server.util.TimeUtil;
-import io.teiler.server.util.service.enums.Currency;
+import io.teiler.server.util.enums.Currency;
 
 import java.sql.Timestamp;
 import java.time.Instant;
