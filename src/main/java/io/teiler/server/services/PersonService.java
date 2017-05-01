@@ -1,8 +1,11 @@
-package io.teiler.server.service;
+package io.teiler.server.services;
 
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
+import io.teiler.server.util.service.GroupUtil;
+import io.teiler.server.util.service.PersonUtil;
+
 import java.util.LinkedList;
 import java.util.List;
 import org.slf4j.Logger;

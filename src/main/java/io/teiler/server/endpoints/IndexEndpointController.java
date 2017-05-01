@@ -1,4 +1,4 @@
-package io.teiler.server.endpoint;
+package io.teiler.server.endpoints;
 
 import static spark.Spark.get;
 

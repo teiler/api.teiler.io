@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import io.teiler.server.endpoint.EndpointController;
+import io.teiler.server.endpoints.EndpointController;
 
 /**
  * Holds the configuration and programmatic setup required for Spark.

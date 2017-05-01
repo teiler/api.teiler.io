@@ -1,4 +1,4 @@
-package io.teiler.server.endpoint;
+package io.teiler.server.endpoints;
 
 /**
  * This interface provides a common base for all REST-Endpoint-Controllers.

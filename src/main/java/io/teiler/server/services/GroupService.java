@@ -1,4 +1,4 @@
-package io.teiler.server.service;
+package io.teiler.server.services;
 
 import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
@@ -7,6 +7,9 @@ import io.teiler.server.persistence.repositories.GroupRepository;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.groupid.IdGenerator;
 import io.teiler.server.util.groupid.RandomGeneratorWithAlphabet;
+import io.teiler.server.util.service.GroupUtil;
+import io.teiler.server.util.service.PersonUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

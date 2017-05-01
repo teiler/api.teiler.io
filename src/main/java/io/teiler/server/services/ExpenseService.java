@@ -1,4 +1,4 @@
-package io.teiler.server.service;
+package io.teiler.server.services;
 
 import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Profiteer;
@@ -7,6 +7,10 @@ import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import io.teiler.server.util.service.ExpenseUtil;
+import io.teiler.server.util.service.GroupUtil;
+import io.teiler.server.util.service.TransactionUtil;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
