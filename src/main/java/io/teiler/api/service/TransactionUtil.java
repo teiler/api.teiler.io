@@ -1,8 +1,11 @@
 package io.teiler.api.service;
 
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
+import io.teiler.server.util.exceptions.PayerInactiveException;
 import io.teiler.server.util.exceptions.PayerNotFoundException;
+import io.teiler.server.util.exceptions.PersonInactiveException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
+import io.teiler.server.util.exceptions.ProfiteerInactiveException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,5 +67,32 @@ public class TransactionUtil {
             throw new ProfiteerNotFoundException();
         }
     }
-    
+
+    /**
+     * Checks if the payer is active
+     *
+     * @param payerId Id of the payer
+     * @throws PayerInactiveException The payer is not active
+     */
+    public void checkPayerIsActive(int payerId) throws PayerInactiveException {
+        try {
+            personUtil.checkPersonIsActive(payerId);
+        } catch (PersonInactiveException e) {
+            throw new PayerInactiveException();
+        }
+    }
+
+    /**
+     * Checks if the profiteer is active
+     *
+     * @param profiteerId Id of the profiteer
+     * @throws io.teiler.server.util.exceptions.ProfiteerInactiveException The payer is not active
+     */
+    public void checkProfiteerIsActive(int profiteerId) throws ProfiteerInactiveException {
+        try {
+            personUtil.checkPersonIsActive(profiteerId);
+        } catch (PersonInactiveException e) {
+            throw new ProfiteerInactiveException();
+        }
+    }
 }

@@ -75,6 +75,7 @@ public class PersonService {
         personUtil.checkPersonExists(personId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
         personUtil.checkNamesAreUnique(groupId, changedPerson.getName());
+        personUtil.checkPersonIsActive(personId);
         
         /* TODO
          *   - If personId = changedPerson.id -> return person with personId

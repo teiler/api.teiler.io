@@ -5,6 +5,7 @@ import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import io.teiler.server.util.exceptions.PersonInactiveException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import java.util.List;
 import org.junit.Assert;
@@ -38,6 +39,15 @@ public class PersonServiceTest {
     @Test(expected = NotAuthorizedException.class)
     public void testReturnNotAuthorizedWhenCreatingPersonWithInvalidGroupId() {
         personService.createPerson("", FIRST_PERSON_NAME);
+    }
+
+    @Test
+    public void testDontReturnPeopleNameConflictWhenDeactivated() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person firstPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.deactivatePerson(groupId, firstPerson.getId());
+        personService.createPerson(groupId, FIRST_PERSON_NAME);
     }
 
     @Test(expected = PeopleNameConflictException.class)
@@ -162,6 +172,16 @@ public class PersonServiceTest {
         personService.deactivatePerson(groupId, firstPerson.getId());
         List<Person> people = personService.getPeople(groupId, 20, false);
         Assert.assertEquals(2, people.size());
+    }
+
+    @Test(expected = PersonInactiveException.class)
+    public void testCannotEditInactivePerson() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person firstPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.deactivatePerson(groupId, firstPerson.getId());
+        firstPerson.setName(SECOND_PERSON_NAME);
+        personService.editPerson(groupId, firstPerson.getId(), firstPerson);
     }
 
 }

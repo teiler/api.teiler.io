@@ -49,9 +49,11 @@ public class ExpenseService {
         groupUtil.checkIdExists(groupId);
         transactionUtil.checkPayerBelongsToThisGroup(groupId, expense.getPayer().getId());
         expenseUtil.checkSharesAddUp(expense.getAmount(), expense.getProfiteers());
+        transactionUtil.checkPayerIsActive(expense.getPayer().getId());
 
         // Before we create anything, let's check all the profiteers
         for(Profiteer share : expense.getProfiteers()) {
+            transactionUtil.checkProfiteerIsActive(share.getPerson().getId());
             transactionUtil.checkProfiteerBelongsToThisGroup(groupId, share.getPerson().getId());
         }
 
