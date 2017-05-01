@@ -1,8 +1,18 @@
 package io.teiler.api.service;
 
+import io.teiler.server.Tylr;
+import io.teiler.server.dto.Expense;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.dto.Profiteer;
+import io.teiler.server.util.exceptions.PayerInactiveException;
+import io.teiler.server.util.exceptions.PayerNotFoundException;
+import io.teiler.server.util.exceptions.ProfiteerInactiveException;
+import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import io.teiler.server.util.exceptions.SharesNotAddingUpException;
+import io.teiler.server.util.exceptions.TransactionNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,16 +21,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import io.teiler.server.Tylr;
-import io.teiler.server.dto.Expense;
-import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
-import io.teiler.server.dto.Profiteer;
-import io.teiler.server.util.exceptions.PayerNotFoundException;
-import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import io.teiler.server.util.exceptions.SharesNotAddingUpException;
-import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -315,6 +315,42 @@ public class ExpenseServiceTest {
         expenseService.deleteExpense(testGroup.getId(), testExpenseResponse.getId());
 
         expenseService.getExpense(testGroup.getId(), testExpenseResponse.getId());
+    }
+
+    @Test(expected = PayerInactiveException.class)
+    public void testCreateExpenseWithInactivePayer() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
+        Person testProfiteer = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
+
+        personService.deactivatePerson(testGroup.getId(), testPayer.getId());
+
+        List<Profiteer> testProfiteers = new LinkedList<>();
+        testProfiteers.add(new Profiteer(null, testPayer, TEST_PAYER_AND_PROFITEER_SHARE));
+        testProfiteers.add(new Profiteer(null, testProfiteer, TEST_PROFITEER_1_SHARE));
+
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE +
+            TEST_PROFITEER_1_SHARE, testPayer, TEST_EXPENSE_TITLE, testProfiteers);
+
+        expenseService.createExpense(testExpense, testGroup.getId());
+    }
+
+    @Test(expected = ProfiteerInactiveException.class)
+    public void testCreateExpenseWithInactiveProfiteer() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
+        Person testProfiteer = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
+
+        personService.deactivatePerson(testGroup.getId(), testProfiteer.getId());
+
+        List<Profiteer> testProfiteers = new LinkedList<>();
+        testProfiteers.add(new Profiteer(null, testPayer, TEST_PAYER_AND_PROFITEER_SHARE));
+        testProfiteers.add(new Profiteer(null, testProfiteer, TEST_PROFITEER_1_SHARE));
+
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE +
+            TEST_PROFITEER_1_SHARE, testPayer, TEST_EXPENSE_TITLE, testProfiteers);
+
+        expenseService.createExpense(testExpense, testGroup.getId());
     }
 
 }
