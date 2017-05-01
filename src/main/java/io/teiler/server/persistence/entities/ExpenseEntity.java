@@ -1,8 +1,9 @@
 package io.teiler.server.persistence.entities;
 
 import io.teiler.server.dto.Expense;
-import io.teiler.server.dto.TransactionType;
 import io.teiler.server.util.TimeUtil;
+import io.teiler.server.util.service.enums.TransactionType;
+
 import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;

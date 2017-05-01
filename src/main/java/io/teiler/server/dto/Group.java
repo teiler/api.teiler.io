@@ -1,6 +1,9 @@
 package io.teiler.server.dto;
 
 import com.google.gson.annotations.SerializedName;
+
+import io.teiler.server.util.service.enums.Currency;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
