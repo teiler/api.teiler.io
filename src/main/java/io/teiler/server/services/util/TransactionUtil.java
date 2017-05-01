@@ -1,4 +1,4 @@
-package io.teiler.server.util.service;
+package io.teiler.server.services.util;
 
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.PayerInactiveException;

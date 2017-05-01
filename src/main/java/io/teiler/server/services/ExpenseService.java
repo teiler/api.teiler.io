@@ -6,10 +6,10 @@ import io.teiler.server.persistence.entities.ExpenseEntity;
 import io.teiler.server.persistence.entities.ProfiteerEntity;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
+import io.teiler.server.services.util.ExpenseUtil;
+import io.teiler.server.services.util.GroupUtil;
+import io.teiler.server.services.util.TransactionUtil;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import io.teiler.server.util.service.ExpenseUtil;
-import io.teiler.server.util.service.GroupUtil;
-import io.teiler.server.util.service.TransactionUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package io.teiler.server.util.service;
+package io.teiler.server.services.util;
 
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
