@@ -18,6 +18,7 @@ import io.teiler.server.services.CompensationService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
+import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
@@ -98,7 +99,7 @@ public class CompensationEndpointController implements EndpointController {
             response.body(gson.toJson(error));
         });
         
-        exception(PersonNotFoundException.class, (e, request, response) -> {
+        exception(PayerProfiteerConflictException.class, (e, request, response) -> {
             response.status(409);
             Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
