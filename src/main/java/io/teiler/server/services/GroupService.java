@@ -1,6 +1,5 @@
 package io.teiler.server.services;
 
-import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.repositories.GroupRepository;
@@ -9,6 +8,7 @@ import io.teiler.server.util.groupid.IdGenerator;
 import io.teiler.server.util.groupid.RandomGeneratorWithAlphabet;
 import io.teiler.server.util.service.GroupUtil;
 import io.teiler.server.util.service.PersonUtil;
+import io.teiler.server.util.service.enums.Currency;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
