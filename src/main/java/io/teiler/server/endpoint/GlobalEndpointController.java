@@ -1,4 +1,4 @@
-package io.teiler.api.endpoint;
+package io.teiler.server.endpoint;
 
 import static spark.Spark.before;
 import static spark.Spark.exception;
