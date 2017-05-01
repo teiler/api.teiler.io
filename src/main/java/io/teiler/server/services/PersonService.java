@@ -3,8 +3,8 @@ package io.teiler.server.services;
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
-import io.teiler.server.util.service.GroupUtil;
-import io.teiler.server.util.service.PersonUtil;
+import io.teiler.server.services.util.GroupUtil;
+import io.teiler.server.services.util.PersonUtil;
 
 import java.util.LinkedList;
 import java.util.List;

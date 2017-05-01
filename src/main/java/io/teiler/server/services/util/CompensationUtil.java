@@ -1,4 +1,4 @@
-package io.teiler.server.util.service;
+package io.teiler.server.services.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
