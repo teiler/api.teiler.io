@@ -1,4 +1,4 @@
-package io.teiler.server.util.service.enums;
+package io.teiler.server.util.enums;
 
 import com.google.gson.annotations.SerializedName;
 
