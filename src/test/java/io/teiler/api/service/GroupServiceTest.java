@@ -1,11 +1,13 @@
 package io.teiler.api.service;
 
 import io.teiler.server.Tylr;
-import io.teiler.server.dto.Currency;
 import io.teiler.server.dto.Group;
+import io.teiler.server.services.GroupService;
+import io.teiler.server.util.enums.Currency;
 import io.teiler.server.util.exceptions.CurrencyNotValidException;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.groupid.RandomGenerator;
+
 import java.lang.reflect.Field;
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package io.teiler.api.endpoint;
+package io.teiler.server.endpoints;
 
 import static spark.Spark.delete;
 import static spark.Spark.exception;
@@ -7,8 +7,9 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 
 import com.google.gson.Gson;
-import io.teiler.api.service.ExpenseService;
+
 import io.teiler.server.dto.Expense;
+import io.teiler.server.services.ExpenseService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalize;
