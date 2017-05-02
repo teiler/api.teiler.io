@@ -27,6 +27,8 @@ CREATE TABLE "person" (
   PRIMARY KEY ("id")
 );
 
+CREATE UNIQUE INDEX unique_name_group ON person (name, "group") WHERE active = true;
+
 CREATE TABLE "transaction" (
   "id"  SERIAL,
   "title" VARCHAR(50),
