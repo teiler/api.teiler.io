@@ -1,5 +1,6 @@
 package io.teiler.server.services.util;
 
+import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,5 +56,17 @@ public class CompensationUtil {
             throw new PayerProfiteerConflictException();
         }
     }
-    
+
+    /**
+     * Checks whether the values are valid.
+     *
+     * @param compensation The compensation to check
+     * @throws ValueLessThanOrEqualToZeroException Profiteer and payer are equal in that compensation
+     */
+    public void checkValues(Compensation compensation)
+            throws ValueLessThanOrEqualToZeroException {
+        if (compensation.getAmount() <= 0) {
+            throw new ValueLessThanOrEqualToZeroException();
+        }
+    }
 }
