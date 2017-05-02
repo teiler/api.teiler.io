@@ -53,6 +53,7 @@ public class CompensationService {
      */
     public Compensation createCompensation(Compensation compensation, String groupId) {
         groupUtil.checkIdExists(groupId);
+        compensationUtil.checkValues(compensation);
         transactionUtil.checkPayerBelongsToThisGroup(groupId, compensation.getPayer().getId());
         transactionUtil.checkPayerIsActive(compensation.getPayer().getId());
 

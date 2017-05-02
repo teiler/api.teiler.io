@@ -51,6 +51,7 @@ public class ExpenseService {
      */
     public Expense createExpense(Expense expense, String groupId) {
         groupUtil.checkIdExists(groupId);
+        expenseUtil.checkValues(expense);
         transactionUtil.checkPayerBelongsToThisGroup(groupId, expense.getPayer().getId());
         expenseUtil.checkSharesAddUp(expense.getAmount(), expense.getProfiteers());
         transactionUtil.checkPayerIsActive(expense.getPayer().getId());
@@ -117,6 +118,7 @@ public class ExpenseService {
      */
     public Expense editExpense(String groupId, int expenseId, Expense changedExpense) {
         groupUtil.checkIdExists(groupId);
+        expenseUtil.checkValues(changedExpense);
         expenseUtil.checkExpenseExists(expenseId);
         expenseUtil.checkExpenseBelongsToThisGroup(groupId, expenseId);
         transactionUtil.checkPayerBelongsToThisGroup(groupId, changedExpense.getPayer().getId());
