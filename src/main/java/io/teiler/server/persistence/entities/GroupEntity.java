@@ -1,14 +1,11 @@
 package io.teiler.server.persistence.entities;
 
-import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
-import io.teiler.server.util.TimeUtil;
-import io.teiler.server.util.enums.Currency;
-
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,6 +18,11 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.util.TimeUtil;
+import io.teiler.server.util.enums.Currency;
 
 /**
  * Entity representing an entry of the <code>group</code>-table.
@@ -66,9 +68,9 @@ public class GroupEntity {
     public GroupEntity(Group group) {
         List<PersonEntity> peopleEntities = new LinkedList<>();
         if (group.getPeople() != null) {
-            for (Person person : group.getPeople()) {
-                peopleEntities.add(new PersonEntity(person));
-            }
+            peopleEntities =
+                group.getPeople().stream().map(p -> new PersonEntity(p)).collect(Collectors.toList());
+            
         } else {
             peopleEntities = null;
         }
@@ -101,20 +103,19 @@ public class GroupEntity {
      */
     public Group toGroup() {
         List<Person> dtoPeople = new LinkedList<>();
-        if (this.getPeople() != null) {
-            for (PersonEntity personEntity : this.getPeople()) {
-                dtoPeople.add(personEntity.toPerson());
-            }
+        if (getPeople() != null) {
+            dtoPeople =
+                getPeople().stream().map(PersonEntity::toPerson).collect(Collectors.toList());
         } else {
             dtoPeople = null;
         }
         return new Group(
-            this.getId(),
-            this.getName(),
-            this.getCurrency(),
+            getId(),
+            getName(),
+            getCurrency(),
             dtoPeople,
-            TimeUtil.convertToLocalDateTime(this.getUpdateTime()),
-            TimeUtil.convertToLocalDateTime(this.getCreateTime()));
+            TimeUtil.convertToLocalDateTime(getUpdateTime()),
+            TimeUtil.convertToLocalDateTime(getCreateTime()));
     }
 
     public void addPerson(PersonEntity person) {
