@@ -354,14 +354,9 @@ public class ExpenseServiceTest {
 
     @Test(expected = ValueLessThanOrEqualToZeroException.class)
     public void testCreateExpenseWithLessThanOrEqualToZero() {
-        final int SPECAL_TEST_PROFITEER_1_SHARE = -10;
-
-
-
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
         Person testProfiteer1 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
-        Person testProfiteer2 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_2);
 
         List<Profiteer> testProfiteers = new LinkedList<>();
         testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, 0));
