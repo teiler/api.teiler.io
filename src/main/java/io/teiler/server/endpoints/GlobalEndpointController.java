@@ -39,7 +39,7 @@ public class GlobalEndpointController implements EndpointController {
         exception(Exception.class, (e, request, response) -> {
             response.status(500);
             Error error = new Error("GENERAL_SERVER_ERROR");
-            e.printStackTrace();
+            LOGGER.error("GENERAL_SERVER_ERROR", e);
             response.body(gson.toJson(error));
         });
     }
