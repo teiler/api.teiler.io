@@ -8,12 +8,8 @@ import io.teiler.server.dto.Profiteer;
 import io.teiler.server.services.ExpenseService;
 import io.teiler.server.services.GroupService;
 import io.teiler.server.services.PersonService;
-import io.teiler.server.util.exceptions.PayerInactiveException;
-import io.teiler.server.util.exceptions.PayerNotFoundException;
-import io.teiler.server.util.exceptions.ProfiteerInactiveException;
-import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import io.teiler.server.util.exceptions.SharesNotAddingUpException;
-import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import io.teiler.server.util.exceptions.*;
+
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.Assert;
@@ -356,4 +352,43 @@ public class ExpenseServiceTest {
         expenseService.createExpense(testExpense, testGroup.getId());
     }
 
+    @Test(expected = ValueLessThanOrEqualToZeroException.class)
+    public void testCreateExpenseWithLessThanOrEqualToZero() {
+        final int SPECAL_TEST_PROFITEER_1_SHARE = -10;
+
+
+
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
+        Person testProfiteer1 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
+        Person testProfiteer2 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_2);
+
+        List<Profiteer> testProfiteers = new LinkedList<>();
+        testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, 0));
+        testProfiteers.add(new Profiteer(null, testProfiteer1, -10));
+
+        Expense testExpense = new Expense(null, -10, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+
+        expenseService.createExpense(testExpense, testGroup.getId());
+        Assert.fail();
+    }
+
+    @Test(expected = ValueLessThanOrEqualToZeroException.class)
+    public void testCreateExpenseWithShareEqualToZero() {
+
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER_AND_PROFITEER);
+        Person testProfiteer1 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
+        Person testProfiteer2 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_2);
+
+        List<Profiteer> testProfiteers = new LinkedList<>();
+        testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, 30));
+        testProfiteers.add(new Profiteer(null, testProfiteer1, 0));
+        testProfiteers.add(new Profiteer(null, testProfiteer2, 5));
+
+        Expense testExpense = new Expense(null, 35, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+
+        expenseService.createExpense(testExpense, testGroup.getId());
+        Assert.fail();
+    }
 }
