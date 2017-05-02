@@ -46,3 +46,4 @@ notifications:
     - https://fathomless-fjord-24024.herokuapp.com/notify?secret=9zUXU4U9qL9xzRy3C0frJPCe9mRPiGlO3cJMfJYoln45j32ANX
     on_success: change
     on_failure: always
+    on_cancel: never
