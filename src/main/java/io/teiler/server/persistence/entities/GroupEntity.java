@@ -69,7 +69,7 @@ public class GroupEntity {
         List<PersonEntity> peopleEntities = new LinkedList<>();
         if (group.getPeople() != null) {
             peopleEntities =
-                group.getPeople().stream().map(p -> new PersonEntity(p)).collect(Collectors.toList());
+                group.getPeople().stream().map(PersonEntity::new).collect(Collectors.toList());
             
         } else {
             peopleEntities = null;
@@ -102,7 +102,7 @@ public class GroupEntity {
      * @return {@link Group}
      */
     public Group toGroup() {
-        List<Person> dtoPeople = new LinkedList<>();
+        List<Person> dtoPeople;
         if (getPeople() != null) {
             dtoPeople =
                 getPeople().stream().map(PersonEntity::toPerson).collect(Collectors.toList());
