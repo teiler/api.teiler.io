@@ -61,7 +61,7 @@ public class CompensationUtil {
      * Checks whether the values are greater than zero.
      *
      * @param compensation The compensation to check
-     * @throws ValueLessThanOrEqualToZeroException Profiteer and payer are equal in that compensation
+     * @throws ValueLessThanOrEqualToZeroException Values less than or equal to zero
      */
     public void checkValuesGreaterThanZero(Compensation compensation)
             throws ValueLessThanOrEqualToZeroException {
