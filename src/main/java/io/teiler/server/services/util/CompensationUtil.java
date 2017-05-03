@@ -58,7 +58,7 @@ public class CompensationUtil {
     }
 
     /**
-     * Checks whether the values are greater then zero.
+     * Checks whether the values are greater than zero.
      *
      * @param compensation The compensation to check
      * @throws ValueLessThanOrEqualToZeroException Profiteer and payer are equal in that compensation
