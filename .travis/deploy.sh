@@ -15,7 +15,7 @@ ssh tylr@api.teiler.io << EOF
  sudo /etc/init.d/tylr-api start
 EOF
 
-until curl -s -I -f https://api.teiler.io | grep "200 OK" &> /dev/null; do
+while [ ! $(curl -s -I -f https://api.teiler.io | grep "200 OK" &> /dev/null)]; do
     printf '.'
     sleep 1
 done
