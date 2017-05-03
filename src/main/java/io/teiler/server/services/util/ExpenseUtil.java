@@ -63,7 +63,7 @@ public class ExpenseUtil {
      * Checks whether the values are greater than zero.
      *
      * @param expense The compensation to check
-     * @throws ValueLessThanOrEqualToZeroException Profiteer and payer are equal in that compensation
+     * @throws ValueLessThanOrEqualToZeroException Values less than or equal to zero
      */
     public void checkValuesGreaterThanZero(Expense expense)
             throws ValueLessThanOrEqualToZeroException {
