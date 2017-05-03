@@ -1,7 +1,7 @@
 package io.teiler.server.util.exceptions;
 
 /**
- * Exception denoting that a value has been .
+ * Exception denoting that a value has been less than or equal to zero.
  *
  * @author dthoma
  */
