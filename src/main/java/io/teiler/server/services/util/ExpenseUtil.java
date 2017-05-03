@@ -60,12 +60,12 @@ public class ExpenseUtil {
     }
 
     /**
-     * Checks whether the values are valid.
+     * Checks whether the values are greater then zero.
      *
      * @param expense The compensation to check
      * @throws ValueLessThanOrEqualToZeroException Profiteer and payer are equal in that compensation
      */
-    public void checkValues(Expense expense)
+    public void checkValuesGreaterThanZero(Expense expense)
             throws ValueLessThanOrEqualToZeroException {
         if (expense.getAmount() <= 0 || expense.getProfiteers().stream().anyMatch(p -> p.getShare() <= 0)) {
             throw new ValueLessThanOrEqualToZeroException();
