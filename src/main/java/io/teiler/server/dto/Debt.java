@@ -9,22 +9,22 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Debt {
 
-    @SerializedName("title")
-    private Person person;
+    @SerializedName("person")
+    private int person;
 
     @SerializedName("balance")
     private int balance;
 
-    public Debt(Person person, int balance) {
+    public Debt(int person, int balance) {
         this.person = person;
         this.balance = balance;
     }
 
-    public Person getPerson() {
+    public int getPerson() {
         return person;
     }
 
-    public void setPerson(Person person) {
+    public void setPerson(int person) {
         this.person = person;
     }
 
