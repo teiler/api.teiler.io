@@ -365,7 +365,6 @@ public class ExpenseServiceTest {
         Expense testExpense = new Expense(null, -10, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
 
         expenseService.createExpense(testExpense, testGroup.getId());
-        Assert.fail();
     }
 
     @Test(expected = ValueLessThanOrEqualToZeroException.class)
@@ -384,6 +383,5 @@ public class ExpenseServiceTest {
         Expense testExpense = new Expense(null, 35, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
 
         expenseService.createExpense(testExpense, testGroup.getId());
-        Assert.fail();
     }
 }

@@ -228,8 +228,6 @@ public class CompensationServiceTest {
 
         Compensation testCompensation = new Compensation(null, 0, testPayer, testProfiteerPerson);
         compensationService.createCompensation(testCompensation, testGroup.getId());
-
-        Assert.fail();
     }
 
     @Test(expected = ValueLessThanOrEqualToZeroException.class)
@@ -240,7 +238,5 @@ public class CompensationServiceTest {
 
         Compensation testCompensation = new Compensation(null, -1, testPayer, testProfiteerPerson);
         compensationService.createCompensation(testCompensation, testGroup.getId());
-
-        Assert.fail();
     }
 }
