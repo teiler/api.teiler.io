@@ -2,6 +2,8 @@ package io.teiler.server.services.util;
 
 import java.util.List;
 
+import io.teiler.server.dto.Expense;
+import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,5 +58,17 @@ public class ExpenseUtil {
             throw new SharesNotAddingUpException();
         }
     }
-    
+
+    /**
+     * Checks whether the values are greater than zero.
+     *
+     * @param expense The compensation to check
+     * @throws ValueLessThanOrEqualToZeroException Values less than or equal to zero
+     */
+    public void checkValuesGreaterThanZero(Expense expense)
+            throws ValueLessThanOrEqualToZeroException {
+        if (expense.getAmount() <= 0 || expense.getProfiteers().stream().anyMatch(p -> p.getShare() <= 0)) {
+            throw new ValueLessThanOrEqualToZeroException();
+        }
+    }
 }
