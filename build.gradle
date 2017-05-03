@@ -24,7 +24,7 @@ repositories {
 }
 
 ext {
-    sparkVersion = "2.5.5"
+    sparkVersion = "2.6.0.RC0"
     springBootVersion = "1.5.3.RELEASE"
     
     postgresqlVersion = "42.0.0"
