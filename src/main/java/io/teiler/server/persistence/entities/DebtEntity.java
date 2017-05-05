@@ -11,7 +11,6 @@ import javax.persistence.Entity;
  *
  * @author dthoma
  */
-@Entity
 public class DebtEntity {
 
     @Column(name = "person")
