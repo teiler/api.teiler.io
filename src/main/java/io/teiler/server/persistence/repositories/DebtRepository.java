@@ -30,7 +30,7 @@ public class DebtRepository {
         String sql =
                 "SELECT" +
                 "    person.id AS person, " +
-                "    transactions.credit - profiteers.debt AS balance " +
+                "    COALESCE(transactions.credit, 0) - COALESCE(profiteers.debt, 0) AS balance " +
                 "FROM person " +
                 "LEFT JOIN ( " +
                 "    SELECT  " +
@@ -55,6 +55,8 @@ public class DebtRepository {
         Query query = entityManager.createNativeQuery(sql, STATEMENT_SQLMAP);
         query.setParameter(1, groupId);
 
-        return query.getResultList();
+        List<DebtEntity> results = query.getResultList();
+
+        return results;
     }
 }
