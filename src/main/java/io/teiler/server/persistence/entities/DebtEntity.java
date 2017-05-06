@@ -2,15 +2,25 @@ package io.teiler.server.persistence.entities;
 
 import io.teiler.server.dto.Debt;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 
 /**
  * Entity representing a virtual debt entry.
  *
  * @author dthoma
  */
+@Entity
+@SqlResultSetMapping(name = "GET_DEBT_QUERY",
+        classes = {
+                @ConstructorResult(targetClass = io.teiler.server.persistence.entities.DebtEntity.class,
+                        columns = {
+                                @ColumnResult(name = "person"),
+                                @ColumnResult(name = "balance")})
+        })
+
 public class DebtEntity {
 
+    @Id
     @Column(name = "person")
     private Integer personID;
 
