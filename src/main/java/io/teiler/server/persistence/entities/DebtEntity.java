@@ -14,10 +14,9 @@ import javax.persistence.*;
         classes = {
                 @ConstructorResult(targetClass = io.teiler.server.persistence.entities.DebtEntity.class,
                         columns = {
-                                @ColumnResult(name = "person"),
-                                @ColumnResult(name = "balance")})
+                                @ColumnResult(name = "person", type = Integer.class),
+                                @ColumnResult(name = "balance", type = Integer.class)})
         })
-
 public class DebtEntity {
 
     @Id
@@ -37,6 +36,11 @@ public class DebtEntity {
     public DebtEntity(Debt debt) {
         this.personID = debt.getPerson();
         this.balance = debt.getBalance();
+    }
+
+    public DebtEntity(Integer person, Integer balance) {
+        this.personID = person;
+        this.balance = balance;
     }
 
     public Debt toDebt() {

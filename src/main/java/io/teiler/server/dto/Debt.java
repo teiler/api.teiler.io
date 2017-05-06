@@ -10,29 +10,29 @@ import com.google.gson.annotations.SerializedName;
 public class Debt {
 
     @SerializedName("person")
-    private int person;
+    private Integer person;
 
     @SerializedName("balance")
-    private int balance;
+    private Integer balance;
 
-    public Debt(int person, int balance) {
+    public Debt(Integer person, Integer balance) {
         this.person = person;
         this.balance = balance;
     }
 
-    public int getPerson() {
+    public Integer getPerson() {
         return person;
     }
 
-    public void setPerson(int person) {
+    public void setPerson(Integer person) {
         this.person = person;
     }
 
-    public int getBalance() {
+    public Integer getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(Integer balance) {
         this.balance = balance;
     }
 
