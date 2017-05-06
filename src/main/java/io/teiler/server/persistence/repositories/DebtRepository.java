@@ -50,13 +50,12 @@ public class DebtRepository {
                 "    LEFT JOIN person ON person.id=profiteer.person " +
                 "    WHERE person.\"group\"=?1 " +
                 "    GROUP BY profiteer.person " +
-                ") AS profiteers ON profiteers.person=person.id ";
+                ") AS profiteers ON profiteers.person=person.id " +
+                "WHERE person.\"group\"=?1 ";
 
         Query query = entityManager.createNativeQuery(sql, STATEMENT_SQLMAP);
         query.setParameter(1, groupId);
 
-        List<DebtEntity> results = query.getResultList();
-
-        return results;
+        return query.getResultList();
     }
 }
