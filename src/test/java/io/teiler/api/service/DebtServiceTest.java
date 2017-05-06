@@ -1,23 +1,24 @@
 package io.teiler.api.service;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import io.teiler.server.Tylr;
 import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
 import io.teiler.server.services.DebtService;
 import io.teiler.server.services.GroupService;
 import io.teiler.server.services.PersonService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = {"local.server.port=4567"})
-@AutoConfigureTestDatabase
+@ActiveProfiles("test")
 public class DebtServiceTest {
 
     private static final String FIRST_PERSON_NAME = "Johannes";
