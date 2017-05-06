@@ -15,6 +15,8 @@ ssh tylr@api.teiler.io << EOF
  sudo /etc/init.d/tylr-api start
 EOF
 
-# TODO check if we can test whether it's already working before starting
-sleep 30s # sadly we need to wait until the server has been started
+while [ ! $(curl -s -I -f https://api.teiler.io | grep "200 OK" &> /dev/null) ]; do
+    printf '.'
+    sleep 1
+done
 ./.travis/test-prod.sh

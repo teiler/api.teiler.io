@@ -7,12 +7,8 @@ import io.teiler.server.dto.Person;
 import io.teiler.server.services.CompensationService;
 import io.teiler.server.services.GroupService;
 import io.teiler.server.services.PersonService;
-import io.teiler.server.util.exceptions.PayerInactiveException;
-import io.teiler.server.util.exceptions.PayerNotFoundException;
-import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
-import io.teiler.server.util.exceptions.ProfiteerInactiveException;
-import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import io.teiler.server.util.exceptions.*;
+
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -224,4 +220,23 @@ public class CompensationServiceTest {
         compensationService.createCompensation(testCompensation, testGroup.getId());
     }
 
+    @Test(expected = ValueLessThanOrEqualToZeroException.class)
+    public void testCreateCompensationWithAmountEqualsZero() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER);
+        Person testProfiteerPerson = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
+
+        Compensation testCompensation = new Compensation(null, 0, testPayer, testProfiteerPerson);
+        compensationService.createCompensation(testCompensation, testGroup.getId());
+    }
+
+    @Test(expected = ValueLessThanOrEqualToZeroException.class)
+    public void testCreateCompensationWithNegativeAmount() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER);
+        Person testProfiteerPerson = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
+
+        Compensation testCompensation = new Compensation(null, -1, testPayer, testProfiteerPerson);
+        compensationService.createCompensation(testCompensation, testGroup.getId());
+    }
 }
