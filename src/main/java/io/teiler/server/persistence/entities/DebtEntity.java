@@ -1,10 +1,8 @@
 package io.teiler.server.persistence.entities;
 
 import io.teiler.server.dto.Debt;
-import io.teiler.server.persistence.repositories.PersonRepository;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 
 /**
  * Entity representing a virtual debt entry.
