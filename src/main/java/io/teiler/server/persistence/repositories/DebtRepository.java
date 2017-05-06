@@ -27,30 +27,33 @@ public class DebtRepository {
      * @return {@link List} of {@link DebtEntity}
      */
     public List<DebtEntity> get(String groupId) {
-        Query query = entityManager.createNativeQuery(
-                "SELECT\n" +
-                        "    person.id AS person,\n" +
-                        "    transactions.credit - profiteers.debt AS balance\n" +
-                        "FROM person\n" +
-                        "LEFT JOIN (\n" +
-                        "    SELECT \n" +
-                        "        transaction.payer,\n" +
-                        "        SUM(profiteer.share) AS credit\n" +
-                        "    FROM transaction\n" +
-                        "    LEFT JOIN profiteer ON profiteer.transaction=transaction.id\n" +
-                        "    LEFT JOIN person ON person.id=profiteer.person\n" +
-                        "    WHERE person.\"group\"='1'\n" +
-                        "    GROUP BY transaction.payer\n" +
-                        ") AS transactions ON transactions.payer=person.id\n" +
-                        "LEFT JOIN (\n" +
-                        "    SELECT \n" +
-                        "        profiteer.person,\n" +
-                        "        SUM(profiteer.share) AS debt\n" +
-                        "    FROM profiteer\n" +
-                        "    LEFT JOIN person ON person.id=profiteer.person\n" +
-                        "    WHERE person.\"group\"='1'\n" +
-                        "    GROUP BY profiteer.person\n" +
-                        ") AS profiteers ON profiteers.person=person.id", STATEMENT_SQLMAP);
+        String sql =
+                "SELECT" +
+                "    person.id AS person," +
+                "    transactions.credit - profiteers.debt AS balance" +
+                "FROM person" +
+                "LEFT JOIN (" +
+                "    SELECT " +
+                "        transaction.payer," +
+                "        SUM(profiteer.share) AS credit" +
+                "    FROM transaction" +
+                "    LEFT JOIN profiteer ON profiteer.transaction=transaction.id" +
+                "    LEFT JOIN person ON person.id=profiteer.person" +
+                "    WHERE person.\"group\"=?1" +
+                "    GROUP BY transaction.payer" +
+                ") AS transactions ON transactions.payer=person.id" +
+                "LEFT JOIN (" +
+                "    SELECT " +
+                "        profiteer.person," +
+                "        SUM(profiteer.share) AS debt" +
+                "    FROM profiteer" +
+                "    LEFT JOIN person ON person.id=profiteer.person" +
+                "    WHERE person.\"group\"=?1" +
+                "    GROUP BY profiteer.person" +
+                ") AS profiteers ON profiteers.person=person.id";
+
+        Query query = entityManager.createNativeQuery(sql, STATEMENT_SQLMAP);
+        query.setParameter(1, groupId);
 
         return query.getResultList();
     }
