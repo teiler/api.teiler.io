@@ -4,8 +4,7 @@ import io.teiler.server.persistence.entities.DebtEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -15,6 +14,8 @@ import java.util.List;
  */
 @Repository
 public class DebtRepository {
+
+    static final String STATEMENT_SQLMAP = "GET_DEBT_QUERY";
 
     @Autowired
     private EntityManager entityManager;
@@ -49,11 +50,8 @@ public class DebtRepository {
                         "    LEFT JOIN person ON person.id=profiteer.person\n" +
                         "    WHERE person.\"group\"='1'\n" +
                         "    GROUP BY profiteer.person\n" +
-                        ") AS profiteers ON profiteers.person=person.id",
-                DebtEntity.class);
+                        ") AS profiteers ON profiteers.person=person.id", STATEMENT_SQLMAP);
 
-        return (List<DebtEntity>) query.getResultList();
-
+        return query.getResultList();
     }
-
 }
