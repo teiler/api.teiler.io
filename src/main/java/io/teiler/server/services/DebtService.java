@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class DebtService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DebtService.class);
 
     @Autowired
     private GroupUtil groupUtil;
