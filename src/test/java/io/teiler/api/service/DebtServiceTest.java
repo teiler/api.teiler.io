@@ -61,7 +61,7 @@ public class DebtServiceTest {
         Expense firstExpense = new Expense(null, 3 * share, firstPerson, "Test", firstExpenseProfiteers);
         expenseService.createExpense(firstExpense, groupId);
 
-        for (Debt debt : debtService.getDebt(groupId)) {
+        for (Debt debt : debtService.getDebts(groupId)) {
             if (debt.getPerson().getId() == firstPerson.getId()) {
                 Assert.assertEquals(10, debt.getBalance().intValue());
             } else {
@@ -77,7 +77,7 @@ public class DebtServiceTest {
 
         personService.createPerson(groupId, FIRST_PERSON_NAME);
 
-        List<Debt> debts = debtService.getDebt(groupId);
+        List<Debt> debts = debtService.getDebts(groupId);
         Assert.assertEquals(0, debts.get(0).getBalance().intValue());
     }
 
@@ -87,7 +87,7 @@ public class DebtServiceTest {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
 
-        List<Debt> debts = debtService.getDebt(groupId);
+        List<Debt> debts = debtService.getDebts(groupId);
         Assert.assertEquals(0, debts.size());
     }
 
@@ -109,7 +109,7 @@ public class DebtServiceTest {
         Compensation compensation = new Compensation(null, share, payer, profiteer);
         compensationService.createCompensation(compensation, group.getId());
 
-        List<Debt> debts = debtService.getDebt(group.getId());
+        List<Debt> debts = debtService.getDebts(group.getId());
         for(Debt debt : debts) {
             if (debt.getPerson().getId() == payer.getId()) {
                 Assert.assertEquals(share, debt.getBalance().intValue());
@@ -141,7 +141,7 @@ public class DebtServiceTest {
         Expense firstExpense = new Expense(null, 2 * expenseShare, secondPerson, "Test", profiteers);
         expenseService.createExpense(firstExpense, group.getId());
 
-        List<Debt> debts = debtService.getDebt(group.getId());
+        List<Debt> debts = debtService.getDebts(group.getId());
         Assert.assertEquals(-5, debts.get(0).getBalance().intValue());
         Assert.assertEquals(5, debts.get(1).getBalance().intValue());
     }
