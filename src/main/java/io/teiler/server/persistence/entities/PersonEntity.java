@@ -63,7 +63,7 @@ public class PersonEntity {
     public PersonEntity() { /* intentionally empty */ }
 
     /**
-     * Converts a {@link PersonEntity} to a {@link Person}.
+     * Converts a {@link Person} to a {@link PersonEntity}.
      * 
      * @param person {@link Person}
      */
