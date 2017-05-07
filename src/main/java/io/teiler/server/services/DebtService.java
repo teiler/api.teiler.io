@@ -6,13 +6,11 @@ import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.DebtRepository;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.services.util.GroupUtil;
-import io.teiler.server.services.util.PersonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,8 +39,7 @@ public class DebtService {
         List<Debt> debts = new LinkedList<>();
         for (DebtEntity debtEntity : debtRepository.get(groupID)) {
             // TODO: Find a better solution than converting it here
-            PersonEntity personEntity = personRepository.getById(debtEntity.getPersonID());;
-            Debt debt = new Debt(personEntity.toPerson(), debtEntity.getBalance());
+            Debt debt = new Debt(personRepository.getById(debtEntity.getPersonID()).toPerson(), debtEntity.getBalance());
             debts.add(debt);
         }
         LOGGER.debug("View debts: {}", debts);

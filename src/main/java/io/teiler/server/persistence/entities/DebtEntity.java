@@ -1,7 +1,6 @@
 package io.teiler.server.persistence.entities;
 
 import io.teiler.server.dto.Debt;
-import io.teiler.server.persistence.repositories.PersonRepository;
 
 import javax.persistence.*;
 
