@@ -62,7 +62,7 @@ public class DebtServiceTest {
         expenseService.createExpense(firstExpense, groupId);
 
         for (Debt debt : debtService.getDebt(groupId)) {
-            if (debt.getPerson() == firstPerson.getId()) {
+            if (debt.getPerson().getId() == firstPerson.getId()) {
                 Assert.assertEquals(10, debt.getBalance().intValue());
             } else {
                 Assert.assertEquals(-5, debt.getBalance().intValue());
@@ -111,9 +111,9 @@ public class DebtServiceTest {
 
         List<Debt> debts = debtService.getDebt(group.getId());
         for(Debt debt : debts) {
-            if (debt.getPerson() == payer.getId()) {
+            if (debt.getPerson().getId() == payer.getId()) {
                 Assert.assertEquals(share, debt.getBalance().intValue());
-            } else if (debt.getPerson() == profiteer.getId()) {
+            } else if (debt.getPerson().getId() == profiteer.getId()) {
                 Assert.assertEquals(-share, debt.getBalance().intValue());
             } else {
                 Assert.assertEquals(0, debt.getBalance().intValue());

@@ -10,21 +10,21 @@ import com.google.gson.annotations.SerializedName;
 public class Debt {
 
     @SerializedName("person")
-    private Integer person;
+    private Person person;
 
     @SerializedName("balance")
     private Integer balance;
 
-    public Debt(Integer person, Integer balance) {
+    public Debt(Person person, Integer balance) {
         this.person = person;
         this.balance = balance;
     }
 
-    public Integer getPerson() {
+    public Person getPerson() {
         return person;
     }
 
-    public void setPerson(Integer person) {
+    public void setPerson(Person person) {
         this.person = person;
     }
 
@@ -38,6 +38,6 @@ public class Debt {
 
     @Override
     public String toString() {
-        return "Debt [person=" + person + ", balance=" + balance + "]";
+        return "Debt [person=" + person.toString() + ", balance=" + balance + "]";
     }
 }
