@@ -2,7 +2,6 @@ package io.teiler.server.services;
 
 import io.teiler.server.dto.Debt;
 import io.teiler.server.persistence.entities.DebtEntity;
-import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.DebtRepository;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.services.util.GroupUtil;
