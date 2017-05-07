@@ -3,6 +3,7 @@ package io.teiler.server.services;
 import io.teiler.server.dto.Debt;
 import io.teiler.server.persistence.entities.DebtEntity;
 import io.teiler.server.persistence.repositories.DebtRepository;
+import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.services.util.GroupUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ public class DebtService {
     private GroupUtil groupUtil;
 
     @Autowired
+    private PersonRepository personRepository;
+
+    @Autowired
     private DebtRepository debtRepository;
 
     public List<Debt> getDebt(String groupID) {
@@ -33,7 +37,9 @@ public class DebtService {
 
         List<Debt> debts = new LinkedList<>();
         for (DebtEntity debtEntity : debtRepository.get(groupID)) {
-            debts.add(debtEntity.toDebt());
+            // TODO: Find a better solution than converting it here
+            Debt debt = new Debt(personRepository.getById(debtEntity.getPersonID()).toPerson(), debtEntity.getBalance());
+            debts.add(debt);
         }
         LOGGER.debug("View debts: {}", debts);
         return debts;
