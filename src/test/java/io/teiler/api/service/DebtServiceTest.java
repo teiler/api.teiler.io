@@ -44,7 +44,7 @@ public class DebtServiceTest {
 
     @Test
     public void testReturnCorrectBalance() {
-        final Integer SHARE = 5;
+        final int share = 5;
 
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
@@ -54,21 +54,18 @@ public class DebtServiceTest {
         Person thirdPerson = personService.createPerson(groupId, THIRD_PERSON_NAME);
 
         List<Profiteer> firstExpenseProfiteers = new LinkedList<>();
-        firstExpenseProfiteers.add(new Profiteer(null, firstPerson, SHARE));
-        firstExpenseProfiteers.add(new Profiteer(null, secondPerson, SHARE));
-        firstExpenseProfiteers.add(new Profiteer(null, thirdPerson, SHARE));
+        firstExpenseProfiteers.add(new Profiteer(null, firstPerson, share));
+        firstExpenseProfiteers.add(new Profiteer(null, secondPerson, share));
+        firstExpenseProfiteers.add(new Profiteer(null, thirdPerson, share));
 
-        Expense firstExpense = new Expense(null, 3 * SHARE, firstPerson, "Test", firstExpenseProfiteers);
+        Expense firstExpense = new Expense(null, 3 * share, firstPerson, "Test", firstExpenseProfiteers);
         expenseService.createExpense(firstExpense, groupId);
-
-        System.out.println(firstPerson.getId());
-        System.out.println(debtService.getDebt(groupId).toString());
 
         for (Debt debt : debtService.getDebt(groupId)) {
             if (debt.getPerson() == firstPerson.getId()) {
-                Assert.assertEquals(new Integer(10), debt.getBalance());
+                Assert.assertEquals(10, debt.getBalance().intValue());
             } else {
-                Assert.assertEquals(new Integer(-5), debt.getBalance());
+                Assert.assertEquals(-5, debt.getBalance().intValue());
             }
         }
     }
@@ -78,10 +75,10 @@ public class DebtServiceTest {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
 
-        Person firstPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        personService.createPerson(groupId, FIRST_PERSON_NAME);
 
         List<Debt> debts = debtService.getDebt(groupId);
-        Assert.assertEquals(new Integer(0), debts.get(0).getBalance());
+        Assert.assertEquals(0, debts.get(0).getBalance().intValue());
     }
 
 }
