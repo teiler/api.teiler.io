@@ -43,7 +43,7 @@ public class DebtServiceTest {
     private GroupService groupService;
 
     @Test
-    public void testReturnCorrectBalance() {
+    public void testReturnCorrectBalanceWithExpense() {
         final int share = 5;
 
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
@@ -79,6 +79,71 @@ public class DebtServiceTest {
 
         List<Debt> debts = debtService.getDebt(groupId);
         Assert.assertEquals(0, debts.get(0).getBalance().intValue());
+    }
+
+
+    @Test
+    public void testReturnNothingWithNoPersonInGroup() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+
+        List<Debt> debts = debtService.getDebt(groupId);
+        Assert.assertEquals(0, debts.size());
+    }
+
+    @Test
+    public void testReturnCorrectBalanceWithCompensation() {
+        final int personCount = 5;
+        final int share = 10;
+
+        Group group = groupService.createGroup(TEST_GROUP_NAME);
+        List<Person> people = new LinkedList<>();
+
+        for (int i = 0; i < personCount; i++) {
+            people.add(personService.createPerson(group.getId(), "Person " + i));
+        }
+
+        Person payer = people.get(0);
+        Person profiteer = people.get(people.size() - 1);
+
+        Compensation compensation = new Compensation(null, share, payer, profiteer);
+        compensationService.createCompensation(compensation, group.getId());
+
+        List<Debt> debts = debtService.getDebt(group.getId());
+        for(Debt debt : debts) {
+            if (debt.getPerson() == payer.getId()) {
+                Assert.assertEquals(share, debt.getBalance().intValue());
+            } else if (debt.getPerson() == profiteer.getId()) {
+                Assert.assertEquals(-share, debt.getBalance().intValue());
+            } else {
+                Assert.assertEquals(0, debt.getBalance().intValue());
+            }
+        }
+    }
+
+    @Test
+    public void testReturnCorrectBalanceWithExpenseAndCompensation() {
+        final int compensationShare = 5;
+        final int expenseShare = 10;
+
+        Group group = groupService.createGroup(TEST_GROUP_NAME);
+
+        Person firstPerson = personService.createPerson(group.getId(), FIRST_PERSON_NAME);
+        Person secondPerson = personService.createPerson(group.getId(), SECOND_PERSON_NAME);
+
+        Compensation compensation = new Compensation(null, compensationShare, firstPerson, secondPerson);
+        compensationService.createCompensation(compensation, group.getId());
+
+        List<Profiteer> profiteers = new LinkedList<>();
+        profiteers.add(new Profiteer(null, firstPerson, expenseShare));
+        profiteers.add(new Profiteer(null, secondPerson, expenseShare));
+
+        Expense firstExpense = new Expense(null, 2 * expenseShare, secondPerson, "Test", profiteers);
+        expenseService.createExpense(firstExpense, group.getId());
+
+        List<Debt> debts = debtService.getDebt(group.getId());
+        Assert.assertEquals(-5, debts.get(0).getBalance().intValue());
+        Assert.assertEquals(5, debts.get(1).getBalance().intValue());
     }
 
 }
