@@ -35,6 +35,7 @@ public class DebtService {
         for (DebtEntity debtEntity : debtRepository.get(groupID)) {
             debts.add(debtEntity.toDebt());
         }
+        LOGGER.debug("View debts: {}", debts);
         return debts;
     }
 }
