@@ -24,6 +24,11 @@ public class SuggestedCompensation {
         this.profiteer = profiteer;
     }
 
+    @Override
+    public String toString() {
+        return "SuggestedCompensation [amount=" + amount + ", payer=" + payer.toString() + ", profiteer=" + profiteer.toString() + "]";
+    }
+
     public Integer getAmount() {
         return amount;
     }
