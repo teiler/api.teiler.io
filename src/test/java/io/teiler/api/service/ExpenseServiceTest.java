@@ -1,5 +1,17 @@
 package io.teiler.api.service;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import io.teiler.server.Tylr;
 import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Group;
@@ -8,23 +20,18 @@ import io.teiler.server.dto.Profiteer;
 import io.teiler.server.services.ExpenseService;
 import io.teiler.server.services.GroupService;
 import io.teiler.server.services.PersonService;
-import io.teiler.server.util.exceptions.*;
-
-import java.util.LinkedList;
-import java.util.List;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import io.teiler.server.util.exceptions.PayerInactiveException;
+import io.teiler.server.util.exceptions.PayerNotFoundException;
+import io.teiler.server.util.exceptions.ProfiteerInactiveException;
+import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import io.teiler.server.util.exceptions.SharesNotAddingUpException;
+import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = {"local.server.port=4567"})
-@AutoConfigureTestDatabase
+@ActiveProfiles("test")
 public class ExpenseServiceTest {
 
     private static final String TEST_GROUP_NAME = "Testgruppe";
