@@ -1,6 +1,7 @@
 package io.teiler.server.persistence.entities;
 
 import io.teiler.server.dto.Debt;
+import io.teiler.server.persistence.repositories.PersonRepository;
 
 import javax.persistence.*;
 
@@ -34,17 +35,13 @@ public class DebtEntity {
      * @param debt
      */
     public DebtEntity(Debt debt) {
-        this.personID = debt.getPerson();
+        this.personID = debt.getPerson().getId();
         this.balance = debt.getBalance();
     }
 
     public DebtEntity(Integer person, Integer balance) {
         this.personID = person;
         this.balance = balance;
-    }
-
-    public Debt toDebt() {
-        return new Debt(this.personID, this.balance);
     }
 
     public Integer getPersonID() {
@@ -65,6 +62,7 @@ public class DebtEntity {
 
     @Override
     public String toString() {
-        return this.toDebt().toString();
+        return "DebtEntity [person=" + personID + ", balance=" + balance + "]";
     }
+
 }
