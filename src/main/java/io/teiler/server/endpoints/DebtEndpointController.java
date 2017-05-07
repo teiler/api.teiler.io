@@ -22,7 +22,7 @@ import java.util.List;
 @Controller
 public class DebtEndpointController implements EndpointController {
 
-    private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/debt";
+    private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/debts";
     private Gson gson = GsonUtil.getHomebrewGson();
 
     @Autowired
