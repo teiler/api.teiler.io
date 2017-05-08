@@ -29,6 +29,18 @@ public class GroupUtil {
         }
     }
 
+    /**
+     * Checks if the currency in the given group is a valid one.
+     *
+     * <p>
+     * This is done by looking if it's null.
+     * If it is null, then GSON could'nt correctly map the textual currency to the enum.
+     * Therefore, the given currency is invalid
+     * </p>
+     *
+     * @param changedGroup The group object to check
+     * @throws CurrencyNotValidException the given currency is invalid
+     */
     public void checkCurrencyIsValid(Group changedGroup) throws CurrencyNotValidException {
         if (changedGroup.getCurrency() == null) {
             throw new CurrencyNotValidException();
