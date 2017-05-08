@@ -1,31 +1,31 @@
 package io.teiler.server.services.util;
 
-import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.repositories.CompensationRepository;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CompensationUtil {
-    
+
     @Autowired
     private CompensationRepository compensationRepository;
-    
+
     public CompensationUtil() { /* intentionally empty */ }
 
     /**
      * Checks whether a Compensation exists within a Group.
-     * 
+     *
      * @param groupId Id of the Group
      * @param compensationId Id of the Compensation
      * @throws TransactionNotFoundException Compensation does not exists within Group
      */
-    public void checkCompensationBelongsToThisGroup(String groupId, int compensationId) throws TransactionNotFoundException {
+    public void checkCompensationBelongsToThisGroup(String groupId, int compensationId)
+        throws TransactionNotFoundException {
         if (compensationRepository.getByGroupIdAndCompensationId(groupId, compensationId) == null) {
             throw new TransactionNotFoundException();
         }
@@ -64,7 +64,7 @@ public class CompensationUtil {
      * @throws ValueLessThanOrEqualToZeroException Values less than or equal to zero
      */
     public void checkValuesGreaterThanZero(Compensation compensation)
-            throws ValueLessThanOrEqualToZeroException {
+        throws ValueLessThanOrEqualToZeroException {
         if (compensation.getAmount() <= 0) {
             throw new ValueLessThanOrEqualToZeroException();
         }

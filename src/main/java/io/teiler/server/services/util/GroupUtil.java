@@ -1,13 +1,12 @@
 package io.teiler.server.services.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.teiler.server.dto.Group;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.repositories.GroupRepository;
 import io.teiler.server.util.exceptions.CurrencyNotValidException;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class GroupUtil {
@@ -19,7 +18,7 @@ public class GroupUtil {
 
     /**
      * Checks whether a Group-Id exists.
-     * 
+     *
      * @param id Id of the group
      * @throws NotAuthorizedException Group-Id does not exist
      */
@@ -35,5 +34,5 @@ public class GroupUtil {
             throw new CurrencyNotValidException();
         }
     }
-    
+
 }

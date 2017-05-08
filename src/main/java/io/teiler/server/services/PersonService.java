@@ -5,7 +5,6 @@ import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.services.util.GroupUtil;
 import io.teiler.server.services.util.PersonUtil;
-
 import java.util.LinkedList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -26,7 +25,7 @@ public class PersonService {
     /* Spring Components (Services/Controller) */
     @Autowired
     private GroupUtil groupUtil;
-    
+
     @Autowired
     private PersonUtil personUtil;
 
@@ -94,11 +93,11 @@ public class PersonService {
         groupUtil.checkIdExists(groupId);
         personUtil.checkPersonExists(personId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
-        
+
         PersonEntity person = personRepository.getById(personId);
         person.setActive(false);
         LOGGER.debug("Deactivate Person: {}", personId);
         personRepository.editPerson(personId, person.toPerson());
     }
-    
+
 }

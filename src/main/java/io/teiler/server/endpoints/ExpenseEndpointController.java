@@ -7,14 +7,13 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 
 import com.google.gson.Gson;
-
 import io.teiler.server.dto.Expense;
 import io.teiler.server.services.ExpenseService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalizer;
-import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
+import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Expense-related endpoints.
- * 
+ *
  * @author pbaechli
  */
 @Controller
@@ -58,7 +57,7 @@ public class ExpenseEndpointController implements EndpointController {
             List<Expense> expenses = expenseService.getLastExpenses(groupId, limit);
             return gson.toJson(expenses);
         });
-        
+
         get(URL_WITH_EXPENSE_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             groupId = Normalizer.normalizeGroupId(groupId);
@@ -95,7 +94,7 @@ public class ExpenseEndpointController implements EndpointController {
             Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
         });
-        
+
         exception(SharesNotAddingUpException.class, (e, request, response) -> {
             response.status(406);
             Error error = new Error(e.getMessage());

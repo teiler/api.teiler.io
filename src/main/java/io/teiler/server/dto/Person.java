@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 /**
  * Class holding all information about a group.
- * 
+ *
  * @author lroellin
  * @author pbaechli
  */
@@ -16,7 +16,7 @@ public class Person {
 
     @SerializedName("name")
     private String name;
-    
+
     @SerializedName("active")
     private boolean active;
 
@@ -28,7 +28,7 @@ public class Person {
 
     /**
      * Usual constructor.
-     * 
+     *
      * @param id Id of the Person
      * @param name Name of the Person
      */
@@ -40,7 +40,7 @@ public class Person {
 
     /**
      * Constructor with all fields (useful for converting).
-     * 
+     *
      * @param id Id of the Person
      * @param name Name of the Person
      * @param active Whether the Person is active or not
@@ -70,7 +70,7 @@ public class Person {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public boolean isActive() {
         return active;
     }
@@ -98,18 +98,26 @@ public class Person {
     @Override
     public String toString() {
         return "Person [id=" + id + ", name=" + name + ", active=" + active + ", updateTime="
-                + updateTime + ", createTime=" + createTime + "]";
+            + updateTime + ", createTime=" + createTime + "]";
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Person person = (Person) o;
 
-        if (active != person.active) return false;
-        if (id != null ? !id.equals(person.id) : person.id != null) return false;
+        if (active != person.active) {
+            return false;
+        }
+        if (id != null ? !id.equals(person.id) : person.id != null) {
+            return false;
+        }
         return name != null ? name.equals(person.name) : person.name == null;
     }
 

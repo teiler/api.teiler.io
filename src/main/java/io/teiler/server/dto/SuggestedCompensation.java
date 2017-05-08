@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Class holding all information about a suggested payment.
  *
- *  @author dthoma
+ * @author dthoma
  */
 public class SuggestedCompensation {
 
@@ -50,6 +50,7 @@ public class SuggestedCompensation {
 
     @Override
     public String toString() {
-        return "SuggestedCompensation [amount=" + amount + ", payer=" + payer.toString() + ", profiteer=" + profiteer.toString() + "]";
+        return "SuggestedCompensation [amount=" + amount + ", payer=" + payer.toString() + ", profiteer=" + profiteer
+            .toString() + "]";
     }
 }

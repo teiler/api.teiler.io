@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Provides database-related operations for Profiteers.
- * 
+ *
  * @author pbaechli
  */
 @Repository
@@ -20,10 +20,10 @@ public class ProfiteerRepository {
 
     @Autowired
     private EntityManager entityManager;
-    
+
     /**
      * Creates a new {@link ProfiteerEntity} and returns it.
-     * 
+     *
      * @param share {@link Profiteer}
      * @return {@link ProfiteerEntity}
      */
@@ -33,10 +33,10 @@ public class ProfiteerRepository {
         entityManager.persist(profiteerEntity);
         return profiteerEntity;
     }
-    
+
     /**
      * Returns the {@link ProfiteerEntity} with the given Id.
-     * 
+     *
      * @param profiteerId Id of the Profiteer
      * @return {@link ProfiteerEntity}
      */
@@ -45,11 +45,11 @@ public class ProfiteerRepository {
             .where(QProfiteerEntity.profiteerEntity.id.eq(profiteerId))
             .fetchOne();
     }
-    
+
     /**
      * Returns the {@link ProfiteerEntity} with the given Person- and Transaction-Id.
      * <i>Note:</i> The Profiteer has to exist within the given Group.
-     * 
+     *
      * @param transactionId Id of the Transaction
      * @param profiteerPersonId Id of the Profiteer-Person
      * @return {@link ProfiteerEntity}
@@ -60,10 +60,10 @@ public class ProfiteerRepository {
             .where(QProfiteerEntity.profiteerEntity.transactionId.eq(transactionId))
             .fetchOne();
     }
-    
+
     /**
      * Updates a already persisted {@link ProfiteerEntity} with the given values.
-     * 
+     *
      * @param profiteerId Id of the Profiteer
      * @param changedProfiteer {@link Profiteer} containing the new values
      * @return {@link ProfiteerEntity} containing the new values
@@ -75,10 +75,10 @@ public class ProfiteerRepository {
         entityManager.persist(profiteer);
         return profiteer;
     }
-    
+
     /**
      * Deletes the {@link ProfiteerEntity} with the given Id.
-     * 
+     *
      * @param transactionId Id of the Transaction
      * @param profiteerPersonId Id of the Profiteer-Person
      */
@@ -87,16 +87,17 @@ public class ProfiteerRepository {
         ProfiteerEntity deleteEntity = getByTransactionIdAndProfiteerPersonId(transactionId, profiteerPersonId);
         entityManager.remove(deleteEntity);
     }
-    
+
     /**
      * Deletes the {@link ProfiteerEntity} with the given Ids.
-     * 
+     *
      * @param transactionId Id of the Transaction
      * @param profiteerPersonIds Id of the Profiteer-Person
      */
     @Transactional
-    public void deleteProfiteerByTransactionIdAndProfiteerPersonIdList(int transactionId, List<Integer> profiteerPersonIds) {
+    public void deleteProfiteerByTransactionIdAndProfiteerPersonIdList(int transactionId,
+        List<Integer> profiteerPersonIds) {
         profiteerPersonIds.forEach(id -> deleteProfiteerByTransactionIdAndProfiteerPersonId(transactionId, id));
     }
-    
+
 }

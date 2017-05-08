@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Error-Wrapper to smoothly getGroupById error-codes across the REST-API.
- * 
+ *
  * @author lroellin
  */
 public class Error {

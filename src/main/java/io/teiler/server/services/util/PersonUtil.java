@@ -42,7 +42,7 @@ public class PersonUtil {
      * @param personId Id of the Person
      * @throws PersonNotFoundException Person does not exists within Group
      */
-    public void checkPersonBelongsToThisGroup(String groupId, int personId)throws PersonNotFoundException {
+    public void checkPersonBelongsToThisGroup(String groupId, int personId) throws PersonNotFoundException {
         if (personRepository.getByGroupAndPersonId(groupId, personId) == null) {
             throw new PersonNotFoundException();
         }
