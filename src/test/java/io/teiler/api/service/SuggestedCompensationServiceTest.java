@@ -20,7 +20,7 @@ import java.util.List;
 @TestPropertySource(properties = {"local.server.port=4567"})
 @ActiveProfiles("test")
 public class SuggestedCompensationServiceTest {
-    
+
     private static final String TEST_GROUP_NAME = "Testgroup";
 
     @Autowired
@@ -63,8 +63,4 @@ public class SuggestedCompensationServiceTest {
         Assert.assertEquals(profiteer.getId(), suggestedCompensation.getPayer().getId());
         Assert.assertEquals(share, suggestedCompensation.getAmount().intValue());
     }
-
-
-
-
 }
