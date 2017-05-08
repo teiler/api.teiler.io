@@ -48,5 +48,4 @@ public class NormalizerTest {
                 Normalizer.normalizeGroupId(GROUP_ID_LETTERS_LOWERCASE_AND_NUMBERS));
     }
     
-    
 }
