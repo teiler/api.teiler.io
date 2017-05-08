@@ -3,7 +3,7 @@ package io.teiler.server.endpoints;
 import static spark.Spark.get;
 
 import io.teiler.server.dto.Debt;
-import io.teiler.server.util.Normalize;
+import io.teiler.server.util.Normalizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
