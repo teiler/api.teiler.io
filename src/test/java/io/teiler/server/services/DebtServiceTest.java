@@ -1,7 +1,8 @@
 package io.teiler.server.services;
 
-import io.teiler.server.dto.*;
-import io.teiler.server.services.*;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +13,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import io.teiler.server.Tylr;
-
-import java.util.LinkedList;
-import java.util.List;
+import io.teiler.server.dto.Compensation;
+import io.teiler.server.dto.Debt;
+import io.teiler.server.dto.Expense;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.dto.Profiteer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
