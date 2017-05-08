@@ -2,7 +2,6 @@ package io.teiler.server.services.util.settleup;
 
 import io.teiler.server.dto.Debt;
 
-import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
