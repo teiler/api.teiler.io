@@ -1,7 +1,7 @@
 package io.teiler.server.services;
 
+import io.teiler.server.dto.Compensation;
 import io.teiler.server.dto.Debt;
-import io.teiler.server.dto.SuggestedCompensation;
 import io.teiler.server.services.util.GroupUtil;
 import io.teiler.server.services.util.settleup.PersonChooser;
 import io.teiler.server.services.util.settleup.TopBottomChooser;
@@ -38,14 +38,14 @@ public class SuggestCompensationService {
      * @param groupId The group to get the suggested compensations for.
      * @return The suggested compensations for this group
      */
-    public List<SuggestedCompensation> getSuggestedCompensations(String groupId) {
+    public List<Compensation> getSuggestedCompensations(String groupId) {
         groupUtil.checkIdExists(groupId);
 
         this.debts = new TreeMap<>();
         debtService.getDebts(groupId).stream().filter(d -> d.getBalance() != 0)
             .forEach(d -> this.debts.put(d.getBalance(), d));
 
-        List<SuggestedCompensation> suggestedCompensations = new LinkedList<>();
+        List<Compensation> suggestedCompensations = new LinkedList<>();
         PersonChooser personChooser = new TopBottomChooser(debts);
 
         while (personChooser.personsLeft()) {
@@ -53,7 +53,8 @@ public class SuggestCompensationService {
             Debt debitor = personChooser.getNextDebitor();
 
             if (creditor.getBalance() >= debitor.getBalance()) {
-                SuggestedCompensation compensation = new SuggestedCompensation(
+                Compensation compensation = new Compensation(
+                    null,
                     -debitor.getBalance(),
                     debitor.getPerson(),
                     creditor.getPerson()
@@ -66,7 +67,8 @@ public class SuggestCompensationService {
                 updateDebts(newCreditorBalance, creditor);
                 updateDebts(newDebitorBalance, debitor);
             } else {
-                SuggestedCompensation compensation = new SuggestedCompensation(
+                Compensation compensation = new Compensation(
+                    null,
                     creditor.getBalance(),
                     debitor.getPerson(),
                     creditor.getPerson()
