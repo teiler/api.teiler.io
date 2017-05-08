@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Provides service-methods for Groups.
+ * Provides service-methods for debts.
  *
  * @author dthoma
  */
@@ -32,7 +32,7 @@ public class DebtService {
     @Autowired
     private DebtRepository debtRepository;
 
-    public List<Debt> getDebt(String groupID) {
+    public List<Debt> getDebts(String groupID) {
         groupUtil.checkIdExists(groupID);
 
         List<Debt> debts = new LinkedList<>();
