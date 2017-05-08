@@ -1,4 +1,4 @@
-package io.teiler.api.service;
+package io.teiler.server.services;
 
 import io.teiler.server.Tylr;
 import io.teiler.server.dto.*;

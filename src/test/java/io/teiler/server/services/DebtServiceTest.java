@@ -1,7 +1,8 @@
-package io.teiler.api.service;
+package io.teiler.server.services;
 
-import io.teiler.server.dto.*;
-import io.teiler.server.services.*;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +13,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import io.teiler.server.Tylr;
-
-import java.util.LinkedList;
-import java.util.List;
+import io.teiler.server.dto.Compensation;
+import io.teiler.server.dto.Debt;
+import io.teiler.server.dto.Expense;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.dto.Profiteer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -61,7 +65,7 @@ public class DebtServiceTest {
         Expense firstExpense = new Expense(null, 3 * share, firstPerson, "Test", firstExpenseProfiteers);
         expenseService.createExpense(firstExpense, groupId);
 
-        for (Debt debt : debtService.getDebts(groupId)) {
+        for (Debt debt : debtService.getDebt(groupId)) {
             if (debt.getPerson().getId() == firstPerson.getId()) {
                 Assert.assertEquals(10, debt.getBalance().intValue());
             } else {
@@ -77,7 +81,7 @@ public class DebtServiceTest {
 
         personService.createPerson(groupId, FIRST_PERSON_NAME);
 
-        List<Debt> debts = debtService.getDebts(groupId);
+        List<Debt> debts = debtService.getDebt(groupId);
         Assert.assertEquals(0, debts.get(0).getBalance().intValue());
     }
 
@@ -87,7 +91,7 @@ public class DebtServiceTest {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         String groupId = testGroup.getId();
 
-        List<Debt> debts = debtService.getDebts(groupId);
+        List<Debt> debts = debtService.getDebt(groupId);
         Assert.assertEquals(0, debts.size());
     }
 
@@ -109,7 +113,7 @@ public class DebtServiceTest {
         Compensation compensation = new Compensation(null, share, payer, profiteer);
         compensationService.createCompensation(compensation, group.getId());
 
-        List<Debt> debts = debtService.getDebts(group.getId());
+        List<Debt> debts = debtService.getDebt(group.getId());
         for(Debt debt : debts) {
             if (debt.getPerson().getId() == payer.getId()) {
                 Assert.assertEquals(share, debt.getBalance().intValue());
@@ -141,7 +145,7 @@ public class DebtServiceTest {
         Expense firstExpense = new Expense(null, 2 * expenseShare, secondPerson, "Test", profiteers);
         expenseService.createExpense(firstExpense, group.getId());
 
-        List<Debt> debts = debtService.getDebts(group.getId());
+        List<Debt> debts = debtService.getDebt(group.getId());
         Assert.assertEquals(-5, debts.get(0).getBalance().intValue());
         Assert.assertEquals(5, debts.get(1).getBalance().intValue());
     }
