@@ -12,7 +12,7 @@ import io.teiler.server.dto.Expense;
 import io.teiler.server.services.ExpenseService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
-import io.teiler.server.util.Normalize;
+import io.teiler.server.util.Normalizer;
 import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
@@ -41,7 +41,7 @@ public class ExpenseEndpointController implements EndpointController {
     public void register() {
         post(BASE_URL, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalize.normalizeGroupId(groupId);
+            groupId = Normalizer.normalizeGroupId(groupId);
             Expense requestExpense = gson.fromJson(req.body(), Expense.class);
             Expense newExpense = expenseService.createExpense(requestExpense, groupId);
             return gson.toJson(newExpense);
@@ -49,7 +49,7 @@ public class ExpenseEndpointController implements EndpointController {
 
         get(BASE_URL, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalize.normalizeGroupId(groupId);
+            groupId = Normalizer.normalizeGroupId(groupId);
             String limitString = req.queryParams(LIMIT_PARAM);
             long limit = DEFAULT_QUERY_LIMIT;
             if (limitString != null) {
@@ -61,7 +61,7 @@ public class ExpenseEndpointController implements EndpointController {
         
         get(URL_WITH_EXPENSE_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalize.normalizeGroupId(groupId);
+            groupId = Normalizer.normalizeGroupId(groupId);
             int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
             Expense expense = expenseService.getExpense(groupId, expenseId);
             return gson.toJson(expense);
@@ -69,7 +69,7 @@ public class ExpenseEndpointController implements EndpointController {
 
         put(URL_WITH_EXPENSE_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalize.normalizeGroupId(groupId);
+            groupId = Normalizer.normalizeGroupId(groupId);
             int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
             Expense changedExpense = gson.fromJson(req.body(), Expense.class);
             Expense expense = expenseService.editExpense(groupId, expenseId, changedExpense);
@@ -78,7 +78,7 @@ public class ExpenseEndpointController implements EndpointController {
 
         delete(URL_WITH_EXPENSE_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalize.normalizeGroupId(groupId);
+            groupId = Normalizer.normalizeGroupId(groupId);
             int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
             expenseService.deleteExpense(groupId, expenseId);
             return "";
