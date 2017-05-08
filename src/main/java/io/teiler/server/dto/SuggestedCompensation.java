@@ -18,6 +18,13 @@ public class SuggestedCompensation {
     @SerializedName("profiteer")
     private Person profiteer;
 
+    /**
+     * Creates a suggested compensations.
+     *
+     * @param amount How much this compensation is about
+     * @param payer Who should pay in this compensation
+     * @param profiteer Who should receive in this compensation
+     */
     public SuggestedCompensation(Integer amount, Person payer, Person profiteer) {
         this.amount = amount;
         this.payer = payer;

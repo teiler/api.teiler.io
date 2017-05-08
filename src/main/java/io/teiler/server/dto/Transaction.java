@@ -26,7 +26,8 @@ public abstract class Transaction {
     private LocalDateTime createTime;
 
     /**
-     * @param id Id of the Transaction
+     * @param id Id of the Transaction.
+     *
      * @param amount Amount of money involved in the transaction
      * @param payer Person who spent the money
      * @param updateTime {@link LocalDateTime} marking the last update of the Transaction

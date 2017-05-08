@@ -32,11 +32,17 @@ public class SuggestCompensationService {
     @Autowired
     private DebtService debtService;
 
-    public List<SuggestedCompensation> getSuggestedCompensations(String groupID) {
-        groupUtil.checkIdExists(groupID);
+    /**
+     * Gets the suggested compensations for this group.
+     *
+     * @param groupId The group to get the suggested compensations for.
+     * @return The suggested compensations for this group
+     */
+    public List<SuggestedCompensation> getSuggestedCompensations(String groupId) {
+        groupUtil.checkIdExists(groupId);
 
         this.debts = new TreeMap<>();
-        debtService.getDebts(groupID).stream().filter(d -> d.getBalance() != 0)
+        debtService.getDebts(groupId).stream().filter(d -> d.getBalance() != 0)
             .forEach(d -> this.debts.put(d.getBalance(), d));
 
         List<SuggestedCompensation> suggestedCompensations = new LinkedList<>();
