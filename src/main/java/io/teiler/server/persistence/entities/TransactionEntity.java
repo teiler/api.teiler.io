@@ -1,5 +1,6 @@
 package io.teiler.server.persistence.entities;
 
+import io.teiler.server.util.enums.TransactionType;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
@@ -22,8 +23,6 @@ import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import io.teiler.server.util.enums.TransactionType;
 
 /**
  * Entity representing an entry of the <code>transaction</code>-table.
@@ -53,7 +52,7 @@ public class TransactionEntity {
     @ManyToOne
     @JoinColumn(name = "payer")
     private PersonEntity payer;
-    
+
     @NotNull
     @Column(name = "update_time")
     private Timestamp updateTime;
@@ -61,16 +60,16 @@ public class TransactionEntity {
     @NotNull
     @Column(name = "create_time")
     private Timestamp createTime;
-    
+
     @OneToMany(mappedBy = "transactionId", fetch = FetchType.EAGER, orphanRemoval = false, cascade = CascadeType.REMOVE)
     private List<ProfiteerEntity> profiteers;
-    
+
     public TransactionEntity() { /* intentionally empty */ }
-    
+
     /**
      * Sets the update-time and creation-time to {@link Instant#now()}.
      * <br>
-     * <i>Note:</i> The creation-time will only be set if it has not been set previously. 
+     * <i>Note:</i> The creation-time will only be set if it has not been set previously.
      */
     @PreUpdate
     @PrePersist
@@ -124,7 +123,7 @@ public class TransactionEntity {
     public void setCreateTime(Timestamp createTime) {
         this.createTime = updateTime != null ? new Timestamp(createTime.getTime()) : null;
     }
-    
+
     public List<ProfiteerEntity> getProfiteers() {
         return profiteers;
     }
@@ -132,5 +131,5 @@ public class TransactionEntity {
     public void setProfiteers(List<ProfiteerEntity> profiteers) {
         this.profiteers = profiteers;
     }
-    
+
 }

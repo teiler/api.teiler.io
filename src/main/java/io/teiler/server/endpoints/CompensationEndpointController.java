@@ -6,13 +6,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
 import com.google.gson.Gson;
-
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.services.CompensationService;
 import io.teiler.server.util.Error;
@@ -21,10 +15,13 @@ import io.teiler.server.util.Normalizer;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Compensation-related endpoints.
- * 
+ *
  * @author pbaechli
  */
 @Controller
@@ -36,7 +33,7 @@ public class CompensationEndpointController implements EndpointController {
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/compensations";
     private static final String URL_WITH_COMPENSATION_ID = BASE_URL + "/" + COMPENSATION_ID_PARAM;
     private Gson gson = GsonUtil.getHomebrewGson();
-    
+
     @Autowired
     private CompensationService compensationService;
 
@@ -61,7 +58,7 @@ public class CompensationEndpointController implements EndpointController {
             List<Compensation> compensations = compensationService.getLastCompensations(groupId, limit);
             return gson.toJson(compensations);
         });
-        
+
         get(URL_WITH_COMPENSATION_ID, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             groupId = Normalizer.normalizeGroupId(groupId);
@@ -75,7 +72,8 @@ public class CompensationEndpointController implements EndpointController {
             groupId = Normalizer.normalizeGroupId(groupId);
             int compensationId = Integer.parseInt(req.params(COMPENSATION_ID_PARAM));
             Compensation changedCompensation = gson.fromJson(req.body(), Compensation.class);
-            Compensation compensation = compensationService.editCompensation(groupId, compensationId, changedCompensation);
+            Compensation compensation = compensationService
+                .editCompensation(groupId, compensationId, changedCompensation);
             return gson.toJson(compensation);
         });
 
@@ -98,7 +96,7 @@ public class CompensationEndpointController implements EndpointController {
             Error error = new Error(e.getMessage());
             response.body(gson.toJson(error));
         });
-        
+
         exception(PayerProfiteerConflictException.class, (e, request, response) -> {
             response.status(409);
             Error error = new Error(e.getMessage());

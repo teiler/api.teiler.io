@@ -45,7 +45,7 @@ public class PersonEntity {
 
     @Column(name = "`group`")
     private String groupId;
-    
+
     @NotNull
     @Column(name = "active")
     private Boolean active;
@@ -64,7 +64,7 @@ public class PersonEntity {
 
     /**
      * Converts a {@link Person} to a {@link PersonEntity}.
-     * 
+     *
      * @param person {@link Person}
      */
     public PersonEntity(Person person) {
@@ -78,7 +78,7 @@ public class PersonEntity {
     /**
      * Sets the update-time and creation-time to {@link Instant#now()}.
      * <br>
-     * <i>Note:</i> The creation-time will only be set if it has not been set previously. 
+     * <i>Note:</i> The creation-time will only be set if it has not been set previously.
      */
     @PreUpdate
     @PrePersist
@@ -118,7 +118,7 @@ public class PersonEntity {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getGroupId() {
         return groupId;
     }

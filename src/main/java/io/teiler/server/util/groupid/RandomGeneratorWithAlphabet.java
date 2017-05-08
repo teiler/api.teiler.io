@@ -16,5 +16,5 @@ public class RandomGeneratorWithAlphabet implements IdGenerator {
         }
         return sb.toString();
     }
-    
+
 }

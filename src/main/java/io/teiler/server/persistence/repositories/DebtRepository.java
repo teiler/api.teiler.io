@@ -1,11 +1,11 @@
 package io.teiler.server.persistence.repositories;
 
 import io.teiler.server.persistence.entities.DebtEntity;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.*;
-import java.util.List;
 
 /**
  * Provides database-related operations for debts.
@@ -28,7 +28,7 @@ public class DebtRepository {
      */
     public List<DebtEntity> get(String groupId) {
         String sql =
-                "SELECT" +
+            "SELECT" +
                 "    person.id AS person, " +
                 "    COALESCE(transactions.credit, 0) - COALESCE(profiteers.debt, 0) AS balance " +
                 "FROM person " +

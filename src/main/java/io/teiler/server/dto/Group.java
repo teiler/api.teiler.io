@@ -1,15 +1,13 @@
 package io.teiler.server.dto;
 
 import com.google.gson.annotations.SerializedName;
-
 import io.teiler.server.util.enums.Currency;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * Class holding all information about a group.
- * 
+ *
  * @author lroellin
  */
 public class Group {
@@ -34,7 +32,7 @@ public class Group {
 
     /**
      * Usual constructor.
-     * 
+     *
      * @param id Id of the Group
      * @param name Name of the Group
      * @param currency Default currency of the Group
@@ -45,9 +43,9 @@ public class Group {
         this.currency = currency;
     }
 
-    /** 
+    /**
      * Constructor with all fields (useful for converting).
-     * 
+     *
      * @param id Id of the Group
      * @param name Name of the Group
      * @param currency Default currency of the Group
@@ -80,7 +78,7 @@ public class Group {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public Currency getCurrency() {
         return currency;
     }
@@ -116,7 +114,7 @@ public class Group {
     @Override
     public String toString() {
         return "Group [id=" + id + ", name=" + name + ", currency=" + currency + ", people="
-                + people + ", updateTime=" + updateTime + ", createTime=" + createTime + "]";
+            + people + ", updateTime=" + updateTime + ", createTime=" + createTime + "]";
     }
-    
+
 }

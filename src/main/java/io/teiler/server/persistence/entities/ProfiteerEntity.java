@@ -34,18 +34,18 @@ public class ProfiteerEntity {
         generator = "profiteer_id_seq")
     @Column(name = "id")
     private Integer id;
-    
+
     @ManyToOne
     @JoinColumn(name = "person")
     private PersonEntity person;
-    
+
     @Column(name = "transaction")
     private Integer transactionId;
-    
+
     @NotNull
     @Column(name = "share")
     private Integer share;
-    
+
     @NotNull
     @Column(name = "update_time")
     private Timestamp updateTime;
@@ -53,9 +53,9 @@ public class ProfiteerEntity {
     @NotNull
     @Column(name = "create_time")
     private Timestamp createTime;
-    
+
     public ProfiteerEntity() { /* intentionally empty */ }
-    
+
     public ProfiteerEntity(Profiteer share) {
         this.person = new PersonEntity(share.getPerson());
         this.share = share.getShare();
@@ -63,11 +63,11 @@ public class ProfiteerEntity {
         this.updateTime = TimeUtil.convertToTimestamp(share.getUpdateTime());
         this.createTime = TimeUtil.convertToTimestamp(share.getCreateTime());
     }
-    
+
     /**
      * Sets the update-time and creation-time to {@link Instant#now()}.
      * <br>
-     * <i>Note:</i> The creation-time will only be set if it has not been set previously. 
+     * <i>Note:</i> The creation-time will only be set if it has not been set previously.
      */
     @PreUpdate
     @PrePersist
@@ -77,10 +77,10 @@ public class ProfiteerEntity {
             createTime = updateTime;
         }
     }
-    
+
     /**
      * Converts this {@link ProfiteerEntity} to a {@link Profiteer}.
-     * 
+     *
      * @return {@link Profiteer}
      */
     public Profiteer toProfiteer() {
@@ -91,7 +91,7 @@ public class ProfiteerEntity {
             TimeUtil.convertToLocalDateTime(getUpdateTime()),
             TimeUtil.convertToLocalDateTime(getCreateTime()));
     }
-    
+
     public Integer getId() {
         return id;
     }

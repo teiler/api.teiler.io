@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Class holding all information about a debt.
  *
- *  @author dthoma
+ * @author dthoma
  */
 public class Debt {
 
@@ -43,12 +43,18 @@ public class Debt {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Debt debt = (Debt) o;
 
-        if (person != null ? !person.equals(debt.person) : debt.person != null) return false;
+        if (person != null ? !person.equals(debt.person) : debt.person != null) {
+            return false;
+        }
         return balance != null ? balance.equals(debt.balance) : debt.balance == null;
     }
 
