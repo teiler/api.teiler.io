@@ -3,7 +3,7 @@ package io.teiler.server.endpoints;
 import static spark.Spark.get;
 
 import io.teiler.server.dto.Debt;
-import io.teiler.server.util.Normalize;
+import io.teiler.server.util.Normalizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -32,7 +32,7 @@ public class DebtEndpointController implements EndpointController {
     public void register() {
         get(BASE_URL, (req, res) -> {
             String groupID = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupID = Normalize.normalizeGroupId(groupID);
+            groupID = Normalizer.normalizeGroupId(groupID);
             List<Debt> debts = debtService.getDebt(groupID);
             return gson.toJson(debts);
         });
