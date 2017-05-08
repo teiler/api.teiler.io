@@ -51,4 +51,11 @@ public class Debt {
         if (person != null ? !person.equals(debt.person) : debt.person != null) return false;
         return balance != null ? balance.equals(debt.balance) : debt.balance == null;
     }
+
+    @Override
+    public int hashCode() {
+        int result = person != null ? person.hashCode() : 0;
+        result = 31 * result + (balance != null ? balance.hashCode() : 0);
+        return result;
+    }
 }

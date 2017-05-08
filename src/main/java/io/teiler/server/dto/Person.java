@@ -100,5 +100,12 @@ public class Person {
         return "Person [id=" + id + ", name=" + name + ", active=" + active + ", updateTime="
                 + updateTime + ", createTime=" + createTime + "]";
     }
-    
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (active ? 1 : 0);
+        return result;
+    }
 }
