@@ -32,7 +32,7 @@ public class DebtEndpointController implements EndpointController {
     public void register() {
         get(BASE_URL, (req, res) -> {
             String groupID = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupID = Normalize.normalizeGroupId(groupID);
+            groupID = Normalizer.normalizeGroupId(groupID);
             List<Debt> debts = debtService.getDebts(groupID);
             return gson.toJson(debts);
         });

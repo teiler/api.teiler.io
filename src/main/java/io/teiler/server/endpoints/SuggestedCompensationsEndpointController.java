@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import io.teiler.server.dto.SuggestedCompensation;
 import io.teiler.server.services.SuggestCompensationService;
 import io.teiler.server.util.GsonUtil;
-import io.teiler.server.util.Normalize;
+import io.teiler.server.util.Normalizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -30,7 +30,7 @@ public class SuggestedCompensationsEndpointController implements EndpointControl
     public void register() {
         get(BASE_URL, (req, res) -> {
             String groupID = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupID = Normalize.normalizeGroupId(groupID);
+            groupID = Normalizer.normalizeGroupId(groupID);
             List<SuggestedCompensation> suggestedCompensations = suggestCompensationService.getSuggestedCompensations(groupID);
             return gson.toJson(suggestedCompensations);
         });

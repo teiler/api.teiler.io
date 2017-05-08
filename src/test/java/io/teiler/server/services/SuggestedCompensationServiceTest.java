@@ -26,9 +26,6 @@ public class SuggestedCompensationServiceTest {
     private SuggestCompensationService suggestCompensationService;
 
     @Autowired
-    private ExpenseService expenseService;
-
-    @Autowired
     private CompensationService compensationService;
 
     @Autowired
