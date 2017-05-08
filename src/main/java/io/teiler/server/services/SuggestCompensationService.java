@@ -48,13 +48,13 @@ public class SuggestCompensationService {
 
             if (creditor.getBalance() >= debitor.getBalance()) {
                 SuggestedCompensation compensation = new SuggestedCompensation(
-                        -debitor.getBalance(),
+                        - debitor.getBalance(),
                         debitor.getPerson(),
                         creditor.getPerson()
                 );
                 suggestedCompensations.add(compensation);
 
-                int newCreditorBalance = creditor.getBalance()+debitor.getBalance();
+                int newCreditorBalance = creditor.getBalance() + debitor.getBalance();
                 int newDebitorBalance = 0;
 
                 updateDebts(newCreditorBalance, creditor);
@@ -68,7 +68,7 @@ public class SuggestCompensationService {
                 suggestedCompensations.add(compensation);
 
                 int newCreditorBalance = 0;
-                int newDebitorBalance = debitor.getBalance()+creditor.getBalance();
+                int newDebitorBalance = debitor.getBalance() + creditor.getBalance();
 
                 updateDebts(newCreditorBalance, creditor);
                 updateDebts(newDebitorBalance, debitor);
