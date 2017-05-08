@@ -57,16 +57,16 @@ public class ProfiteerEntity {
     public ProfiteerEntity() { /* intentionally empty */ }
 
     /**
-     * Creates a ProfiteerEntity from a given DTO profiteer
+     * Creates a ProfiteerEntity from a given DTO profiteer.
      *
-     * @param share The DTO profiteer
+     * @param profiteer The DTO profiteer
      */
-    public ProfiteerEntity(Profiteer share) {
-        this.person = new PersonEntity(share.getPerson());
-        this.share = share.getShare();
-        this.transactionId = share.getTransactionId();
-        this.updateTime = TimeUtil.convertToTimestamp(share.getUpdateTime());
-        this.createTime = TimeUtil.convertToTimestamp(share.getCreateTime());
+    public ProfiteerEntity(Profiteer profiteer) {
+        this.person = new PersonEntity(profiteer.getPerson());
+        this.share = profiteer.getShare();
+        this.transactionId = profiteer.getTransactionId();
+        this.updateTime = TimeUtil.convertToTimestamp(profiteer.getUpdateTime());
+        this.createTime = TimeUtil.convertToTimestamp(profiteer.getCreateTime());
     }
 
     /**

@@ -28,10 +28,10 @@ public class SuggestedCompensationsEndpointController implements EndpointControl
     @Override
     public void register() {
         get(BASE_URL, (req, res) -> {
-            String groupID = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupID = Normalizer.normalizeGroupId(groupID);
+            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
+            groupId = Normalizer.normalizeGroupId(groupId);
             List<SuggestedCompensation> suggestedCompensations = suggestCompensationService
-                .getSuggestedCompensations(groupID);
+                .getSuggestedCompensations(groupId);
             return gson.toJson(suggestedCompensations);
         });
     }
