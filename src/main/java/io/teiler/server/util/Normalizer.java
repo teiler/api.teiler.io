@@ -1,8 +1,8 @@
 package io.teiler.server.util;
 
-public class Normalize {
+public class Normalizer {
 
-    private Normalize() { /* intentionally empty */ }
+    private Normalizer() { /* intentionally empty */ }
     
     public static String normalizeGroupId(String groupId) {
         return groupId.toLowerCase();

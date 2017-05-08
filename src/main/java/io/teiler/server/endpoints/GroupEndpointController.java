@@ -12,7 +12,7 @@ import io.teiler.server.dto.Group;
 import io.teiler.server.services.GroupService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
-import io.teiler.server.util.Normalize;
+import io.teiler.server.util.Normalizer;
 import io.teiler.server.util.exceptions.CurrencyNotValidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +44,7 @@ public class GroupEndpointController implements EndpointController {
 
         get(URL_WITH_GROUP_ID, (req, res) -> {
             String groupId = req.params(GROUP_ID_PARAM);
-            groupId = Normalize.normalizeGroupId(groupId);
+            groupId = Normalizer.normalizeGroupId(groupId);
             String activeString = req.queryParams(PersonEndpointController.ACTIVE_PARAM);
             Boolean activeOnly = true;
             if(activeString != null) {
@@ -56,7 +56,7 @@ public class GroupEndpointController implements EndpointController {
 
         put(URL_WITH_GROUP_ID, (req, res) -> {
             String groupId = req.params(GROUP_ID_PARAM);
-            groupId = Normalize.normalizeGroupId(groupId);
+            groupId = Normalizer.normalizeGroupId(groupId);
             Group changedGroup = gson.fromJson(req.body(), Group.class);
             Group group = groupService.editGroup(groupId, changedGroup);
             return gson.toJson(group);
@@ -64,7 +64,7 @@ public class GroupEndpointController implements EndpointController {
 
         delete(URL_WITH_GROUP_ID, (req, res) -> {
             String groupId = req.params(GROUP_ID_PARAM);
-            groupId = Normalize.normalizeGroupId(groupId);
+            groupId = Normalizer.normalizeGroupId(groupId);
             groupService.deleteGroup(groupId);
             return "";
         });
