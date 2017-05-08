@@ -43,8 +43,6 @@ public class SuggestCompensationService {
         PersonChooser personChooser = new TopBottomChooser(debts);
 
         while (personChooser.personsLeft()) {
-            LOGGER.debug("debts: {}", debts);
-
             Debt creditor = personChooser.getNextCreditor();
             Debt debitor = personChooser.getNextDebitor();
 
