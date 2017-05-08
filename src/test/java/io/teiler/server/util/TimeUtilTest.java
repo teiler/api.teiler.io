@@ -33,5 +33,4 @@ public class TimeUtilTest {
         Assert.assertNull(TimeUtil.convertToLocalDateTime(null));
     }
     
-    
 }
