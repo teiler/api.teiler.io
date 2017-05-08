@@ -20,10 +20,7 @@ import java.util.List;
 @TestPropertySource(properties = {"local.server.port=4567"})
 @ActiveProfiles("test")
 public class SuggestedCompensationServiceTest {
-
-    private static final String FIRST_PERSON_NAME = "Johannes";
-    private static final String SECOND_PERSON_NAME = "Rudolf";
-    private static final String THIRD_PERSON_NAME = "Sepp";
+    
     private static final String TEST_GROUP_NAME = "Testgroup";
 
     @Autowired
