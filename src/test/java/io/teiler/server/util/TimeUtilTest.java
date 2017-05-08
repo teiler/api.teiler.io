@@ -9,7 +9,7 @@ import org.junit.Test;
 public class TimeUtilTest {
     
     private static final LocalDateTime C99_DATETIME = LocalDateTime.of(1999, 12, 1, 11, 11, 11);
-    private static final long MILLIS_SINCE_C99 = 944043071000l;
+    private static final long MILLIS_SINCE_C99 = 944043071000L;
     
     @Test
     public void testConvertToTimestamp() {
