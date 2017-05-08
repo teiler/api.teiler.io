@@ -24,6 +24,11 @@ public class ExpenseEntity extends TransactionEntity {
 
     public ExpenseEntity() { /* intentionally empty */ }
 
+    /**
+     * Creates an ExpenseEntity from a DTO expense.
+     *
+     * @param expense The DTO expense
+     */
     public ExpenseEntity(Expense expense) {
         super.setId(expense.getId());
         super.setPayer(new PersonEntity(expense.getPayer()));
@@ -34,6 +39,11 @@ public class ExpenseEntity extends TransactionEntity {
         this.title = expense.getTitle();
     }
 
+    /**
+     * Returns itself as a DTO expense.
+     *
+     * @return itself as a DTO expense
+     */
     public Expense toExpense() {
         return new Expense(getId(), getAmount(), getPayer().toPerson(),
             TimeUtil.convertToLocalDateTime(getUpdateTime()),

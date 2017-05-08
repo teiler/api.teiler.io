@@ -56,6 +56,11 @@ public class ProfiteerEntity {
 
     public ProfiteerEntity() { /* intentionally empty */ }
 
+    /**
+     * Creates a ProfiteerEntity from a given DTO profiteer
+     *
+     * @param share The DTO profiteer
+     */
     public ProfiteerEntity(Profiteer share) {
         this.person = new PersonEntity(share.getPerson());
         this.share = share.getShare();

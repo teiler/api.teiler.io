@@ -11,6 +11,11 @@ public class GsonUtil {
 
     private GsonUtil() { /* intentionally empty */ }
 
+    /**
+     * Returns a GSON instance with our converters applied.
+     *
+     * @return a GSON instance with our converters applied
+     */
     public static GsonBuilder getHomebrewGsonBuilder() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeHierarchyAdapter(LocalDateTime.class, new LocalDateTimeSerializer());

@@ -50,6 +50,14 @@ public class PersonService {
         return personEntity.toPerson();
     }
 
+    /**
+     * Gets all the people in a group up to a given limit.
+     *
+     * @param groupId The group to get the people for
+     * @param limit How many people to get
+     * @param activeOnly Get only active people
+     * @return The people in a group
+     */
     public List<Person> getPeople(String groupId, long limit, boolean activeOnly) {
         groupUtil.checkIdExists(groupId);
 
@@ -64,6 +72,13 @@ public class PersonService {
         return people;
     }
 
+    /**
+     * Gets a single person in a group.
+     *
+     * @param groupId The group to get this person from
+     * @param personId The person to get
+     * @return The person found
+     */
     public Person getPerson(String groupId, int personId) {
         groupUtil.checkIdExists(groupId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
@@ -72,6 +87,14 @@ public class PersonService {
         return person;
     }
 
+    /**
+     * Edits a person.
+     *
+     * @param groupId The group to edit this person in
+     * @param personId The person to edit
+     * @param changedPerson The new parameters for the person
+     * @return The edited person
+     */
     public Person editPerson(String groupId, int personId, Person changedPerson) {
         groupUtil.checkIdExists(groupId);
         personUtil.checkPersonExists(personId);
@@ -89,6 +112,12 @@ public class PersonService {
         return personRepository.editPerson(personId, changedPerson).toPerson();
     }
 
+    /**
+     * Deactivates a person in a group.
+     *
+     * @param groupId The group to deactivate the person in
+     * @param personId The person to deactivate
+     */
     public void deactivatePerson(String groupId, int personId) {
         groupUtil.checkIdExists(groupId);
         personUtil.checkPersonExists(personId);

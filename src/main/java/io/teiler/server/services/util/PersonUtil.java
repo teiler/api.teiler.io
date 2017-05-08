@@ -64,6 +64,12 @@ public class PersonUtil {
         return people.stream().filter(Person::isActive).collect(Collectors.toList());
     }
 
+    /**
+     * Check if this person is active.
+     *
+     * @param personId The person to check
+     * @throws PersonInactiveException The person is inactive
+     */
     public void checkPersonIsActive(int personId) throws PersonInactiveException {
         if (!personRepository.getById(personId).getActive()) {
             throw new PersonInactiveException();

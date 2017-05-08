@@ -31,11 +31,17 @@ public class DebtService {
     @Autowired
     private DebtRepository debtRepository;
 
-    public List<Debt> getDebts(String groupID) {
-        groupUtil.checkIdExists(groupID);
+    /**
+     * Gets the debts for the given group.
+     *
+     * @param groupId The group to get the debts for
+     * @return The debts for that group
+     */
+    public List<Debt> getDebts(String groupId) {
+        groupUtil.checkIdExists(groupId);
 
         List<Debt> debts = new LinkedList<>();
-        for (DebtEntity debtEntity : debtRepository.get(groupID)) {
+        for (DebtEntity debtEntity : debtRepository.get(groupId)) {
             // TODO: Find a better solution than converting it here
             Debt debt = new Debt(personRepository.getById(debtEntity.getPersonId()).toPerson(),
                 debtEntity.getBalance());

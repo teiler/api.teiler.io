@@ -69,6 +69,13 @@ public class GroupService {
         return groupEntity.toGroup();
     }
 
+    /**
+     * Edits a group.
+     *
+     * @param groupId The group to edit
+     * @param changedGroup The new group parameters
+     * @return The edited group
+     */
     public Group editGroup(String groupId, Group changedGroup) {
         groupUtil.checkIdExists(groupId);
         groupUtil.checkCurrencyIsValid(changedGroup);
@@ -76,6 +83,11 @@ public class GroupService {
         return groupRepository.editGroup(groupId, changedGroup).toGroup();
     }
 
+    /**
+     * Deletes a group.
+     *
+     * @param groupId The group to delete
+     */
     public void deleteGroup(String groupId) {
         groupUtil.checkIdExists(groupId);
         LOGGER.debug("Delete Group: {}", groupId);
@@ -87,7 +99,7 @@ public class GroupService {
      * See the linked page for further information.
      *
      * @return A UUID (as a mere String; not to be confused with {@link java.util.UUID})
-     * @see <a href="http://stackoverflow.com/a/41156">http://stackoverflow.com/a/41156<a>
+     * @see <a href="http://stackoverflow.com/a/41156">http://stackoverflow.com/a/41156</a>
      */
     private String createNewId() {
         String id;
