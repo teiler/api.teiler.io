@@ -12,6 +12,14 @@ addons:
       secure: 70c45aec45b92f28e14b9159a18a20c92e2dddae
   ssh_known_hosts: api.teiler.io
 
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
 before_install:
 - openssl aes-256-cbc -K $encrypted_d1738fc2806c_key -iv $encrypted_d1738fc2806c_iv
   -in .travis/deploy_key.pem.enc -out .travis/deploy_key.pem -d
