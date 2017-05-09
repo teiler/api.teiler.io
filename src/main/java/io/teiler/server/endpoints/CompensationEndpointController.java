@@ -16,10 +16,8 @@ import com.google.gson.Gson;
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.CompensationService;
-import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
-import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
 /**
@@ -79,23 +77,11 @@ public class CompensationEndpointController implements EndpointController {
             return "";
         });
 
-        exception(TransactionNotFoundException.class, (e, request, response) -> {
-            response.status(404);
-            Error error = new Error(e.getMessage());
-            response.body(gson.toJson(error));
-        });
+        exception(TransactionNotFoundException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 404, e, gson));
 
-        exception(PersonNotFoundException.class, (e, request, response) -> {
-            response.status(404);
-            Error error = new Error(e.getMessage());
-            response.body(gson.toJson(error));
-        });
-
-        exception(PayerProfiteerConflictException.class, (e, request, response) -> {
-            response.status(409);
-            Error error = new Error(e.getMessage());
-            response.body(gson.toJson(error));
-        });
+        exception(PayerProfiteerConflictException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 409, e, gson));
     }
 
 }

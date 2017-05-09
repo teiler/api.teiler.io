@@ -16,9 +16,7 @@ import com.google.gson.Gson;
 import io.teiler.server.dto.Expense;
 import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.ExpenseService;
-import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
-import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 
@@ -78,23 +76,11 @@ public class ExpenseEndpointController implements EndpointController {
             return "";
         });
 
-        exception(TransactionNotFoundException.class, (e, request, response) -> {
-            response.status(404);
-            Error error = new Error(e.getMessage());
-            response.body(gson.toJson(error));
-        });
+        exception(TransactionNotFoundException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 404, e, gson));
 
-        exception(PersonNotFoundException.class, (e, request, response) -> {
-            response.status(404);
-            Error error = new Error(e.getMessage());
-            response.body(gson.toJson(error));
-        });
-
-        exception(SharesNotAddingUpException.class, (e, request, response) -> {
-            response.status(406);
-            Error error = new Error(e.getMessage());
-            response.body(gson.toJson(error));
-        });
+        exception(SharesNotAddingUpException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 406, e, gson));
     }
 
 }

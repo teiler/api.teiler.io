@@ -16,7 +16,6 @@ import com.google.gson.Gson;
 import io.teiler.server.dto.Person;
 import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.PersonService;
-import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
 import io.teiler.server.util.exceptions.PersonInactiveException;
@@ -75,23 +74,14 @@ public class PersonEndpointController implements EndpointController {
             return "";
         });
 
-        exception(PersonNotFoundException.class, (e, request, response) -> {
-            response.status(404);
-            Error error = new Error(e.getMessage());
-            response.body(gson.toJson(error));
-        });
+        exception(PersonNotFoundException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 404, e, gson));
 
-        exception(PeopleNameConflictException.class, (e, request, response) -> {
-            response.status(409);
-            Error error = new Error(e.getMessage());
-            response.body(gson.toJson(error));
-        });
+        exception(PeopleNameConflictException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 409, e, gson));
 
-        exception(PersonInactiveException.class, (e, request, response) -> {
-            response.status(410);
-            Error error = new Error(e.getMessage());
-            response.body(gson.toJson(error));
-        });
+        exception(PersonInactiveException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 410, e, gson));
     }
 
 }
