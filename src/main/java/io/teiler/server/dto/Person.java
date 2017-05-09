@@ -1,5 +1,6 @@
 package io.teiler.server.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.time.LocalDateTime;
 
@@ -11,18 +12,23 @@ import java.time.LocalDateTime;
  */
 public class Person {
 
+    @Expose
     @SerializedName("id")
     private Integer id;
 
+    @Expose
     @SerializedName("name")
     private String name;
 
+    @Expose(deserialize = false)
     @SerializedName("active")
     private boolean active;
 
+    @Expose(deserialize = false)
     @SerializedName("update-time")
     private LocalDateTime updateTime;
 
+    @Expose(deserialize = false)
     @SerializedName("create-time")
     private LocalDateTime createTime;
 
