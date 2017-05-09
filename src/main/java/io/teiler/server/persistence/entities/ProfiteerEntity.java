@@ -153,4 +153,5 @@ public class ProfiteerEntity {
     public String toString() {
         return this.toProfiteer().toString();
     }
+
 }
