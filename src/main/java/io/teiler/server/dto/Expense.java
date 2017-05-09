@@ -1,5 +1,6 @@
 package io.teiler.server.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,9 +12,11 @@ import java.util.List;
  */
 public class Expense extends Transaction {
 
+    @Expose
     @SerializedName("title")
     private String title;
 
+    @Expose
     @SerializedName("profiteers")
     private List<Profiteer> profiteers;
 

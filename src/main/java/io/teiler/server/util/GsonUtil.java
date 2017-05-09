@@ -18,6 +18,7 @@ public class GsonUtil {
      */
     public static GsonBuilder getHomebrewGsonBuilder() {
         GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.excludeFieldsWithoutExposeAnnotation();
         gsonBuilder.registerTypeHierarchyAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
         gsonBuilder.registerTypeHierarchyAdapter(Timestamp.class, new TimestampSerializer());
         return gsonBuilder;

@@ -1,5 +1,6 @@
 package io.teiler.server.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.time.LocalDateTime;
 
@@ -10,18 +11,23 @@ import java.time.LocalDateTime;
  */
 public abstract class Transaction {
 
+    @Expose
     @SerializedName("id")
     private Integer id;
 
+    @Expose
     @SerializedName("amount")
     private Integer amount;
 
+    @Expose
     @SerializedName("payer")
     private Person payer;
 
+    @Expose(deserialize = false)
     @SerializedName("update-time")
     private LocalDateTime updateTime;
 
+    @Expose(deserialize = false)
     @SerializedName("create-time")
     private LocalDateTime createTime;
 

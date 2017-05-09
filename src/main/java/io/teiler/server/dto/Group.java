@@ -1,5 +1,6 @@
 package io.teiler.server.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import io.teiler.server.util.enums.Currency;
 import java.time.LocalDateTime;
@@ -12,21 +13,27 @@ import java.util.List;
  */
 public class Group {
 
+    @Expose
     @SerializedName("id")
     private String id;
 
+    @Expose
     @SerializedName("name")
     private String name;
 
+    @Expose
     @SerializedName("currency")
     private Currency currency;
 
+    @Expose(deserialize = false)
     @SerializedName("people")
     private List<Person> people;
 
+    @Expose(deserialize = false)
     @SerializedName("update-time")
     private LocalDateTime updateTime;
 
+    @Expose(deserialize = false)
     @SerializedName("create-time")
     private LocalDateTime createTime;
 
