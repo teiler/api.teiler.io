@@ -1,13 +1,14 @@
 package io.teiler.server.services.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.repositories.CompensationRepository;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class CompensationUtil {
@@ -69,4 +70,5 @@ public class CompensationUtil {
             throw new ValueLessThanOrEqualToZeroException();
         }
     }
+
 }

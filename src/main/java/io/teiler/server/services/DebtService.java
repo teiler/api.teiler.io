@@ -1,16 +1,18 @@
 package io.teiler.server.services;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Debt;
 import io.teiler.server.persistence.entities.DebtEntity;
 import io.teiler.server.persistence.repositories.DebtRepository;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.services.util.GroupUtil;
-import java.util.LinkedList;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for debts.
@@ -50,4 +52,5 @@ public class DebtService {
         LOGGER.debug("View debts: {}", debts);
         return debts;
     }
+
 }
