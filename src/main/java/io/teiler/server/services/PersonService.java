@@ -1,16 +1,18 @@
 package io.teiler.server.services;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.services.util.GroupUtil;
 import io.teiler.server.services.util.PersonUtil;
-import java.util.LinkedList;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Groups.
@@ -22,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class PersonService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
-    /* Spring Components (Services/Controller) */
+
     @Autowired
     private GroupUtil groupUtil;
 

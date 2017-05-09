@@ -1,14 +1,16 @@
 package io.teiler.server.services.util;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Profiteer;
 import io.teiler.server.persistence.repositories.ExpenseRepository;
 import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ExpenseUtil {
@@ -70,4 +72,5 @@ public class ExpenseUtil {
             throw new ValueLessThanOrEqualToZeroException();
         }
     }
+
 }

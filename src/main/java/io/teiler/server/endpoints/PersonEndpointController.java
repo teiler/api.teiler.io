@@ -6,7 +6,13 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import com.google.gson.Gson;
+
 import io.teiler.server.dto.Person;
 import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.PersonService;
@@ -14,9 +20,6 @@ import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
 import io.teiler.server.util.exceptions.PersonInactiveException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Person-related endpoints.
@@ -27,12 +30,13 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class PersonEndpointController implements EndpointController {
 
-    public static final String ACTIVE_PARAM = "active";
     private static final int DEFAULT_QUERY_LIMIT = 20;
     private static final String PERSON_ID_PARAM = ":personid";
-    private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/people";
-    private static final String URL_WITH_PERSON_ID = BASE_URL + "/:personid";
+    private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/" + EndpointUtil.GROUP_ID_PARAM + "/people";
+    private static final String URL_WITH_PERSON_ID = BASE_URL + "/" + PERSON_ID_PARAM;
+    
     private Gson gson = GsonUtil.getHomebrewGson();
+    
     @Autowired
     private PersonService personService;
 

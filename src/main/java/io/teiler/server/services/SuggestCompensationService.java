@@ -1,18 +1,20 @@
 package io.teiler.server.services;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.dto.Debt;
 import io.teiler.server.services.util.GroupUtil;
 import io.teiler.server.services.util.settleup.PersonChooser;
 import io.teiler.server.services.util.settleup.TopBottomChooser;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for suggested compensations.
@@ -92,4 +94,5 @@ public class SuggestCompensationService {
         debt.setBalance(newBalance);
         this.debts.put(newBalance, debt);
     }
+
 }
