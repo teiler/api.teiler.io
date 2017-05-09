@@ -16,16 +16,12 @@ public class GsonUtil {
      *
      * @return a GSON instance with our converters applied
      */
-    public static GsonBuilder getHomebrewGsonBuilder() {
+    public static Gson getHomebrewGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.excludeFieldsWithoutExposeAnnotation();
         gsonBuilder.registerTypeHierarchyAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
         gsonBuilder.registerTypeHierarchyAdapter(Timestamp.class, new TimestampSerializer());
-        return gsonBuilder;
-    }
-
-    public static Gson getHomebrewGson() {
-        return getHomebrewGsonBuilder().create();
+        return gsonBuilder.create();
     }
 
 }

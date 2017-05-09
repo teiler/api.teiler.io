@@ -19,9 +19,4 @@ public class Error {
     public Error(String errorCode) {
         this.errorCodes.add(errorCode);
     }
-
-    public void addError(String errorCode) {
-        this.errorCodes.add(errorCode);
-    }
-
 }
