@@ -1,4 +1,4 @@
-package io.teiler.server.util.groupid;
+package io.teiler.server.services.util.groupid;
 
 import java.security.SecureRandom;
 
