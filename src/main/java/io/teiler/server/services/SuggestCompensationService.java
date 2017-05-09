@@ -55,7 +55,7 @@ public class SuggestCompensationService {
             if (creditor.getBalance() >= debitor.getBalance()) {
                 Compensation compensation = new Compensation(
                     null,
-                    -debitor.getBalance(),
+                    - debitor.getBalance(),
                     debitor.getPerson(),
                     creditor.getPerson()
                 );
