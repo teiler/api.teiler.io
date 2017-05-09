@@ -9,10 +9,10 @@ import io.teiler.server.dto.Debt;
  */
 public interface PersonChooser {
 
-    public Debt getNextDebitor();
+    Debt getNextDebitor();
 
-    public Debt getNextCreditor();
+    Debt getNextCreditor();
 
-    public boolean personsLeft();
+    boolean personsLeft();
 
 }
