@@ -36,7 +36,11 @@ public class GroupService {
     @Autowired
     private GroupRepository groupRepository;
 
-    private IdGenerator idGenerator = new RandomGeneratorWithAlphabet();
+    private IdGenerator idGenerator;
+    
+    public GroupService() {
+        idGenerator = new RandomGeneratorWithAlphabet();
+    }
 
     /**
      * Returns information about a Group.
