@@ -1,10 +1,8 @@
 package io.teiler.server.persistence.entities;
 
-import com.google.gson.annotations.SerializedName;
-import io.teiler.server.dto.Person;
-import io.teiler.server.util.TimeUtil;
 import java.sql.Timestamp;
 import java.time.Instant;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +13,11 @@ import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.google.gson.annotations.SerializedName;
+
+import io.teiler.server.dto.Person;
+import io.teiler.server.util.TimeUtil;
 
 /**
  * Entity representing an entry of the <code>group</code>-table.
@@ -30,10 +33,12 @@ public class PersonEntity {
 
     @Id
     @SerializedName("id")
-    @SequenceGenerator(name = "person_id_seq",
+    @SequenceGenerator(
+        name = "person_id_seq",
         sequenceName = "person_id_seq",
         allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+    @GeneratedValue(
+        strategy = GenerationType.SEQUENCE,
         generator = "person_id_seq")
     @Column(name = "id")
     private Integer id;

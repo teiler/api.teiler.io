@@ -1,9 +1,9 @@
 package io.teiler.server.persistence.entities;
 
-import io.teiler.server.util.enums.TransactionType;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -24,6 +24,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import io.teiler.server.util.enums.TransactionType;
+
 /**
  * Entity representing an entry of the <code>transaction</code>-table.
  *
@@ -36,10 +38,12 @@ import javax.validation.constraints.NotNull;
 public class TransactionEntity {
 
     @Id
-    @SequenceGenerator(name = "transaction_id_seq",
+    @SequenceGenerator(
+        name = "transaction_id_seq",
         sequenceName = "transaction_id_seq",
         allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+    @GeneratedValue(
+        strategy = GenerationType.SEQUENCE,
         generator = "transaction_id_seq")
     @Column(name = "id")
     private Integer id;
