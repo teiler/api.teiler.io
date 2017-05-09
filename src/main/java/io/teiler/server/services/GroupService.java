@@ -25,17 +25,13 @@ public class GroupService {
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupService.class);
 
     private static final int NUMBER_OF_ID_CHARACTERS = 8;
-
+    private final IdGenerator idGenerator;
     @Autowired
     private GroupUtil groupUtil;
-
     @Autowired
     private PersonUtil personUtil;
-
     @Autowired
     private GroupRepository groupRepository;
-
-    private IdGenerator idGenerator;
     
     public GroupService() {
         idGenerator = new RandomGeneratorWithAlphabet();

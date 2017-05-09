@@ -21,8 +21,8 @@ public class SuggestedCompensationsEndpointController implements EndpointControl
 
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/"
         + EndpointUtil.GROUP_ID_PARAM + "/settleup";
-    
-    private Gson gson = GsonUtil.getHomebrewGson();
+
+    private final Gson gson = GsonUtil.getHomebrewGson();
 
     @Autowired
     private SuggestCompensationService suggestCompensationService;

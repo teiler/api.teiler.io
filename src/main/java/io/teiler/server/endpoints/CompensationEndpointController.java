@@ -30,8 +30,8 @@ public class CompensationEndpointController implements EndpointController {
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/"
         + EndpointUtil.GROUP_ID_PARAM + "/compensations";
     private static final String URL_WITH_COMPENSATION_ID = BASE_URL + "/" + COMPENSATION_ID_PARAM;
-    
-    private Gson gson = GsonUtil.getHomebrewGson();
+
+    private final Gson gson = GsonUtil.getHomebrewGson();
 
     @Autowired
     private CompensationService compensationService;

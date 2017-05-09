@@ -21,8 +21,8 @@ public class DebtEndpointController implements EndpointController {
 
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/"
         + EndpointUtil.GROUP_ID_PARAM + "/debts";
-    
-    private Gson gson = GsonUtil.getHomebrewGson();
+
+    private final Gson gson = GsonUtil.getHomebrewGson();
 
     @Autowired
     private DebtService debtService;
