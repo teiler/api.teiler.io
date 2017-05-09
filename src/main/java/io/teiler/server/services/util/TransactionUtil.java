@@ -1,5 +1,8 @@
 package io.teiler.server.services.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.persistence.repositories.ProfiteerRepository;
 import io.teiler.server.util.exceptions.PayerInactiveException;
 import io.teiler.server.util.exceptions.PayerNotFoundException;
@@ -7,8 +10,6 @@ import io.teiler.server.util.exceptions.PersonInactiveException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.ProfiteerInactiveException;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class TransactionUtil {
@@ -95,4 +96,5 @@ public class TransactionUtil {
             throw new ProfiteerInactiveException();
         }
     }
+
 }

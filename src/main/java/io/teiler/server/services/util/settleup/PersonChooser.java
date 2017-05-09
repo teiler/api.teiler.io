@@ -14,4 +14,5 @@ public interface PersonChooser {
     public Debt getNextCreditor();
 
     public boolean personsLeft();
+
 }

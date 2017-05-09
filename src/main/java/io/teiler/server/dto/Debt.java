@@ -67,4 +67,5 @@ public class Debt {
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
         return result;
     }
+
 }
