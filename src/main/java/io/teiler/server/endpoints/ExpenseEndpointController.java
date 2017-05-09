@@ -8,7 +8,7 @@ import static spark.Spark.put;
 
 import com.google.gson.Gson;
 import io.teiler.server.dto.Expense;
-import io.teiler.server.endpoints.util.GroupIdReader;
+import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.ExpenseService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
@@ -29,7 +29,6 @@ public class ExpenseEndpointController implements EndpointController {
 
     private static final int DEFAULT_QUERY_LIMIT = 20;
     private static final String EXPENSE_ID_PARAM = ":expenseid";
-    private static final String LIMIT_PARAM = "limit";
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/expenses";
     private static final String URL_WITH_EXPENSE_ID = BASE_URL + "/" + EXPENSE_ID_PARAM;
     private Gson gson = GsonUtil.getHomebrewGson();
@@ -39,32 +38,28 @@ public class ExpenseEndpointController implements EndpointController {
     @Override
     public void register() {
         post(BASE_URL, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             Expense requestExpense = gson.fromJson(req.body(), Expense.class);
             Expense newExpense = expenseService.createExpense(requestExpense, groupId);
             return gson.toJson(newExpense);
         });
 
         get(BASE_URL, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
-            String limitString = req.queryParams(LIMIT_PARAM);
-            long limit = DEFAULT_QUERY_LIMIT;
-            if (limitString != null) {
-                limit = Long.parseLong(limitString);
-            }
+            String groupId = EndpointUtil.readGroupId(req);
+            long limit = EndpointUtil.readLimit(req, DEFAULT_QUERY_LIMIT);
             List<Expense> expenses = expenseService.getLastExpenses(groupId, limit);
             return gson.toJson(expenses);
         });
 
         get(URL_WITH_EXPENSE_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
             Expense expense = expenseService.getExpense(groupId, expenseId);
             return gson.toJson(expense);
         });
 
         put(URL_WITH_EXPENSE_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
             Expense changedExpense = gson.fromJson(req.body(), Expense.class);
             Expense expense = expenseService.editExpense(groupId, expenseId, changedExpense);
@@ -72,7 +67,7 @@ public class ExpenseEndpointController implements EndpointController {
         });
 
         delete(URL_WITH_EXPENSE_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
             expenseService.deleteExpense(groupId, expenseId);
             return "";

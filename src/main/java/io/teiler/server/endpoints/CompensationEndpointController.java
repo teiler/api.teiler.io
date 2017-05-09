@@ -8,7 +8,7 @@ import static spark.Spark.put;
 
 import com.google.gson.Gson;
 import io.teiler.server.dto.Compensation;
-import io.teiler.server.endpoints.util.GroupIdReader;
+import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.CompensationService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
@@ -29,7 +29,6 @@ public class CompensationEndpointController implements EndpointController {
 
     private static final int DEFAULT_QUERY_LIMIT = 20;
     private static final String COMPENSATION_ID_PARAM = ":compensationid";
-    private static final String LIMIT_PARAM = "limit";
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/compensations";
     private static final String URL_WITH_COMPENSATION_ID = BASE_URL + "/" + COMPENSATION_ID_PARAM;
     private Gson gson = GsonUtil.getHomebrewGson();
@@ -40,32 +39,28 @@ public class CompensationEndpointController implements EndpointController {
     @Override
     public void register() {
         post(BASE_URL, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             Compensation requestCompensation = gson.fromJson(req.body(), Compensation.class);
             Compensation newCompensation = compensationService.createCompensation(requestCompensation, groupId);
             return gson.toJson(newCompensation);
         });
 
         get(BASE_URL, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
-            String limitString = req.queryParams(LIMIT_PARAM);
-            long limit = DEFAULT_QUERY_LIMIT;
-            if (limitString != null) {
-                limit = Long.parseLong(limitString);
-            }
+            String groupId = EndpointUtil.readGroupId(req);
+            long limit = EndpointUtil.readLimit(req, DEFAULT_QUERY_LIMIT);
             List<Compensation> compensations = compensationService.getLastCompensations(groupId, limit);
             return gson.toJson(compensations);
         });
 
         get(URL_WITH_COMPENSATION_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             int compensationId = Integer.parseInt(req.params(COMPENSATION_ID_PARAM));
             Compensation compensation = compensationService.getCompensation(groupId, compensationId);
             return gson.toJson(compensation);
         });
 
         put(URL_WITH_COMPENSATION_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             int compensationId = Integer.parseInt(req.params(COMPENSATION_ID_PARAM));
             Compensation changedCompensation = gson.fromJson(req.body(), Compensation.class);
             Compensation compensation = compensationService
@@ -74,7 +69,7 @@ public class CompensationEndpointController implements EndpointController {
         });
 
         delete(URL_WITH_COMPENSATION_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             int compensationId = Integer.parseInt(req.params(COMPENSATION_ID_PARAM));
             compensationService.deleteCompensation(groupId, compensationId);
             return "";
