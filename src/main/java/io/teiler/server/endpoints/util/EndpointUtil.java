@@ -61,9 +61,17 @@ public class EndpointUtil {
     }
 
 
-    public static void prepareErrorResponse(Response response, int statusCode, Exception e, Gson gsonInstance) {
+    /**
+     * Sets the response so that it represents an error state.
+     *
+     * @param response The response to modify
+     * @param statusCode The HTTP status code to set
+     * @param exception The exception to include
+     * @param gsonInstance The instance to GSON, needed because it's a static method
+     */
+    public static void prepareErrorResponse(Response response, int statusCode, Exception exception, Gson gsonInstance) {
         response.status(statusCode);
-        Error error = new Error(e.getMessage());
+        Error error = new Error(exception.getMessage());
         response.body(gsonInstance.toJson(error));
     }
 }

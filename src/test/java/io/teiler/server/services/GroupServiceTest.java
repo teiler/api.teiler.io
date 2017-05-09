@@ -23,7 +23,7 @@ public class GroupServiceTest {
     private static final String TEST_GROUP_NAME = "Test";
     private static final String ENTROPY_BITS_CONSTANT_NAME = "ENTROPY_BITS_IN_ONE_CHARACTER";
     private static final int ENTROPY_BITS_IN_ONE_CHARACTER_EXPECTED = 5;
-    
+
     @Autowired
     private GroupService groupService;
 

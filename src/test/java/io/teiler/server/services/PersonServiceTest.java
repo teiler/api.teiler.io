@@ -1,7 +1,14 @@
 package io.teiler.server.services;
 
+import io.teiler.server.Tylr;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.services.util.PersonUtil;
+import io.teiler.server.util.exceptions.NotAuthorizedException;
+import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import io.teiler.server.util.exceptions.PersonInactiveException;
+import io.teiler.server.util.exceptions.PersonNotFoundException;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,17 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import io.teiler.server.Tylr;
-import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
-import io.teiler.server.services.GroupService;
-import io.teiler.server.services.PersonService;
-import io.teiler.server.services.util.PersonUtil;
-import io.teiler.server.util.exceptions.NotAuthorizedException;
-import io.teiler.server.util.exceptions.PeopleNameConflictException;
-import io.teiler.server.util.exceptions.PersonInactiveException;
-import io.teiler.server.util.exceptions.PersonNotFoundException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -34,10 +30,10 @@ public class PersonServiceTest {
 
     @Autowired
     private PersonService personService;
-    
+
     @Autowired
     private GroupService groupService;
-    
+
     @Autowired
     private PersonUtil personUtil;
 
@@ -62,7 +58,7 @@ public class PersonServiceTest {
         personService.createPerson(groupId, FIRST_PERSON_NAME);
         personService.createPerson(groupId, FIRST_PERSON_NAME);
     }
-    
+
     @Test
     public void testDifferentNamesDontConflict() {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);

@@ -6,19 +6,16 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
 import com.google.gson.Gson;
-
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.CompensationService;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Compensation-related endpoints.
@@ -30,7 +27,8 @@ public class CompensationEndpointController implements EndpointController {
 
     private static final int DEFAULT_QUERY_LIMIT = 20;
     private static final String COMPENSATION_ID_PARAM = ":compensationid";
-    private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/" + EndpointUtil.GROUP_ID_PARAM + "/compensations";
+    private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/"
+        + EndpointUtil.GROUP_ID_PARAM + "/compensations";
     private static final String URL_WITH_COMPENSATION_ID = BASE_URL + "/" + COMPENSATION_ID_PARAM;
     
     private Gson gson = GsonUtil.getHomebrewGson();
