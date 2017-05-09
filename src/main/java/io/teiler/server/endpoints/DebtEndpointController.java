@@ -4,7 +4,7 @@ import static spark.Spark.get;
 
 import com.google.gson.Gson;
 import io.teiler.server.dto.Debt;
-import io.teiler.server.endpoints.util.GroupIdReader;
+import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.DebtService;
 import io.teiler.server.util.GsonUtil;
 import java.util.List;
@@ -28,7 +28,7 @@ public class DebtEndpointController implements EndpointController {
     @Override
     public void register() {
         get(BASE_URL, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             List<Debt> debts = debtService.getDebts(groupId);
             return gson.toJson(debts);
         });

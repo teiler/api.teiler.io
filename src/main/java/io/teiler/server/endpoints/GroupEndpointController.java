@@ -8,7 +8,7 @@ import static spark.Spark.put;
 
 import com.google.gson.Gson;
 import io.teiler.server.dto.Group;
-import io.teiler.server.endpoints.util.GroupIdReader;
+import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.GroupService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
@@ -41,25 +41,21 @@ public class GroupEndpointController implements EndpointController {
         });
 
         get(URL_WITH_GROUP_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
-            String activeString = req.queryParams(PersonEndpointController.ACTIVE_PARAM);
-            Boolean activeOnly = true;
-            if (activeString != null) {
-                activeOnly = Boolean.parseBoolean(activeString);
-            }
+            String groupId = EndpointUtil.readGroupId(req);
+            Boolean activeOnly = EndpointUtil.readActive(req, true);
             Group requestGroup = groupService.viewGroup(groupId, activeOnly);
             return gson.toJson(requestGroup);
         });
 
         put(URL_WITH_GROUP_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             Group changedGroup = gson.fromJson(req.body(), Group.class);
             Group group = groupService.editGroup(groupId, changedGroup);
             return gson.toJson(group);
         });
 
         delete(URL_WITH_GROUP_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             groupService.deleteGroup(groupId);
             return "";
         });

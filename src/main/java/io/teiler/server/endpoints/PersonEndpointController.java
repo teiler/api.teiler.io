@@ -8,7 +8,7 @@ import static spark.Spark.put;
 
 import com.google.gson.Gson;
 import io.teiler.server.dto.Person;
-import io.teiler.server.endpoints.util.GroupIdReader;
+import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.PersonService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
@@ -31,7 +31,6 @@ public class PersonEndpointController implements EndpointController {
     public static final String ACTIVE_PARAM = "active";
     private static final int DEFAULT_QUERY_LIMIT = 20;
     private static final String PERSON_ID_PARAM = ":personid";
-    private static final String LIMIT_PARAM = "limit";
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/people";
     private static final String URL_WITH_PERSON_ID = BASE_URL + "/:personid";
     private Gson gson = GsonUtil.getHomebrewGson();
@@ -41,30 +40,22 @@ public class PersonEndpointController implements EndpointController {
     @Override
     public void register() {
         post(BASE_URL, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             Person requestPerson = gson.fromJson(req.body(), Person.class);
             Person newPerson = personService.createPerson(groupId, requestPerson.getName());
             return gson.toJson(newPerson);
         });
 
         get(BASE_URL, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
-            String limitString = req.queryParams(LIMIT_PARAM);
-            long limit = DEFAULT_QUERY_LIMIT;
-            if (limitString != null) {
-                limit = Long.parseLong(limitString);
-            }
-            String activeString = req.queryParams(ACTIVE_PARAM);
-            Boolean activeOnly = true;
-            if (activeString != null) {
-                activeOnly = Boolean.parseBoolean(activeString);
-            }
+            String groupId = EndpointUtil.readGroupId(req);
+            long limit = EndpointUtil.readLimit(req, DEFAULT_QUERY_LIMIT);
+            Boolean activeOnly = EndpointUtil.readActive(req, true);
             List<Person> people = personService.getPeople(groupId, limit, activeOnly);
             return gson.toJson(people);
         });
 
         put(URL_WITH_PERSON_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             Person changedPerson = gson.fromJson(req.body(), Person.class);
             // GSON doesn't go through the normal constructor so we set it manually
@@ -74,7 +65,7 @@ public class PersonEndpointController implements EndpointController {
         });
 
         delete(URL_WITH_PERSON_ID, (req, res) -> {
-            String groupId = GroupIdReader.getGroupId(req);
+            String groupId = EndpointUtil.readGroupId(req);
             int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             personService.deactivatePerson(groupId, personId);
             return "";
