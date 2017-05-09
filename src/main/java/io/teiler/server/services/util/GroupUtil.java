@@ -14,7 +14,7 @@ public class GroupUtil {
     @Autowired
     private GroupRepository groupRepository;
 
-    GroupUtil() { /* intentionally empty */ }
+    public GroupUtil() { /* intentionally empty */ }
 
     /**
      * Checks whether a Group-Id exists.

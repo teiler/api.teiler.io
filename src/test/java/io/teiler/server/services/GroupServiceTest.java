@@ -1,7 +1,10 @@
 package io.teiler.server.services;
 
-import java.lang.reflect.Field;
-
+import io.teiler.server.Tylr;
+import io.teiler.server.dto.Group;
+import io.teiler.server.util.enums.Currency;
+import io.teiler.server.util.exceptions.CurrencyNotValidException;
+import io.teiler.server.util.exceptions.NotAuthorizedException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,13 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import io.teiler.server.Tylr;
-import io.teiler.server.dto.Group;
-import io.teiler.server.services.GroupService;
-import io.teiler.server.util.enums.Currency;
-import io.teiler.server.util.exceptions.CurrencyNotValidException;
-import io.teiler.server.util.exceptions.NotAuthorizedException;
-import io.teiler.server.util.groupid.RandomGenerator;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -26,9 +22,7 @@ import io.teiler.server.util.groupid.RandomGenerator;
 public class GroupServiceTest {
 
     private static final String TEST_GROUP_NAME = "Test";
-    private static final String ENTROPY_BITS_CONSTANT_NAME = "ENTROPY_BITS_IN_ONE_CHARACTER";
-    private static final int ENTROPY_BITS_IN_ONE_CHARACTER_EXPECTED = 5;
-    
+
     @Autowired
     private GroupService groupService;
 
@@ -113,18 +107,5 @@ public class GroupServiceTest {
         groupService.deleteGroup(groupId);
         groupService.viewGroup(groupId, true);
     }
-
-    @Test
-    public void testThatEntropyBitsAreStillSetToFive()
-        throws NoSuchFieldException, IllegalAccessException {
-        Field field = RandomGenerator.class.getDeclaredField(ENTROPY_BITS_CONSTANT_NAME);
-        Class<?> fieldType = field.getType();
-        field.setAccessible(true); // make sure we can access the value of the private field
-
-        Assert.assertEquals(int.class, fieldType);
-        Assert.assertEquals("You can't change mathematical facts.",
-            ENTROPY_BITS_IN_ONE_CHARACTER_EXPECTED, field.getInt(null));
-    }
-
 
 }

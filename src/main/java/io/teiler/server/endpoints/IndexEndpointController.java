@@ -2,10 +2,9 @@ package io.teiler.server.endpoints;
 
 import static spark.Spark.get;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import io.teiler.server.util.GsonUtil;
+import io.teiler.server.util.HomebrewGson;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -15,8 +14,6 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class IndexEndpointController implements EndpointController {
-
-    private Gson gson = GsonUtil.getHomebrewGson();
 
     @Override
     public void register() {
@@ -39,7 +36,7 @@ public class IndexEndpointController implements EndpointController {
             versions.add(v2);
             json.add("versions", versions);
 
-            return gson.toJson(json);
+            return HomebrewGson.getInstance().toJson(json);
         });
     }
 

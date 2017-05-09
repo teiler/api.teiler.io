@@ -6,7 +6,6 @@ import io.teiler.server.util.TimeUtil;
 import io.teiler.server.util.enums.Currency;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
@@ -64,7 +63,7 @@ public class GroupEntity {
      * @param group {@link Group}
      */
     public GroupEntity(Group group) {
-        List<PersonEntity> peopleEntities = new LinkedList<>();
+        List<PersonEntity> peopleEntities;
         if (group.getPeople() != null) {
             peopleEntities =
                 group.getPeople().stream().map(PersonEntity::new).collect(Collectors.toList());
