@@ -1,8 +1,19 @@
 package io.teiler.server.services;
 
+import io.teiler.server.Tylr;
+import io.teiler.server.dto.Expense;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.dto.Profiteer;
+import io.teiler.server.util.exceptions.PayerInactiveException;
+import io.teiler.server.util.exceptions.PayerNotFoundException;
+import io.teiler.server.util.exceptions.ProfiteerInactiveException;
+import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import io.teiler.server.util.exceptions.SharesNotAddingUpException;
+import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,22 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import io.teiler.server.Tylr;
-import io.teiler.server.dto.Expense;
-import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
-import io.teiler.server.dto.Profiteer;
-import io.teiler.server.services.ExpenseService;
-import io.teiler.server.services.GroupService;
-import io.teiler.server.services.PersonService;
-import io.teiler.server.util.exceptions.PayerInactiveException;
-import io.teiler.server.util.exceptions.PayerNotFoundException;
-import io.teiler.server.util.exceptions.ProfiteerInactiveException;
-import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import io.teiler.server.util.exceptions.SharesNotAddingUpException;
-import io.teiler.server.util.exceptions.TransactionNotFoundException;
-import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -47,10 +42,10 @@ public class ExpenseServiceTest {
 
     @Autowired
     private ExpenseService expenseService;
-    
+
     @Autowired
     private GroupService groupService;
-    
+
     @Autowired
     private PersonService personService;
 
@@ -62,7 +57,8 @@ public class ExpenseServiceTest {
         List<Profiteer> testProfiteers = new LinkedList<>();
         testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer,
+            TEST_EXPENSE_TITLE, testProfiteers);
 
         Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
 
@@ -86,14 +82,15 @@ public class ExpenseServiceTest {
         testProfiteers.add(new Profiteer(null, testProfiteer1, TEST_PROFITEER_1_SHARE));
         testProfiteers.add(new Profiteer(null, testProfiteer2, TEST_PROFITEER_2_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, testPayerAndProfiteer, TEST_EXPENSE_TITLE,
+            testProfiteers);
 
         Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
 
         Assert.assertEquals(TEST_EXPENSE_TITLE, testExpenseResponse.getTitle());
         Assert.assertEquals(TEST_EXPENSE_AMOUNT, testExpenseResponse.getAmount());
         Assert.assertEquals(testPayerAndProfiteer.getId(), testExpenseResponse.getPayer().getId());
-        
+
         Assert.assertFalse(testExpenseResponse.getProfiteers().isEmpty());
         Assert.assertEquals(testProfiteers.size(), testExpenseResponse.getProfiteers().size());
     }
@@ -111,7 +108,8 @@ public class ExpenseServiceTest {
         testProfiteers.add(new Profiteer(null, testProfiteer1, TEST_PROFITEER_1_SHARE + 100));
         testProfiteers.add(new Profiteer(null, testProfiteer2, TEST_PROFITEER_2_SHARE + 100));
 
-        Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, testPayerAndProfiteer, TEST_EXPENSE_TITLE,
+            testProfiteers);
 
         expenseService.createExpense(testExpense, testGroup.getId());
     }
@@ -126,7 +124,8 @@ public class ExpenseServiceTest {
         List<Profiteer> testProfiteers = new LinkedList<>();
         testProfiteers.add(new Profiteer(null, differentGroupPerson, TEST_PAYER_AND_PROFITEER_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, differentGroupPerson, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, differentGroupPerson,
+            TEST_EXPENSE_TITLE, testProfiteers);
 
         expenseService.createExpense(testExpense, testGroup.getId());
     }
@@ -142,7 +141,8 @@ public class ExpenseServiceTest {
         List<Profiteer> testProfiteers = new LinkedList<>();
         testProfiteers.add(new Profiteer(null, differentProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPerson, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPerson, TEST_EXPENSE_TITLE,
+            testProfiteers);
 
         expenseService.createExpense(testExpense, testGroup.getId());
     }
@@ -159,7 +159,8 @@ public class ExpenseServiceTest {
         testProfiteers.add(new Profiteer(null, testProfiteer1, TEST_PROFITEER_1_SHARE));
         testProfiteers.add(new Profiteer(null, testProfiteer2, TEST_PROFITEER_2_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_EXPENSE_AMOUNT, testPayerAndProfiteer, TEST_EXPENSE_TITLE,
+            testProfiteers);
 
         Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
         Expense viewResponse = expenseService.getExpense(testGroup.getId(), testExpenseResponse.getId());
@@ -180,7 +181,8 @@ public class ExpenseServiceTest {
         List<Profiteer> testProfiteers = new LinkedList<>();
         testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer,
+            TEST_EXPENSE_TITLE, testProfiteers);
 
         expenseService.createExpense(testExpense, testGroup.getId());
 
@@ -190,9 +192,11 @@ public class ExpenseServiceTest {
         List<Profiteer> testDifferentProfiteers = new LinkedList<>();
         testDifferentProfiteers.add(new Profiteer(null, differentPerson, TEST_PAYER_AND_PROFITEER_SHARE));
 
-        Expense testDifferentExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, differentPerson, TEST_EXPENSE_TITLE, testDifferentProfiteers);
+        Expense testDifferentExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, differentPerson,
+            TEST_EXPENSE_TITLE, testDifferentProfiteers);
 
-        Expense testDifferentExpenseResponse = expenseService.createExpense(testDifferentExpense, differentGroup.getId());
+        Expense testDifferentExpenseResponse = expenseService
+            .createExpense(testDifferentExpense, differentGroup.getId());
 
         expenseService.getExpense(testGroup.getId(), testDifferentExpenseResponse.getId());
     }
@@ -205,13 +209,15 @@ public class ExpenseServiceTest {
         List<Profiteer> testProfiteers = new LinkedList<>();
         testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer,
+            TEST_EXPENSE_TITLE, testProfiteers);
 
         Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
 
         testExpenseResponse.setTitle("Getrocknete Bananen");
 
-        Expense changedExpense = expenseService.editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
+        Expense changedExpense = expenseService
+            .editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
 
         Assert.assertEquals("Getrocknete Bananen", changedExpense.getTitle());
     }
@@ -224,7 +230,8 @@ public class ExpenseServiceTest {
         List<Profiteer> testProfiteers = new LinkedList<>();
         testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer,
+            TEST_EXPENSE_TITLE, testProfiteers);
 
         Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
 
@@ -245,13 +252,14 @@ public class ExpenseServiceTest {
         List<Profiteer> testProfiteers = new LinkedList<>();
         testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer,
+            TEST_EXPENSE_TITLE, testProfiteers);
 
         Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
 
         testExpenseResponse.setAmount(1000);
         // The "get" part is a bit hacky but it's just too much code otherwise...
-        testProfiteers.get(0).setShare(1000+100);
+        testProfiteers.get(0).setShare(1000 + 100);
 
         testExpenseResponse.setProfiteers(testProfiteers);
 
@@ -269,7 +277,8 @@ public class ExpenseServiceTest {
         testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
         testProfiteers.add(new Profiteer(null, testProfiteer1, TEST_PROFITEER_1_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE + TEST_PROFITEER_1_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE + TEST_PROFITEER_1_SHARE,
+            testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
 
         Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
 
@@ -277,7 +286,8 @@ public class ExpenseServiceTest {
         testExpenseResponse.setProfiteers(testProfiteers);
         testExpenseResponse.setAmount(testExpenseResponse.getAmount() + TEST_PROFITEER_2_SHARE);
 
-        Expense testEditedExpense = expenseService.editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
+        Expense testEditedExpense = expenseService
+            .editExpense(testGroup.getId(), testExpenseResponse.getId(), testExpenseResponse);
 
         Assert.assertEquals(TEST_EXPENSE_TITLE, testEditedExpense.getTitle());
         Assert.assertEquals(TEST_EXPENSE_AMOUNT, testEditedExpense.getAmount());
@@ -295,8 +305,10 @@ public class ExpenseServiceTest {
         List<Profiteer> testProfiteers = new LinkedList<>();
         testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
-        Expense testExpense2 = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE + " zwei", testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer,
+            TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense2 = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer,
+            TEST_EXPENSE_TITLE + " zwei", testProfiteers);
 
         expenseService.createExpense(testExpense, testGroup.getId());
         expenseService.createExpense(testExpense2, testGroup.getId());
@@ -314,7 +326,8 @@ public class ExpenseServiceTest {
         List<Profiteer> testProfiteers = new LinkedList<>();
         testProfiteers.add(new Profiteer(null, testPayerAndProfiteer, TEST_PAYER_AND_PROFITEER_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE, testPayerAndProfiteer,
+            TEST_EXPENSE_TITLE, testProfiteers);
 
         Expense testExpenseResponse = expenseService.createExpense(testExpense, testGroup.getId());
 
@@ -335,8 +348,8 @@ public class ExpenseServiceTest {
         testProfiteers.add(new Profiteer(null, testPayer, TEST_PAYER_AND_PROFITEER_SHARE));
         testProfiteers.add(new Profiteer(null, testProfiteer, TEST_PROFITEER_1_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE +
-            TEST_PROFITEER_1_SHARE, testPayer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE
+            + TEST_PROFITEER_1_SHARE, testPayer, TEST_EXPENSE_TITLE, testProfiteers);
 
         expenseService.createExpense(testExpense, testGroup.getId());
     }
@@ -353,8 +366,8 @@ public class ExpenseServiceTest {
         testProfiteers.add(new Profiteer(null, testPayer, TEST_PAYER_AND_PROFITEER_SHARE));
         testProfiteers.add(new Profiteer(null, testProfiteer, TEST_PROFITEER_1_SHARE));
 
-        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE +
-            TEST_PROFITEER_1_SHARE, testPayer, TEST_EXPENSE_TITLE, testProfiteers);
+        Expense testExpense = new Expense(null, TEST_PAYER_AND_PROFITEER_SHARE
+            + TEST_PROFITEER_1_SHARE, testPayer, TEST_EXPENSE_TITLE, testProfiteers);
 
         expenseService.createExpense(testExpense, testGroup.getId());
     }

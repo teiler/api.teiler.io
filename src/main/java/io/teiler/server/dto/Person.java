@@ -1,8 +1,9 @@
 package io.teiler.server.dto;
 
+import java.time.LocalDateTime;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.time.LocalDateTime;
 
 /**
  * Class holding all information about a group.
@@ -134,4 +135,5 @@ public class Person {
         result = 31 * result + (active ? 1 : 0);
         return result;
     }
+
 }

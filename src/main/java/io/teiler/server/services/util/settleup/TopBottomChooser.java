@@ -11,7 +11,11 @@ import java.util.TreeMap;
  */
 public class TopBottomChooser implements PersonChooser {
 
-    private SortedMap<Integer, Debt> debts = new TreeMap<>();
+    private final SortedMap<Integer, Debt> debts;
+    
+    public TopBottomChooser() {
+        debts = new TreeMap<>();
+    }
 
     public TopBottomChooser(SortedMap<Integer, Debt> debts) {
         this.debts = debts;
@@ -31,4 +35,5 @@ public class TopBottomChooser implements PersonChooser {
     public boolean personsLeft() {
         return debts.entrySet().stream().anyMatch(d -> d.getKey() != 0);
     }
+
 }

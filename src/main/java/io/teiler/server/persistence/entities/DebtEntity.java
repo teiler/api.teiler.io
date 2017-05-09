@@ -1,6 +1,5 @@
 package io.teiler.server.persistence.entities;
 
-import io.teiler.server.dto.Debt;
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
@@ -8,19 +7,24 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.SqlResultSetMapping;
 
+import io.teiler.server.dto.Debt;
+import io.teiler.server.persistence.repositories.DebtRepository;
+
 /**
  * Entity representing a virtual debt entry.
  *
  * @author dthoma
  */
 @Entity
-@SqlResultSetMapping(name = "GET_DEBT_QUERY",
+@SqlResultSetMapping(
+    name = DebtRepository.STATEMENT_SQLMAP,
     classes = {
-        @ConstructorResult(targetClass = io.teiler.server.persistence.entities.DebtEntity.class,
+        @ConstructorResult(
+            targetClass = io.teiler.server.persistence.entities.DebtEntity.class,
             columns = {
                 @ColumnResult(name = "person", type = Integer.class),
                 @ColumnResult(name = "balance", type = Integer.class)})
-    })
+})
 public class DebtEntity {
 
     @Id

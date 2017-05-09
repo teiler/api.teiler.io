@@ -124,7 +124,7 @@ describe("Edit a group", function () {
       expect(updateRef).not.to.be.equal(createTime);
     });
     return chakram.wait();
-  })
+  });
 
   it("should return Not authorized to group", function () {
     var response = chakram.put(baseUrl + "groups/ABC");
@@ -167,7 +167,7 @@ describe("Delete group", function () {
     expect(response).to.have.status(200);
     expect(response).to.have.header("content-type", "application/json");
     return chakram.wait();
-  })
+  });
 
   it("should return Not authorized to group", function () {
     var response = chakram.delete(baseUrl + "groups/ABC");

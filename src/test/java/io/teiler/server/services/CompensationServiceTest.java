@@ -1,7 +1,17 @@
 package io.teiler.server.services;
 
+import io.teiler.server.Tylr;
+import io.teiler.server.dto.Compensation;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.util.exceptions.PayerInactiveException;
+import io.teiler.server.util.exceptions.PayerNotFoundException;
+import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
+import io.teiler.server.util.exceptions.ProfiteerInactiveException;
+import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
+import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,21 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import io.teiler.server.Tylr;
-import io.teiler.server.dto.Compensation;
-import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
-import io.teiler.server.services.CompensationService;
-import io.teiler.server.services.GroupService;
-import io.teiler.server.services.PersonService;
-import io.teiler.server.util.exceptions.PayerInactiveException;
-import io.teiler.server.util.exceptions.PayerNotFoundException;
-import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
-import io.teiler.server.util.exceptions.ProfiteerInactiveException;
-import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-import io.teiler.server.util.exceptions.TransactionNotFoundException;
-import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -41,10 +36,10 @@ public class CompensationServiceTest {
 
     @Autowired
     private CompensationService compensationService;
-    
+
     @Autowired
     private GroupService groupService;
-    
+
     @Autowired
     private PersonService personService;
 
@@ -53,9 +48,11 @@ public class CompensationServiceTest {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER);
         Person testProfiteerPerson = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
-        
-        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer, testProfiteerPerson);
-        Compensation testCompensationResponse = compensationService.createCompensation(testCompensation, testGroup.getId());
+
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer,
+            testProfiteerPerson);
+        Compensation testCompensationResponse = compensationService
+            .createCompensation(testCompensation, testGroup.getId());
 
         Assert.assertEquals(TEST_COMPENSATION_AMOUNT, testCompensationResponse.getAmount());
         Assert.assertEquals(testPayer.getId(), testCompensationResponse.getPayer().getId());
@@ -67,9 +64,10 @@ public class CompensationServiceTest {
     public void testCreateCompensationWithSamePayerAndProfiteer() {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         Person testPayerAndProfiteer = personService.createPerson(testGroup.getId(), TEST_PAYER);
-        
-        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayerAndProfiteer, testPayerAndProfiteer);
-        
+
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayerAndProfiteer,
+            testPayerAndProfiteer);
+
         compensationService.createCompensation(testCompensation, testGroup.getId());
     }
 
@@ -80,7 +78,8 @@ public class CompensationServiceTest {
         Group differentGroup = groupService.createGroup(TEST_GROUP_NAME);
         Person differentGroupPerson = personService.createPerson(differentGroup.getId(), TEST_PAYER);
 
-        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, differentGroupPerson, differentGroupPerson);
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, differentGroupPerson,
+            differentGroupPerson);
 
         compensationService.createCompensation(testCompensation, testGroup.getId());
     }
@@ -93,7 +92,8 @@ public class CompensationServiceTest {
         Group differentGroup = groupService.createGroup(TEST_GROUP_NAME);
         Person differentProfiteerPerson = personService.createPerson(differentGroup.getId(), TEST_PROFITEER_1);
 
-        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPerson, differentProfiteerPerson);
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPerson,
+            differentProfiteerPerson);
 
         compensationService.createCompensation(testCompensation, testGroup.getId());
     }
@@ -104,10 +104,13 @@ public class CompensationServiceTest {
         Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER);
         Person testProfiteerPerson = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
 
-        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer, testProfiteerPerson);
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer,
+            testProfiteerPerson);
 
-        Compensation testCompensationResponse = compensationService.createCompensation(testCompensation, testGroup.getId());
-        Compensation viewResponse = compensationService.getCompensation(testGroup.getId(), testCompensationResponse.getId());
+        Compensation testCompensationResponse = compensationService
+            .createCompensation(testCompensation, testGroup.getId());
+        Compensation viewResponse = compensationService
+            .getCompensation(testGroup.getId(), testCompensationResponse.getId());
 
         Assert.assertEquals(TEST_COMPENSATION_AMOUNT, viewResponse.getAmount());
         Assert.assertEquals(testPayer.getId(), viewResponse.getPayer().getId());
@@ -120,8 +123,9 @@ public class CompensationServiceTest {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER);
         Person testProfiteerPerson = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
-        
-        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer, testProfiteerPerson);
+
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer,
+            testProfiteerPerson);
 
         compensationService.createCompensation(testCompensation, testGroup.getId());
 
@@ -129,8 +133,10 @@ public class CompensationServiceTest {
         Person differentPayer = personService.createPerson(differentGroup.getId(), TEST_PAYER);
         Person differentProfiteerPerson = personService.createPerson(differentGroup.getId(), TEST_PROFITEER_1);
 
-        Compensation differentCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, differentPayer, differentProfiteerPerson);
-        Compensation differentCompensationResponse = compensationService.createCompensation(differentCompensation, differentGroup.getId());
+        Compensation differentCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, differentPayer,
+            differentProfiteerPerson);
+        Compensation differentCompensationResponse = compensationService
+            .createCompensation(differentCompensation, differentGroup.getId());
 
         compensationService.getCompensation(testGroup.getId(), differentCompensationResponse.getId());
     }
@@ -140,14 +146,17 @@ public class CompensationServiceTest {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER);
         Person testProfiteerPerson = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
-        
-        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer, testProfiteerPerson);
-        Compensation testCompensationResponse = compensationService.createCompensation(testCompensation, testGroup.getId());
+
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer,
+            testProfiteerPerson);
+        Compensation testCompensationResponse = compensationService
+            .createCompensation(testCompensation, testGroup.getId());
 
         testCompensationResponse.setAmount(1000);
 
-        Compensation testComensationEditResponse = compensationService.editCompensation(testGroup.getId(), testCompensationResponse.getId(), testCompensationResponse);
-        
+        Compensation testComensationEditResponse = compensationService
+            .editCompensation(testGroup.getId(), testCompensationResponse.getId(), testCompensationResponse);
+
         Assert.assertEquals(Integer.valueOf(1000), testComensationEditResponse.getAmount());
     }
 
@@ -158,12 +167,15 @@ public class CompensationServiceTest {
         Person testProfiteerPerson1 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
         Person testProfiteerPerson2 = personService.createPerson(testGroup.getId(), TEST_PROFITEER_2);
 
-        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer, testProfiteerPerson1);
-        Compensation testCompensationResponse = compensationService.createCompensation(testCompensation, testGroup.getId());
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer,
+            testProfiteerPerson1);
+        Compensation testCompensationResponse = compensationService
+            .createCompensation(testCompensation, testGroup.getId());
 
         testCompensationResponse.setProfiteer(testProfiteerPerson2);
 
-        Compensation testEditedCompensation = compensationService.editCompensation(testGroup.getId(), testCompensationResponse.getId(), testCompensationResponse);
+        Compensation testEditedCompensation = compensationService
+            .editCompensation(testGroup.getId(), testCompensationResponse.getId(), testCompensationResponse);
 
         Assert.assertEquals(TEST_COMPENSATION_AMOUNT, testEditedCompensation.getAmount());
         Assert.assertEquals(testPayer.getId(), testEditedCompensation.getPayer().getId());
@@ -177,9 +189,11 @@ public class CompensationServiceTest {
         Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
         Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER);
         Person testProfiteerPerson = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
-        
-        Compensation testCompensation1 = new Compensation(null, TEST_COMPENSATION_AMOUNT - 50, testPayer, testProfiteerPerson); // slighly hacky, but hey, it works
-        Compensation testCompensation2 = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer, testProfiteerPerson);
+
+        Compensation testCompensation1 = new Compensation(null, TEST_COMPENSATION_AMOUNT - 50, testPayer,
+            testProfiteerPerson); // slighly hacky, but hey, it works
+        Compensation testCompensation2 = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer,
+            testProfiteerPerson);
 
         compensationService.createCompensation(testCompensation1, testGroup.getId());
         compensationService.createCompensation(testCompensation2, testGroup.getId());
@@ -195,8 +209,10 @@ public class CompensationServiceTest {
         Person testPayer = personService.createPerson(testGroup.getId(), TEST_PAYER);
         Person testProfiteerPerson = personService.createPerson(testGroup.getId(), TEST_PROFITEER_1);
 
-        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer, testProfiteerPerson);
-        Compensation testCompensationResponse = compensationService.createCompensation(testCompensation, testGroup.getId());
+        Compensation testCompensation = new Compensation(null, TEST_COMPENSATION_AMOUNT, testPayer,
+            testProfiteerPerson);
+        Compensation testCompensationResponse = compensationService
+            .createCompensation(testCompensation, testGroup.getId());
 
         compensationService.deleteCompensation(testGroup.getId(), testCompensationResponse.getId());
 

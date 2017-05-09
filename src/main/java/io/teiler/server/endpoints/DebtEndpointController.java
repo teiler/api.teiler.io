@@ -2,11 +2,10 @@ package io.teiler.server.endpoints;
 
 import static spark.Spark.get;
 
-import com.google.gson.Gson;
 import io.teiler.server.dto.Debt;
+import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.DebtService;
-import io.teiler.server.util.GsonUtil;
-import io.teiler.server.util.Normalizer;
+import io.teiler.server.util.HomebrewGson;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +18,8 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class DebtEndpointController implements EndpointController {
 
-    private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/:groupid/debts";
-    private Gson gson = GsonUtil.getHomebrewGson();
+    private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/"
+        + EndpointUtil.GROUP_ID_PARAM + "/debts";
 
     @Autowired
     private DebtService debtService;
@@ -28,10 +27,9 @@ public class DebtEndpointController implements EndpointController {
     @Override
     public void register() {
         get(BASE_URL, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = EndpointUtil.readGroupId(req);
             List<Debt> debts = debtService.getDebts(groupId);
-            return gson.toJson(debts);
+            return HomebrewGson.getInstance().toJson(debts);
         });
     }
 

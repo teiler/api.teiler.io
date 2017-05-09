@@ -7,25 +7,35 @@ import io.teiler.server.util.jsonserializer.TimestampSerializer;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class GsonUtil {
+public class HomebrewGson {
 
-    private GsonUtil() { /* intentionally empty */ }
+    private static Gson instance;
+
+    private HomebrewGson() { /* intentionally empty */ }
+
+    /**
+     * Provides an instance to the singleton GSON.
+     *
+     * @return the singleton GSON
+     */
+    public static Gson getInstance() {
+        if (instance == null) {
+            instance = getHomebrewGson();
+        }
+        return instance;
+    }
 
     /**
      * Returns a GSON instance with our converters applied.
      *
      * @return a GSON instance with our converters applied
      */
-    public static GsonBuilder getHomebrewGsonBuilder() {
+    private static Gson getHomebrewGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.excludeFieldsWithoutExposeAnnotation();
         gsonBuilder.registerTypeHierarchyAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
         gsonBuilder.registerTypeHierarchyAdapter(Timestamp.class, new TimestampSerializer());
-        return gsonBuilder;
-    }
-
-    public static Gson getHomebrewGson() {
-        return getHomebrewGsonBuilder().create();
+        return gsonBuilder.create();
     }
 
 }
