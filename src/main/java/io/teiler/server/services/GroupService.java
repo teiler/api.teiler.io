@@ -43,7 +43,7 @@ public class GroupService {
      * @param id Id of Group
      * @param activeOnly Only active people
      * @return Information about the Group
-     * @throws NotAuthorizedException See {@link GroupUtil#fetchGroup(String)}
+     * @throws NotAuthorizedException Not authorized
      */
     public Group viewGroup(String id, Boolean activeOnly) {
         groupUtil.checkIdExists(id);
