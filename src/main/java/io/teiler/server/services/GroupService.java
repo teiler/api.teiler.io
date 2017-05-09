@@ -26,13 +26,16 @@ public class GroupService {
 
     private static final int NUMBER_OF_ID_CHARACTERS = 8;
     private final IdGenerator idGenerator;
+    
     @Autowired
     private GroupUtil groupUtil;
+    
     @Autowired
     private PersonUtil personUtil;
+
     @Autowired
     private GroupRepository groupRepository;
-    
+
     public GroupService() {
         idGenerator = new RandomGeneratorWithAlphabet();
     }
