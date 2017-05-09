@@ -54,29 +54,28 @@ public class SuggestCompensationService {
 
             int newCreditorBalance;
             int newDebitorBalance;
+            int balance;
+
             if (creditor.getBalance() >= debitor.getBalance()) {
-                Compensation compensation = new Compensation(
-                    null,
-                    - debitor.getBalance(),
-                    debitor.getPerson(),
-                    creditor.getPerson()
-                );
-                suggestedCompensations.add(compensation);
+                balance = -debitor.getBalance();
 
                 newCreditorBalance = creditor.getBalance() + debitor.getBalance();
                 newDebitorBalance = 0;
             } else {
-                Compensation compensation = new Compensation(
-                    null,
-                    creditor.getBalance(),
-                    debitor.getPerson(),
-                    creditor.getPerson()
-                );
-                suggestedCompensations.add(compensation);
+                balance = creditor.getBalance();
 
                 newCreditorBalance = 0;
                 newDebitorBalance = debitor.getBalance() + creditor.getBalance();
             }
+
+            Compensation compensation = new Compensation(
+                null,
+                balance,
+                debitor.getPerson(),
+                creditor.getPerson()
+            );
+            suggestedCompensations.add(compensation);
+
             updateDebts(newCreditorBalance, creditor);
             updateDebts(newDebitorBalance, debitor);
         }
