@@ -67,7 +67,6 @@ public class EndpointUtil {
      * @param response The response to modify
      * @param statusCode The HTTP status code to set
      * @param exception The exception to include
-     * @param gsonInstance The instance to GSON, needed because it's a static method
      */
     public static void prepareErrorResponse(Response response, int statusCode, Exception exception) {
         response.status(statusCode);
