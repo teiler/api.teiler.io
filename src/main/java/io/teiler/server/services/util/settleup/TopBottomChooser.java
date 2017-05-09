@@ -12,7 +12,11 @@ import io.teiler.server.dto.Debt;
  */
 public class TopBottomChooser implements PersonChooser {
 
-    private SortedMap<Integer, Debt> debts = new TreeMap<>();
+    private SortedMap<Integer, Debt> debts;
+    
+    public TopBottomChooser() {
+        debts = new TreeMap<>();
+    }
 
     public TopBottomChooser(SortedMap<Integer, Debt> debts) {
         this.debts = debts;
