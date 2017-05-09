@@ -42,7 +42,7 @@ public class PersonUtil {
      * @param personId Id of the Person
      * @throws PersonNotFoundException Person does not exists within Group
      */
-    public void checkPersonBelongsToThisGroup(String groupId, int personId)throws PersonNotFoundException {
+    public void checkPersonBelongsToThisGroup(String groupId, int personId) throws PersonNotFoundException {
         if (personRepository.getByGroupAndPersonId(groupId, personId) == null) {
             throw new PersonNotFoundException();
         }
@@ -64,6 +64,12 @@ public class PersonUtil {
         return people.stream().filter(Person::isActive).collect(Collectors.toList());
     }
 
+    /**
+     * Check if this person is active.
+     *
+     * @param personId The person to check
+     * @throws PersonInactiveException The person is inactive
+     */
     public void checkPersonIsActive(int personId) throws PersonInactiveException {
         if (!personRepository.getById(personId).getActive()) {
             throw new PersonInactiveException();

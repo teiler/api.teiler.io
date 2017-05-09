@@ -5,15 +5,14 @@ import io.teiler.server.dto.SuggestedCompensation;
 import io.teiler.server.services.util.GroupUtil;
 import io.teiler.server.services.util.settleup.PersonChooser;
 import io.teiler.server.services.util.settleup.TopBottomChooser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for suggested compensations.
@@ -33,11 +32,18 @@ public class SuggestCompensationService {
     @Autowired
     private DebtService debtService;
 
-    public List<SuggestedCompensation> getSuggestedCompensations(String groupID) {
-        groupUtil.checkIdExists(groupID);
+    /**
+     * Gets the suggested compensations for this group.
+     *
+     * @param groupId The group to get the suggested compensations for.
+     * @return The suggested compensations for this group
+     */
+    public List<SuggestedCompensation> getSuggestedCompensations(String groupId) {
+        groupUtil.checkIdExists(groupId);
 
         this.debts = new TreeMap<>();
-        debtService.getDebts(groupID).stream().filter(d -> d.getBalance() != 0).forEach(d -> this.debts.put(d.getBalance(), d));
+        debtService.getDebts(groupId).stream().filter(d -> d.getBalance() != 0)
+            .forEach(d -> this.debts.put(d.getBalance(), d));
 
         List<SuggestedCompensation> suggestedCompensations = new LinkedList<>();
         PersonChooser personChooser = new TopBottomChooser(debts);
@@ -48,9 +54,9 @@ public class SuggestCompensationService {
 
             if (creditor.getBalance() >= debitor.getBalance()) {
                 SuggestedCompensation compensation = new SuggestedCompensation(
-                        - debitor.getBalance(),
-                        debitor.getPerson(),
-                        creditor.getPerson()
+                    -debitor.getBalance(),
+                    debitor.getPerson(),
+                    creditor.getPerson()
                 );
                 suggestedCompensations.add(compensation);
 
@@ -61,9 +67,9 @@ public class SuggestCompensationService {
                 updateDebts(newDebitorBalance, debitor);
             } else {
                 SuggestedCompensation compensation = new SuggestedCompensation(
-                        creditor.getBalance(),
-                        debitor.getPerson(),
-                        creditor.getPerson()
+                    creditor.getBalance(),
+                    debitor.getPerson(),
+                    creditor.getPerson()
                 );
                 suggestedCompensations.add(compensation);
 

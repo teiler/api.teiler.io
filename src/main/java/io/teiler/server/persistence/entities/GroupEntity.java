@@ -1,11 +1,14 @@
 package io.teiler.server.persistence.entities;
 
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.util.TimeUtil;
+import io.teiler.server.util.enums.Currency;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,11 +22,6 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
-import io.teiler.server.util.TimeUtil;
-import io.teiler.server.util.enums.Currency;
-
 /**
  * Entity representing an entry of the <code>group</code>-table.
  *
@@ -32,7 +30,7 @@ import io.teiler.server.util.enums.Currency;
 @Entity
 @Table(name = "`group`") // f*** PSQL
 public class GroupEntity {
-    
+
     @Id
     @Column(name = "id")
     private String id;
@@ -62,7 +60,7 @@ public class GroupEntity {
 
     /**
      * Converts a {@link GroupEntity} to a {@link Group}.
-     * 
+     *
      * @param group {@link Group}
      */
     public GroupEntity(Group group) {
@@ -70,7 +68,7 @@ public class GroupEntity {
         if (group.getPeople() != null) {
             peopleEntities =
                 group.getPeople().stream().map(PersonEntity::new).collect(Collectors.toList());
-            
+
         } else {
             peopleEntities = null;
         }
@@ -85,7 +83,7 @@ public class GroupEntity {
     /**
      * Sets the update-time and creation-time to {@link Instant#now()}.
      * <br>
-     * <i>Note:</i> The creation-time will only be set if it has not been set previously. 
+     * <i>Note:</i> The creation-time will only be set if it has not been set previously.
      */
     @PreUpdate
     @PrePersist
@@ -98,7 +96,7 @@ public class GroupEntity {
 
     /**
      * Converts this {@link GroupEntity} to a {@link Group}.
-     * 
+     *
      * @return {@link Group}
      */
     public Group toGroup() {
@@ -174,5 +172,5 @@ public class GroupEntity {
     public String toString() {
         return this.toGroup().toString();
     }
-    
+
 }

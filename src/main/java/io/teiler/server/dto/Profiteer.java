@@ -1,12 +1,11 @@
 package io.teiler.server.dto;
 
-import java.time.LocalDateTime;
-
 import com.google.gson.annotations.SerializedName;
+import java.time.LocalDateTime;
 
 /**
  * Represents the share a Person takes in a Transaction.
- * 
+ *
  * @author pbaechli
  */
 public class Profiteer {
@@ -15,7 +14,7 @@ public class Profiteer {
 
     @SerializedName("person")
     private Person person;
-    
+
     @SerializedName("share")
     private Integer share;
 
@@ -27,7 +26,7 @@ public class Profiteer {
 
     /**
      * Usual constructor.
-     * 
+     *
      * @param transactionId Id of the Transaction in which share is being taken
      * @param person Person taking share in the Transaction
      * @param share Amount of money by which share is being taken
@@ -37,10 +36,10 @@ public class Profiteer {
         this.person = person;
         this.share = share;
     }
-    
+
     /**
      * Constructor with all fields (useful for converting).
-     * 
+     *
      * @param transactionId Id of the Transaction in which share is being taken
      * @param person Person taking share in the Transaction
      * @param share Amount of money by which share is being taken
@@ -48,7 +47,7 @@ public class Profiteer {
      * @param createTime {@link LocalDateTime} marking the creation of the Share
      */
     public Profiteer(Integer transactionId, Person person, Integer share, LocalDateTime updateTime,
-            LocalDateTime createTime) {
+        LocalDateTime createTime) {
         this.transactionId = transactionId;
         this.person = person;
         this.share = share;
@@ -79,7 +78,7 @@ public class Profiteer {
     public void setShare(Integer share) {
         this.share = share;
     }
-    
+
     public LocalDateTime getUpdateTime() {
         return updateTime;
     }
@@ -99,7 +98,7 @@ public class Profiteer {
     @Override
     public String toString() {
         return "Profiteer [person=" + person + ", share=" + share + ", updateTime=" + updateTime
-                + ", createTime=" + createTime + ", transactionId(transient)=" + transactionId + "]";
+            + ", createTime=" + createTime + ", transactionId(transient)=" + transactionId + "]";
     }
-    
+
 }

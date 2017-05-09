@@ -7,7 +7,6 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 
 import com.google.gson.Gson;
-
 import io.teiler.server.dto.Person;
 import io.teiler.server.services.PersonService;
 import io.teiler.server.util.Error;
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Person-related endpoints.
- * 
+ *
  * @author lroellin
  * @author pbaechli
  */
@@ -59,7 +58,7 @@ public class PersonEndpointController implements EndpointController {
             }
             String activeString = req.queryParams(ACTIVE_PARAM);
             Boolean activeOnly = true;
-            if(activeString != null) {
+            if (activeString != null) {
                 activeOnly = Boolean.parseBoolean(activeString);
             }
             List<Person> people = personService.getPeople(groupId, limit, activeOnly);

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 
 /**
  * Controller for the index endpoint.
- * 
+ *
  * @author lroellin
  */
 @Controller

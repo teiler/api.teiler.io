@@ -5,13 +5,12 @@ import io.teiler.server.persistence.entities.DebtEntity;
 import io.teiler.server.persistence.repositories.DebtRepository;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.services.util.GroupUtil;
+import java.util.LinkedList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Provides service-methods for debts.
@@ -32,13 +31,20 @@ public class DebtService {
     @Autowired
     private DebtRepository debtRepository;
 
-    public List<Debt> getDebts(String groupID) {
-        groupUtil.checkIdExists(groupID);
+    /**
+     * Gets the debts for the given group.
+     *
+     * @param groupId The group to get the debts for
+     * @return The debts for that group
+     */
+    public List<Debt> getDebts(String groupId) {
+        groupUtil.checkIdExists(groupId);
 
         List<Debt> debts = new LinkedList<>();
-        for (DebtEntity debtEntity : debtRepository.get(groupID)) {
+        for (DebtEntity debtEntity : debtRepository.get(groupId)) {
             // TODO: Find a better solution than converting it here
-            Debt debt = new Debt(personRepository.getById(debtEntity.getPersonID()).toPerson(), debtEntity.getBalance());
+            Debt debt = new Debt(personRepository.getById(debtEntity.getPersonId()).toPerson(),
+                debtEntity.getBalance());
             debts.add(debt);
         }
         LOGGER.debug("View debts: {}", debts);

@@ -1,13 +1,12 @@
 package io.teiler.server.dto;
 
+import com.google.gson.annotations.SerializedName;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Class holding all information about an expense.
- * 
+ *
  * @author pbaechli
  */
 public class Expense extends Transaction {
@@ -20,7 +19,7 @@ public class Expense extends Transaction {
 
     /**
      * Usual constructor.
-     * 
+     *
      * @param id Id of the Expense
      * @param amount Amount of money involved in the Expense
      * @param payer Person who spent the money
@@ -28,7 +27,7 @@ public class Expense extends Transaction {
      * @param profiteers {@link List} of {@link Profiteer} related to the Expense
      */
     public Expense(Integer id, Integer amount, Person payer, String title,
-            List<Profiteer> profiteers) {
+        List<Profiteer> profiteers) {
         super(id, amount, payer, null, null);
         this.title = title;
         this.profiteers = profiteers;
@@ -36,7 +35,7 @@ public class Expense extends Transaction {
 
     /**
      * Constructor with all fields (useful for converting).
-     * 
+     *
      * @param id Id of the Expense
      * @param amount Amount of money involved in the Expense
      * @param payer Person who spent the money
@@ -46,7 +45,7 @@ public class Expense extends Transaction {
      * @param profiteers {@link List} of {@link Profiteer} related to the Expense
      */
     public Expense(Integer id, Integer amount, Person payer, LocalDateTime updateTime,
-            LocalDateTime createTime, String title, List<Profiteer> profiteers) {
+        LocalDateTime createTime, String title, List<Profiteer> profiteers) {
         super(id, amount, payer, updateTime, createTime);
         this.title = title;
         this.profiteers = profiteers;
@@ -72,5 +71,5 @@ public class Expense extends Transaction {
     public String toString() {
         return "Expense [title=" + title + ", profiteers=" + profiteers + "]";
     }
-    
+
 }

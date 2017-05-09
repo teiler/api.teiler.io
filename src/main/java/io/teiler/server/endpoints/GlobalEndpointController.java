@@ -3,27 +3,24 @@ package io.teiler.server.endpoints;
 import static spark.Spark.before;
 import static spark.Spark.exception;
 
+import com.google.gson.Gson;
+import io.teiler.server.util.Error;
+import io.teiler.server.util.exceptions.NotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.Gson;
-
-import io.teiler.server.util.Error;
-import io.teiler.server.util.exceptions.NotAuthorizedException;
-
 /**
  * Controller for global things such as authorisation-checks or exception handling.
- * 
+ *
  * @author lroellin
  */
 @Component
 public class GlobalEndpointController implements EndpointController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalEndpointController.class);
-
-    private Gson gson = new Gson();
     public static final String URL_VERSION = "/v1/";
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalEndpointController.class);
+    private Gson gson = new Gson();
 
     @Override
     public void register() {

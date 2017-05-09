@@ -2,7 +2,7 @@ package io.teiler.server.endpoints;
 
 /**
  * This interface provides a common base for all REST-Endpoint-Controllers.
- * 
+ *
  * @author pbaechli
  */
 public interface EndpointController {

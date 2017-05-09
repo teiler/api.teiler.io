@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Class holding all information about a suggested payment.
  *
- *  @author dthoma
+ * @author dthoma
  */
 public class SuggestedCompensation {
 
@@ -18,6 +18,13 @@ public class SuggestedCompensation {
     @SerializedName("profiteer")
     private Person profiteer;
 
+    /**
+     * Creates a suggested compensations.
+     *
+     * @param amount How much this compensation is about
+     * @param payer Who should pay in this compensation
+     * @param profiteer Who should receive in this compensation
+     */
     public SuggestedCompensation(Integer amount, Person payer, Person profiteer) {
         this.amount = amount;
         this.payer = payer;
@@ -50,6 +57,7 @@ public class SuggestedCompensation {
 
     @Override
     public String toString() {
-        return "SuggestedCompensation [amount=" + amount + ", payer=" + payer.toString() + ", profiteer=" + profiteer.toString() + "]";
+        return "SuggestedCompensation [amount=" + amount + ", payer=" + payer.toString() + ", profiteer=" + profiteer
+            .toString() + "]";
     }
 }

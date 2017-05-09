@@ -1,12 +1,11 @@
 package io.teiler.server.dto;
 
-import java.time.LocalDateTime;
-
 import com.google.gson.annotations.SerializedName;
+import java.time.LocalDateTime;
 
 /**
  * Class holding all information about a transaction.
- * 
+ *
  * @author pbaechli
  */
 public abstract class Transaction {
@@ -27,14 +26,15 @@ public abstract class Transaction {
     private LocalDateTime createTime;
 
     /**
-     * @param id Id of the Transaction
+     * @param id Id of the Transaction.
+     *
      * @param amount Amount of money involved in the transaction
      * @param payer Person who spent the money
      * @param updateTime {@link LocalDateTime} marking the last update of the Transaction
      * @param createTime {@link LocalDateTime} marking the creation of the Transaction
      */
     public Transaction(Integer id, Integer amount, Person payer, LocalDateTime updateTime,
-            LocalDateTime createTime) {
+        LocalDateTime createTime) {
         this.id = id;
         this.amount = amount;
         this.payer = payer;
@@ -85,7 +85,7 @@ public abstract class Transaction {
     @Override
     public String toString() {
         return "Transaction [id=" + id + ", amount=" + amount + ", payer=" + payer + ", updateTime="
-                + updateTime + ", createTime=" + createTime + "]";
+            + updateTime + ", createTime=" + createTime + "]";
     }
 
 }

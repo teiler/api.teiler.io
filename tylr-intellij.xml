@@ -19,12 +19,12 @@
   </option>
   <option name="IMPORT_LAYOUT_TABLE">
     <value>
-      <package name="" withSubpackages="true" static="true" />
+      <package name="" static="true" withSubpackages="true"/>
       <emptyLine />
-      <package name="" withSubpackages="true" static="false" />
+      <package name="" static="false" withSubpackages="true"/>
     </value>
   </option>
-  <option name="RIGHT_MARGIN" value="100" />
+  <option name="RIGHT_MARGIN" value="120"/>
   <option name="JD_ALIGN_PARAM_COMMENTS" value="false" />
   <option name="JD_ALIGN_EXCEPTION_COMMENTS" value="false" />
   <option name="JD_P_AT_EMPTY_LINES" value="false" />

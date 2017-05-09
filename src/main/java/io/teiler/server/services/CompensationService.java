@@ -11,7 +11,6 @@ import io.teiler.server.services.util.CompensationUtil;
 import io.teiler.server.services.util.GroupUtil;
 import io.teiler.server.services.util.TransactionUtil;
 import io.teiler.server.util.exceptions.ProfiteerNotFoundException;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Compensations.
- * 
+ *
  * @author pbaechli
  */
 @Service
@@ -47,7 +46,7 @@ public class CompensationService {
     /**
      * Creates a new {@link Compensation}.<br>
      * <i>Note:</i> The Payer and Profiteer may not be the same Person.
-     * 
+     *
      * @param compensation {@link Compensation} containing the information to be persisted
      * @return {@link Compensation} containing the data freshly fetched from the database
      */
@@ -63,9 +62,9 @@ public class CompensationService {
         transactionUtil.checkProfiteerIsActive(profiteerPerson.getId());
 
         CompensationEntity compensationEntity = compensationRepository.create(compensation);
-        
+
         Profiteer profiteer = new Profiteer(
-                compensationEntity.getId(), profiteerPerson, compensation.getAmount());
+            compensationEntity.getId(), profiteerPerson, compensation.getAmount());
         profiteerRepository.create(profiteer);
 
         LOGGER.debug("Create compensation {}", compensation);
@@ -74,7 +73,7 @@ public class CompensationService {
 
     /**
      * Returns a {@link Compensation} with the given Id and Group-Id.
-     * 
+     *
      * @param groupId Id of the Group
      * @param compensationId Id of the Compensation
      * @return {@link Compensation}
@@ -93,7 +92,7 @@ public class CompensationService {
      * Returns a {@link List} of {@link Compensation} in the Group with the given Id sorted
      * descending by the <code>update-time</code>.<br>
      * <i>Note:</i> The Group of the Payer of the Compensation has to to match the given Group.
-     * 
+     *
      * @param groupId Id of the Group
      * @param limit Maximum amount of Compensation to fetch
      * @return {@link List} of {@link Compensation}
@@ -111,7 +110,7 @@ public class CompensationService {
      * Updates and already created Compensation with the given values.<br>
      * <i>Note:</i> The Compensation has to exist within the given Group
      * and the Payer and Profiteer may not be the same Person.
-     * 
+     *
      * @param groupId Id of the Group
      * @param compensationId Id of the Compensation
      * @param changedCompensation {@link Compensation} containing the new values
@@ -132,31 +131,30 @@ public class CompensationService {
         LOGGER.debug("Edit compensation {}", changedCompensation);
         compensationRepository.editCompensation(compensationId, changedCompensation);
         CompensationEntity compensationEntity = compensationRepository.getById(compensationId);
-        
+
         try {
             // first we check if the profiteer changed by looking him up in the group
             transactionUtil.checkProfiteerExistsInThisTransaction(
-                    compensationEntity.getId(), changedProfiteerPerson.getId());
+                compensationEntity.getId(), changedProfiteerPerson.getId());
 
             // profiteer was not changed => update
             LOGGER.debug("-- Updating Profiteer: {}", changedProfiteerPerson);
             ProfiteerEntity profiteerEntity = profiteerRepository.getByTransactionIdAndProfiteerPersonId(
-                    compensationEntity.getId(), changedProfiteerPerson.getId());
+                compensationEntity.getId(), changedProfiteerPerson.getId());
 
             Profiteer changedProfiteer = new Profiteer(
-                    compensationEntity.getId(), changedProfiteerPerson, changedCompensation.getAmount());
+                compensationEntity.getId(), changedProfiteerPerson, changedCompensation.getAmount());
             profiteerRepository.editProfiteer(profiteerEntity.getId(), changedProfiteer);
-        }
-        catch (ProfiteerNotFoundException e) {
+        } catch (ProfiteerNotFoundException e) {
             // does not yet exist => delete the existing one and create a new one
 
             LOGGER.debug("-- Removing Profiteer: {}", compensationEntity.getProfiteer());
             profiteerRepository.deleteProfiteerByTransactionIdAndProfiteerPersonId(
-                    compensationEntity.getId(), compensationEntity.getProfiteer().getPerson().getId());
+                compensationEntity.getId(), compensationEntity.getProfiteer().getPerson().getId());
 
             LOGGER.debug("-- Adding Profiteer: {}", changedProfiteerPerson);
             Profiteer changedProfiteer = new Profiteer(
-                    compensationEntity.getId(), changedProfiteerPerson, changedCompensation.getAmount());
+                compensationEntity.getId(), changedProfiteerPerson, changedCompensation.getAmount());
             profiteerRepository.create(changedProfiteer);
         }
 
@@ -166,7 +164,7 @@ public class CompensationService {
     /**
      * Deletes the Compensation with the given Id and Group-Id.<br>
      * <i>Note:</i> The Compensation has to exist within the given Group.
-     * 
+     *
      * @param groupId Id of the Group
      * @param compensationId Id of the Compensation
      */
