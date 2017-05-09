@@ -4,7 +4,7 @@ import spark.Request;
 
 public class EndpointUtil {
 
-    private static final String GROUP_ID_PARAM = ":groupid";
+    public static final String GROUP_ID_PARAM = ":groupid";
     private static final String LIMIT_PARAM = "limit";
     private static final String ACTIVE_PARAM = "active";
 
