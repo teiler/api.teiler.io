@@ -6,11 +6,10 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import com.google.gson.Gson;
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.CompensationService;
-import io.teiler.server.util.GsonUtil;
+import io.teiler.server.util.HomebrewGson;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
 import java.util.List;
@@ -31,8 +30,6 @@ public class CompensationEndpointController implements EndpointController {
         + EndpointUtil.GROUP_ID_PARAM + "/compensations";
     private static final String URL_WITH_COMPENSATION_ID = BASE_URL + "/" + COMPENSATION_ID_PARAM;
 
-    private final Gson gson = GsonUtil.getHomebrewGson();
-
     @Autowired
     private CompensationService compensationService;
 
@@ -40,32 +37,32 @@ public class CompensationEndpointController implements EndpointController {
     public void register() {
         post(BASE_URL, (req, res) -> {
             String groupId = EndpointUtil.readGroupId(req);
-            Compensation requestCompensation = gson.fromJson(req.body(), Compensation.class);
+            Compensation requestCompensation = HomebrewGson.getInstance().fromJson(req.body(), Compensation.class);
             Compensation newCompensation = compensationService.createCompensation(requestCompensation, groupId);
-            return gson.toJson(newCompensation);
+            return HomebrewGson.getInstance().toJson(newCompensation);
         });
 
         get(BASE_URL, (req, res) -> {
             String groupId = EndpointUtil.readGroupId(req);
             long limit = EndpointUtil.readLimit(req, DEFAULT_QUERY_LIMIT);
             List<Compensation> compensations = compensationService.getLastCompensations(groupId, limit);
-            return gson.toJson(compensations);
+            return HomebrewGson.getInstance().toJson(compensations);
         });
 
         get(URL_WITH_COMPENSATION_ID, (req, res) -> {
             String groupId = EndpointUtil.readGroupId(req);
             int compensationId = Integer.parseInt(req.params(COMPENSATION_ID_PARAM));
             Compensation compensation = compensationService.getCompensation(groupId, compensationId);
-            return gson.toJson(compensation);
+            return HomebrewGson.getInstance().toJson(compensation);
         });
 
         put(URL_WITH_COMPENSATION_ID, (req, res) -> {
             String groupId = EndpointUtil.readGroupId(req);
             int compensationId = Integer.parseInt(req.params(COMPENSATION_ID_PARAM));
-            Compensation changedCompensation = gson.fromJson(req.body(), Compensation.class);
+            Compensation changedCompensation = HomebrewGson.getInstance().fromJson(req.body(), Compensation.class);
             Compensation compensation = compensationService
                 .editCompensation(groupId, compensationId, changedCompensation);
-            return gson.toJson(compensation);
+            return HomebrewGson.getInstance().toJson(compensation);
         });
 
         delete(URL_WITH_COMPENSATION_ID, (req, res) -> {
@@ -76,10 +73,10 @@ public class CompensationEndpointController implements EndpointController {
         });
 
         exception(TransactionNotFoundException.class, (e, request, response) ->
-            EndpointUtil.prepareErrorResponse(response, 404, e, gson));
+            EndpointUtil.prepareErrorResponse(response, 404, e));
 
         exception(PayerProfiteerConflictException.class, (e, request, response) ->
-            EndpointUtil.prepareErrorResponse(response, 409, e, gson));
+            EndpointUtil.prepareErrorResponse(response, 409, e));
     }
 
 }

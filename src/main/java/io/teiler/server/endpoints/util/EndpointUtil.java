@@ -1,7 +1,7 @@
 package io.teiler.server.endpoints.util;
 
-import com.google.gson.Gson;
 import io.teiler.server.util.Error;
+import io.teiler.server.util.HomebrewGson;
 import spark.Request;
 import spark.Response;
 
@@ -69,9 +69,9 @@ public class EndpointUtil {
      * @param exception The exception to include
      * @param gsonInstance The instance to GSON, needed because it's a static method
      */
-    public static void prepareErrorResponse(Response response, int statusCode, Exception exception, Gson gsonInstance) {
+    public static void prepareErrorResponse(Response response, int statusCode, Exception exception) {
         response.status(statusCode);
         Error error = new Error(exception.getMessage());
-        response.body(gsonInstance.toJson(error));
+        response.body(HomebrewGson.getInstance().toJson(error));
     }
 }
