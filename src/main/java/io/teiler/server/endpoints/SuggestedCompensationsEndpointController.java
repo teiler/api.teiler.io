@@ -3,7 +3,7 @@ package io.teiler.server.endpoints;
 import static spark.Spark.get;
 
 import com.google.gson.Gson;
-import io.teiler.server.dto.SuggestedCompensation;
+import io.teiler.server.dto.Compensation;
 import io.teiler.server.services.SuggestCompensationService;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.Normalizer;
@@ -30,7 +30,7 @@ public class SuggestedCompensationsEndpointController implements EndpointControl
         get(BASE_URL, (req, res) -> {
             String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
             groupId = Normalizer.normalizeGroupId(groupId);
-            List<SuggestedCompensation> suggestedCompensations = suggestCompensationService
+            List<Compensation> suggestedCompensations = suggestCompensationService
                 .getSuggestedCompensations(groupId);
             return gson.toJson(suggestedCompensations);
         });
