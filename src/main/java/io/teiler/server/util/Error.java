@@ -1,5 +1,6 @@
 package io.teiler.server.util;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 public class Error {
 
+    @Expose
     @SerializedName("error")
     private List<String> errorCodes = new LinkedList<>();
 
