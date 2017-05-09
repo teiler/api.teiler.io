@@ -13,7 +13,7 @@ apply plugin: "eclipse"
 apply plugin: "idea"
 
 sourceCompatibility = 1.8
-sourceSets.main.java.srcDirs = [ "src/main/java", "src/main/resources", "src/querydsl/java" , "src/dist/sql" ]
+sourceSets.main.java.srcDirs = [ "src/main/java", "src/main/resources", "src/dist/sql" ]
 sourceSets.test.java.srcDirs = [ "src/test/java", "src/test/chakram" ]
 
 mainClassName = "io.teiler.server.Tylr"
@@ -65,7 +65,6 @@ checkstyle {
     toolVersion = "7.6"
     sourceSets = [sourceSets.main, sourceSets.test]
 }
-checkstyleMain.source = "src/main/java" // set base dir explicitly because reasons
 
 querydsl {
     jpa = true
