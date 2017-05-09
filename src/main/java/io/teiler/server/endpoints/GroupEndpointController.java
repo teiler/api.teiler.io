@@ -8,10 +8,10 @@ import static spark.Spark.put;
 
 import com.google.gson.Gson;
 import io.teiler.server.dto.Group;
+import io.teiler.server.endpoints.util.GroupIdReader;
 import io.teiler.server.services.GroupService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
-import io.teiler.server.util.Normalizer;
 import io.teiler.server.util.exceptions.CurrencyNotValidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class GroupEndpointController implements EndpointController {
 
-    public static final String GROUP_ID_PARAM = ":groupid";
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups";
     private static final String URL_WITH_GROUP_ID = BASE_URL + "/:groupid";
 
@@ -42,8 +41,7 @@ public class GroupEndpointController implements EndpointController {
         });
 
         get(URL_WITH_GROUP_ID, (req, res) -> {
-            String groupId = req.params(GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             String activeString = req.queryParams(PersonEndpointController.ACTIVE_PARAM);
             Boolean activeOnly = true;
             if (activeString != null) {
@@ -54,16 +52,14 @@ public class GroupEndpointController implements EndpointController {
         });
 
         put(URL_WITH_GROUP_ID, (req, res) -> {
-            String groupId = req.params(GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             Group changedGroup = gson.fromJson(req.body(), Group.class);
             Group group = groupService.editGroup(groupId, changedGroup);
             return gson.toJson(group);
         });
 
         delete(URL_WITH_GROUP_ID, (req, res) -> {
-            String groupId = req.params(GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             groupService.deleteGroup(groupId);
             return "";
         });

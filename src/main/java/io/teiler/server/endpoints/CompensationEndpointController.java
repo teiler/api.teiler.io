@@ -8,10 +8,10 @@ import static spark.Spark.put;
 
 import com.google.gson.Gson;
 import io.teiler.server.dto.Compensation;
+import io.teiler.server.endpoints.util.GroupIdReader;
 import io.teiler.server.services.CompensationService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
-import io.teiler.server.util.Normalizer;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
@@ -40,16 +40,14 @@ public class CompensationEndpointController implements EndpointController {
     @Override
     public void register() {
         post(BASE_URL, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             Compensation requestCompensation = gson.fromJson(req.body(), Compensation.class);
             Compensation newCompensation = compensationService.createCompensation(requestCompensation, groupId);
             return gson.toJson(newCompensation);
         });
 
         get(BASE_URL, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             String limitString = req.queryParams(LIMIT_PARAM);
             long limit = DEFAULT_QUERY_LIMIT;
             if (limitString != null) {
@@ -60,16 +58,14 @@ public class CompensationEndpointController implements EndpointController {
         });
 
         get(URL_WITH_COMPENSATION_ID, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             int compensationId = Integer.parseInt(req.params(COMPENSATION_ID_PARAM));
             Compensation compensation = compensationService.getCompensation(groupId, compensationId);
             return gson.toJson(compensation);
         });
 
         put(URL_WITH_COMPENSATION_ID, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             int compensationId = Integer.parseInt(req.params(COMPENSATION_ID_PARAM));
             Compensation changedCompensation = gson.fromJson(req.body(), Compensation.class);
             Compensation compensation = compensationService
@@ -78,8 +74,7 @@ public class CompensationEndpointController implements EndpointController {
         });
 
         delete(URL_WITH_COMPENSATION_ID, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             int compensationId = Integer.parseInt(req.params(COMPENSATION_ID_PARAM));
             compensationService.deleteCompensation(groupId, compensationId);
             return "";

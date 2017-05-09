@@ -8,10 +8,10 @@ import static spark.Spark.put;
 
 import com.google.gson.Gson;
 import io.teiler.server.dto.Person;
+import io.teiler.server.endpoints.util.GroupIdReader;
 import io.teiler.server.services.PersonService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
-import io.teiler.server.util.Normalizer;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
 import io.teiler.server.util.exceptions.PersonInactiveException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
@@ -41,16 +41,14 @@ public class PersonEndpointController implements EndpointController {
     @Override
     public void register() {
         post(BASE_URL, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             Person requestPerson = gson.fromJson(req.body(), Person.class);
             Person newPerson = personService.createPerson(groupId, requestPerson.getName());
             return gson.toJson(newPerson);
         });
 
         get(BASE_URL, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             String limitString = req.queryParams(LIMIT_PARAM);
             long limit = DEFAULT_QUERY_LIMIT;
             if (limitString != null) {
@@ -66,8 +64,7 @@ public class PersonEndpointController implements EndpointController {
         });
 
         put(URL_WITH_PERSON_ID, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             Person changedPerson = gson.fromJson(req.body(), Person.class);
             // GSON doesn't go through the normal constructor so we set it manually
@@ -77,8 +74,7 @@ public class PersonEndpointController implements EndpointController {
         });
 
         delete(URL_WITH_PERSON_ID, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             int personId = Integer.parseInt(req.params(PERSON_ID_PARAM));
             personService.deactivatePerson(groupId, personId);
             return "";
