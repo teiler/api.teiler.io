@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Error-Wrapper to smoothly getGroupById error-codes across the REST-API.
+ * Error wrapper to smoothly get error codes across the REST API.
  *
  * @author lroellin
  */
@@ -19,9 +19,4 @@ public class Error {
     public Error(String errorCode) {
         this.errorCodes.add(errorCode);
     }
-
-    public void addError(String errorCode) {
-        this.errorCodes.add(errorCode);
-    }
-
 }
