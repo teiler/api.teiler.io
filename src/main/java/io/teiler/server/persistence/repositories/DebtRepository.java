@@ -1,14 +1,11 @@
 package io.teiler.server.persistence.repositories;
 
+import io.teiler.server.persistence.entities.DebtEntity;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import io.teiler.server.persistence.entities.DebtEntity;
 
 /**
  * Provides database-related operations for debts.
@@ -18,7 +15,7 @@ import io.teiler.server.persistence.entities.DebtEntity;
 @Repository
 public class DebtRepository {
 
-    static final String STATEMENT_SQLMAP = "GET_DEBT_QUERY";
+    private static final String STATEMENT_SQLMAP = "GET_DEBT_QUERY";
 
     @Autowired
     private EntityManager entityManager;

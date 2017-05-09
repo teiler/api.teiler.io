@@ -6,16 +6,14 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
 import com.google.gson.Gson;
-
 import io.teiler.server.dto.Group;
 import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.GroupService;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.exceptions.CurrencyNotValidException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Group-related endpoints.
@@ -28,7 +26,7 @@ public class GroupEndpointController implements EndpointController {
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups";
     private static final String URL_WITH_GROUP_ID = BASE_URL + "/" + EndpointUtil.GROUP_ID_PARAM;
 
-    private Gson gson = GsonUtil.getHomebrewGson();
+    private final Gson gson = GsonUtil.getHomebrewGson();
 
     @Autowired
     private GroupService groupService;

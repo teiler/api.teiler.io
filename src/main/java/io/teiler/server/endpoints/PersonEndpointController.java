@@ -32,8 +32,8 @@ public class PersonEndpointController implements EndpointController {
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/"
         + EndpointUtil.GROUP_ID_PARAM + "/people";
     private static final String URL_WITH_PERSON_ID = BASE_URL + "/" + PERSON_ID_PARAM;
-    
-    private Gson gson = GsonUtil.getHomebrewGson();
+
+    private final Gson gson = GsonUtil.getHomebrewGson();
     
     @Autowired
     private PersonService personService;

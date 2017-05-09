@@ -16,7 +16,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class IndexEndpointController implements EndpointController {
 
-    private Gson gson = GsonUtil.getHomebrewGson();
+    private final Gson gson = GsonUtil.getHomebrewGson();
 
     @Override
     public void register() {

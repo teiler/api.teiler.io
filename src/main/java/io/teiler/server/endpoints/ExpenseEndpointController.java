@@ -30,8 +30,8 @@ public class ExpenseEndpointController implements EndpointController {
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups/"
         + EndpointUtil.GROUP_ID_PARAM + "/expenses";
     private static final String URL_WITH_EXPENSE_ID = BASE_URL + "/" + EXPENSE_ID_PARAM;
-    
-    private Gson gson = GsonUtil.getHomebrewGson();
+
+    private final Gson gson = GsonUtil.getHomebrewGson();
     
     @Autowired
     private ExpenseService expenseService;

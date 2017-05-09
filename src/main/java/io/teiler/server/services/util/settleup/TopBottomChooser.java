@@ -1,9 +1,8 @@
 package io.teiler.server.services.util.settleup;
 
+import io.teiler.server.dto.Debt;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import io.teiler.server.dto.Debt;
 
 /**
  * Implements methods by choosing the persons with the highest and the lowest balance.
@@ -12,7 +11,7 @@ import io.teiler.server.dto.Debt;
  */
 public class TopBottomChooser implements PersonChooser {
 
-    private SortedMap<Integer, Debt> debts;
+    private final SortedMap<Integer, Debt> debts;
     
     public TopBottomChooser() {
         debts = new TreeMap<>();
