@@ -26,11 +26,11 @@ repositories {
 ext {
     sparkVersion = "2.6.0.RC0"
     springBootVersion = "1.5.3.RELEASE"
-    
+
     postgresqlVersion = "42.0.0"
     hibernateValidatorVersion = "6.0.0.Alpha2"
     queryDslVersion = "4.1.4"
-    
+
     gsonVersion = "2.8.0"
 
     slf4jVersion = "1.7.24"
@@ -44,13 +44,13 @@ dependencies {
     compile "com.sparkjava:spark-core:${sparkVersion}"
     compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-    
+
     compile "org.postgresql:postgresql:${postgresqlVersion}"
     compile "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
     compile "com.querydsl:querydsl-jpa:${queryDslVersion}"
 
     compile "com.google.code.gson:gson:${gsonVersion}"
-    
+
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
     compile "ch.qos.logback:logback-classic:${logbackVersion}"
 
@@ -64,8 +64,8 @@ checkstyle {
     configFile = rootProject.file("checkstyle.xml")
     toolVersion = "7.6"
     sourceSets = [sourceSets.main, sourceSets.test]
-    
 }
+checkstyleMain.source = "src/main/java" // set base dir explicitly because reasons
 
 querydsl {
     jpa = true
