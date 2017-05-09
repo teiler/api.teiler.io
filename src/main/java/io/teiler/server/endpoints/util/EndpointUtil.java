@@ -60,7 +60,6 @@ public class EndpointUtil {
         return activeOnly;
     }
 
-
     /**
      * Sets the response so that it represents an error state.
      *
@@ -73,4 +72,5 @@ public class EndpointUtil {
         Error error = new Error(exception.getMessage());
         response.body(HomebrewGson.getInstance().toJson(error));
     }
+    
 }
