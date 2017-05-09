@@ -7,7 +7,6 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 
 import com.google.gson.Gson;
-
 import io.teiler.server.dto.Group;
 import io.teiler.server.services.GroupService;
 import io.teiler.server.util.Error;
@@ -19,12 +18,12 @@ import org.springframework.stereotype.Controller;
 
 /**
  * Controller for Group-related endpoints.
- * 
+ *
  * @author lroellin
  */
 @Controller
 public class GroupEndpointController implements EndpointController {
-    
+
     public static final String GROUP_ID_PARAM = ":groupid";
     private static final String BASE_URL = GlobalEndpointController.URL_VERSION + "/groups";
     private static final String URL_WITH_GROUP_ID = BASE_URL + "/:groupid";
@@ -47,7 +46,7 @@ public class GroupEndpointController implements EndpointController {
             groupId = Normalizer.normalizeGroupId(groupId);
             String activeString = req.queryParams(PersonEndpointController.ACTIVE_PARAM);
             Boolean activeOnly = true;
-            if(activeString != null) {
+            if (activeString != null) {
                 activeOnly = Boolean.parseBoolean(activeString);
             }
             Group requestGroup = groupService.viewGroup(groupId, activeOnly);

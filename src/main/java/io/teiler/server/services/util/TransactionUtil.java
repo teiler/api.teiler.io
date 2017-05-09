@@ -22,7 +22,7 @@ public class TransactionUtil {
     public TransactionUtil() { /* intentionally empty */ }
 
     /**
-     * Checks whether the payer belongs to this group
+     * Checks whether the payer belongs to this group.
      *
      * @param groupId Id of the group this payer should belong to
      * @param payerId Id of the payer
@@ -38,7 +38,7 @@ public class TransactionUtil {
     }
 
     /**
-     * Checks whether the profiteer belongs to this group
+     * Checks whether the profiteer belongs to this group.
      *
      * @param groupId Id of the group this profiteer should belong to
      * @param profiteerId Id of the profiteer
@@ -69,7 +69,7 @@ public class TransactionUtil {
     }
 
     /**
-     * Checks if the payer is active
+     * Checks if the payer is active.
      *
      * @param payerId Id of the payer
      * @throws PayerInactiveException The payer is not active

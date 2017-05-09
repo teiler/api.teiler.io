@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Provides database-related operations for Groups.
- * 
+ *
  * @author lroellin
  * @author pbaechli
  */
@@ -28,7 +28,7 @@ public class PersonRepository {
 
     /**
      * Creates a new Person and returns it.
-     * 
+     *
      * @param groupId Id of the Group
      * @param person Name of the Group
      * @return {@link GroupEntity}
@@ -45,7 +45,7 @@ public class PersonRepository {
 
     /**
      * Returns a {@link PersonEntity} with the given name and Group-Id.
-     * 
+     *
      * @param groupId Id of the Group
      * @param name Name of the Person
      * @return {@link PersonEntity}
@@ -53,13 +53,13 @@ public class PersonRepository {
     public PersonEntity getByName(String groupId, String name) {
         return new JPAQuery<PersonEntity>(entityManager).from(QPersonEntity.personEntity)
             .where(QPersonEntity.personEntity.groupId.eq(groupId)
-            .and(QPersonEntity.personEntity.name.eq(name)))
+                .and(QPersonEntity.personEntity.name.eq(name)))
             .fetchOne();
     }
 
     /**
      * Returns a {@link List} of {@link PersonEntity} in the Group with the given Id.
-     * 
+     *
      * @param groupId Id of the Group
      * @param limit Maximum amount of people to fetch
      * @return {@link List} of {@link PersonEntity}
@@ -74,7 +74,7 @@ public class PersonRepository {
 
     /**
      * Returns a {@link PersonEntity} with the given Group- and Person-Id.
-     * 
+     *
      * @param groupId Id of the Group
      * @param personId Id of the Person
      * @return {@link PersonEntity}
@@ -82,13 +82,13 @@ public class PersonRepository {
     public PersonEntity getByGroupAndPersonId(String groupId, int personId) {
         return new JPAQuery<PersonEntity>(entityManager).from(QPersonEntity.personEntity)
             .where(QPersonEntity.personEntity.groupId.eq(groupId)
-            .and(QPersonEntity.personEntity.id.eq(personId)))
+                .and(QPersonEntity.personEntity.id.eq(personId)))
             .fetchOne();
     }
 
     /**
      * Returns the {@link PersonEntity} with the given Id.
-     * 
+     *
      * @param personId Id of the Person
      * @return {@link PersonEntity}
      */
@@ -100,7 +100,7 @@ public class PersonRepository {
 
     /**
      * Updates a already persisted Person with the given values.
-     * 
+     *
      * @param personId Id of the Person
      * @param changedPerson {@link Person} containing the new values
      * @return {@link PersonEntity} containing the new values
@@ -115,10 +115,10 @@ public class PersonRepository {
 
         return entityManager.merge(updatedPerson);
     }
-    
+
     /**
      * Deletes the Person with the given Id.
-     * 
+     *
      * @param personId Id of the Person
      */
     @Transactional
@@ -126,5 +126,5 @@ public class PersonRepository {
         PersonEntity person = getById(personId);
         entityManager.remove(person);
     }
-    
+
 }

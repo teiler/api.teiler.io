@@ -1,22 +1,18 @@
 package io.teiler.server.persistence.repositories;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import com.querydsl.jpa.impl.JPAQuery;
-
 import io.teiler.server.dto.Expense;
 import io.teiler.server.persistence.entities.ExpenseEntity;
 import io.teiler.server.persistence.entities.QExpenseEntity;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /**
  * Provides database-related operations for Expenses.
- * 
+ *
  * @author pbaechli
  */
 @Repository
@@ -24,10 +20,10 @@ public class ExpenseRepository {
 
     @Autowired
     private EntityManager entityManager;
-    
+
     /**
      * Creates a new {@link ExpenseEntity} and returns it.
-     * 
+     *
      * @param expense {@link Expense}
      * @return {@link ExpenseEntity}
      */
@@ -37,10 +33,10 @@ public class ExpenseRepository {
         entityManager.persist(expenseEntity);
         return expenseEntity;
     }
-    
+
     /**
      * Returns a {@link ExpenseEntity} with the Id.
-     * 
+     *
      * @param id Id of the Expense
      * @return {@link ExpenseEntity}
      */
@@ -53,7 +49,7 @@ public class ExpenseRepository {
     /**
      * Returns an {@link ExpenseEntity} with the given Id and Group-Id.<br>
      * <i>Note:</i> The Group of the Payer of the Expense has to to match the given Group.
-     * 
+     *
      * @param groupId Id of the Group of the Payer
      * @param expenseId Id of the Expense
      * @return {@link ExpenseEntity}
@@ -69,7 +65,7 @@ public class ExpenseRepository {
      * Returns a {@link List} of {@link ExpenseEntity} in the Group with the given Id
      * ordered by <code>update-time</code> descending.<br>
      * <i>Note:</i> The Expense has to exist within the given Group.
-     * 
+     *
      * @param groupId Id of the Group
      * @param limit Maximum amount of Expenses to fetch
      * @return {@link List} of {@link ExpenseEntity}
@@ -85,7 +81,7 @@ public class ExpenseRepository {
 
     /**
      * Updates a already persisted {@link ExpenseEntity} with the given values.
-     * 
+     *
      * @param expenseId Id of the Expense
      * @param changedExpense {@link Expense} containing the new values
      * @return {@link ExpenseEntity} containing the new values
@@ -94,7 +90,7 @@ public class ExpenseRepository {
     public ExpenseEntity editExpense(int expenseId, Expense changedExpense) {
         ExpenseEntity expense = new ExpenseEntity(changedExpense);
         expense.setId(expenseId);
-        
+
         entityManager.merge(expense);
 
         return expense;
@@ -102,7 +98,7 @@ public class ExpenseRepository {
 
     /**
      * Deletes the {@link ExpenseEntity} with the given Id.
-     * 
+     *
      * @param expenseId Id of the Expense
      */
     @Transactional
@@ -110,5 +106,5 @@ public class ExpenseRepository {
         ExpenseEntity expense = getById(expenseId);
         entityManager.remove(expense);
     }
-    
+
 }

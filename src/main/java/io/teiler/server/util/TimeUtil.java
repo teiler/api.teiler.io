@@ -4,12 +4,12 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class TimeUtil {
-    
+
     private TimeUtil() { /* intentionally empty */ }
 
     /**
      * Converts a {@link LocalDateTime} to a {@link Timestamp}.
-     * 
+     *
      * @param time {@link LocalDateTime}
      * @return {@link Timestamp}
      */
@@ -22,7 +22,7 @@ public class TimeUtil {
 
     /**
      * Converts a {@link Timestamp} to a {@link LocalDateTime}.
-     * 
+     *
      * @param time {@link Timestamp}
      * @return {@link LocalDateTime}
      */
@@ -32,5 +32,5 @@ public class TimeUtil {
         }
         return time.toLocalDateTime();
     }
-    
+
 }

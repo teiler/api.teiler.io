@@ -1,8 +1,12 @@
 package io.teiler.server.persistence.entities;
 
 import io.teiler.server.dto.Debt;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.SqlResultSetMapping;
 
 /**
  * Entity representing a virtual debt entry.
@@ -11,17 +15,17 @@ import javax.persistence.*;
  */
 @Entity
 @SqlResultSetMapping(name = "GET_DEBT_QUERY",
-        classes = {
-                @ConstructorResult(targetClass = io.teiler.server.persistence.entities.DebtEntity.class,
-                        columns = {
-                                @ColumnResult(name = "person", type = Integer.class),
-                                @ColumnResult(name = "balance", type = Integer.class)})
-        })
+    classes = {
+        @ConstructorResult(targetClass = io.teiler.server.persistence.entities.DebtEntity.class,
+            columns = {
+                @ColumnResult(name = "person", type = Integer.class),
+                @ColumnResult(name = "balance", type = Integer.class)})
+    })
 public class DebtEntity {
 
     @Id
     @Column(name = "person")
-    private Integer personID;
+    private Integer personId;
 
     @Column(name = "balance")
     private Integer balance;
@@ -29,26 +33,24 @@ public class DebtEntity {
     public DebtEntity() { /* intentionally empty */ }
 
     /**
-     * Converts a {@link Debt} to a {@link DebtEntity}
-     *
-     * @param debt
+     * Converts a {@link Debt} to a {@link DebtEntity}.
      */
     public DebtEntity(Debt debt) {
-        this.personID = debt.getPerson().getId();
+        this.personId = debt.getPerson().getId();
         this.balance = debt.getBalance();
     }
 
     public DebtEntity(Integer person, Integer balance) {
-        this.personID = person;
+        this.personId = person;
         this.balance = balance;
     }
 
-    public Integer getPersonID() {
-        return personID;
+    public Integer getPersonId() {
+        return personId;
     }
 
-    public void setPersonID(Integer personID) {
-        this.personID = personID;
+    public void setPersonId(Integer personId) {
+        this.personId = personId;
     }
 
     public Integer getBalance() {
@@ -61,7 +63,7 @@ public class DebtEntity {
 
     @Override
     public String toString() {
-        return "DebtEntity [person=" + personID + ", balance=" + balance + "]";
+        return "DebtEntity [person=" + personId + ", balance=" + balance + "]";
     }
 
 }

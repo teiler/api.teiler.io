@@ -1,12 +1,11 @@
 package io.teiler.server.dto;
 
-import java.time.LocalDateTime;
-
 import com.google.gson.annotations.SerializedName;
+import java.time.LocalDateTime;
 
 /**
  * Class holding all information about a Compensation.
- * 
+ *
  * @author pbaechli
  */
 public class Compensation extends Transaction {
@@ -16,7 +15,7 @@ public class Compensation extends Transaction {
 
     /**
      * Usual constructor.
-     * 
+     *
      * @param id Id of the Compensation
      * @param amount Amount of money involved in the Compensation
      * @param payer Person who spent the money
@@ -29,7 +28,7 @@ public class Compensation extends Transaction {
 
     /**
      * Constructor with all fields (useful for converting).
-     * 
+     *
      * @param id Id of the Compensation
      * @param amount Amount of money involved in the Compensation
      * @param payer Person who spent the money
@@ -38,7 +37,7 @@ public class Compensation extends Transaction {
      * @param profiteer {@link Profiteer} related to the Compensation
      */
     public Compensation(Integer id, Integer amount, Person payer, LocalDateTime updateTime,
-            LocalDateTime createTime, Person profiteer) {
+        LocalDateTime createTime, Person profiteer) {
         super(id, amount, payer, updateTime, createTime);
         this.profiteer = profiteer;
     }
