@@ -1,5 +1,6 @@
 package io.teiler.server.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,9 +10,11 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Debt {
 
+    @Expose(deserialize = false)
     @SerializedName("person")
     private Person person;
 
+    @Expose(deserialize = false)
     @SerializedName("balance")
     private Integer balance;
 
