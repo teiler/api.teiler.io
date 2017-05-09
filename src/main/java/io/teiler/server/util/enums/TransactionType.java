@@ -10,6 +10,6 @@ import com.google.gson.annotations.SerializedName;
 public enum TransactionType {
     @SerializedName("EXPENSE")
     EXPENSE,
-    @SerializedName("compensation")
+    @SerializedName("COMPENSATION")
     COMPENSATION,
 }
