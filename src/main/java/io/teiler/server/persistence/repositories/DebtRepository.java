@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DebtRepository {
 
-    private static final String STATEMENT_SQLMAP = "GET_DEBT_QUERY";
+    public static final String STATEMENT_SQLMAP = "GET_DEBT_QUERY";
 
     @Autowired
     private EntityManager entityManager;
