@@ -1,10 +1,5 @@
 package io.teiler.server.services;
 
-import io.teiler.server.Tylr;
-import io.teiler.server.dto.Group;
-import io.teiler.server.util.enums.Currency;
-import io.teiler.server.util.exceptions.CurrencyNotValidException;
-import io.teiler.server.util.exceptions.NotAuthorizedException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +9,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import io.teiler.server.Tylr;
+import io.teiler.server.dto.Group;
+import io.teiler.server.util.enums.Currency;
+import io.teiler.server.util.exceptions.CurrencyNotValidException;
+import io.teiler.server.util.exceptions.NotAuthorizedException;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = {"local.server.port=4567"})
@@ -21,8 +22,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class GroupServiceTest {
 
     private static final String TEST_GROUP_NAME = "Test";
-    private static final String ENTROPY_BITS_CONSTANT_NAME = "ENTROPY_BITS_IN_ONE_CHARACTER";
-    private static final int ENTROPY_BITS_IN_ONE_CHARACTER_EXPECTED = 5;
     
     @Autowired
     private GroupService groupService;
