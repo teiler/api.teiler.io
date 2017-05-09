@@ -1,8 +1,14 @@
 package io.teiler.server.services;
 
+import io.teiler.server.Tylr;
+import io.teiler.server.dto.Compensation;
+import io.teiler.server.dto.Debt;
+import io.teiler.server.dto.Expense;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.dto.Profiteer;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,14 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import io.teiler.server.Tylr;
-import io.teiler.server.dto.Compensation;
-import io.teiler.server.dto.Debt;
-import io.teiler.server.dto.Expense;
-import io.teiler.server.dto.Group;
-import io.teiler.server.dto.Person;
-import io.teiler.server.dto.Profiteer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -114,7 +112,7 @@ public class DebtServiceTest {
         compensationService.createCompensation(compensation, group.getId());
 
         List<Debt> debts = debtService.getDebts(group.getId());
-        for(Debt debt : debts) {
+        for (Debt debt : debts) {
             if (debt.getPerson().getId() == payer.getId()) {
                 Assert.assertEquals(share, debt.getBalance().intValue());
             } else if (debt.getPerson().getId() == profiteer.getId()) {
