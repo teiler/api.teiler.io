@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import io.teiler.server.dto.Group;
 import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.GroupService;
-import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
 import io.teiler.server.util.exceptions.CurrencyNotValidException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,11 +59,8 @@ public class GroupEndpointController implements EndpointController {
             return "";
         });
 
-        exception(CurrencyNotValidException.class, (e, request, response) -> {
-            response.status(416);
-            Error error = new Error(e.getMessage());
-            response.body(gson.toJson(error));
-        });
+        exception(CurrencyNotValidException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 416, e, gson));
     }
 
 }

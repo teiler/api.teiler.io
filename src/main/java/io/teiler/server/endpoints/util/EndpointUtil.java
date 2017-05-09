@@ -1,6 +1,9 @@
 package io.teiler.server.endpoints.util;
 
+import com.google.gson.Gson;
+import io.teiler.server.util.Error;
 import spark.Request;
+import spark.Response;
 
 public class EndpointUtil {
 
@@ -58,5 +61,9 @@ public class EndpointUtil {
     }
 
 
-
+    public static void prepareErrorResponse(Response response, int statusCode, Exception e, Gson gsonInstance) {
+        response.status(statusCode);
+        Error error = new Error(e.getMessage());
+        response.body(gsonInstance.toJson(error));
+    }
 }
