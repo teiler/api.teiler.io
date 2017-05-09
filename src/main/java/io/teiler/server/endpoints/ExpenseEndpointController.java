@@ -8,10 +8,10 @@ import static spark.Spark.put;
 
 import com.google.gson.Gson;
 import io.teiler.server.dto.Expense;
+import io.teiler.server.endpoints.util.GroupIdReader;
 import io.teiler.server.services.ExpenseService;
 import io.teiler.server.util.Error;
 import io.teiler.server.util.GsonUtil;
-import io.teiler.server.util.Normalizer;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
@@ -39,16 +39,14 @@ public class ExpenseEndpointController implements EndpointController {
     @Override
     public void register() {
         post(BASE_URL, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             Expense requestExpense = gson.fromJson(req.body(), Expense.class);
             Expense newExpense = expenseService.createExpense(requestExpense, groupId);
             return gson.toJson(newExpense);
         });
 
         get(BASE_URL, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             String limitString = req.queryParams(LIMIT_PARAM);
             long limit = DEFAULT_QUERY_LIMIT;
             if (limitString != null) {
@@ -59,16 +57,14 @@ public class ExpenseEndpointController implements EndpointController {
         });
 
         get(URL_WITH_EXPENSE_ID, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
             Expense expense = expenseService.getExpense(groupId, expenseId);
             return gson.toJson(expense);
         });
 
         put(URL_WITH_EXPENSE_ID, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
             Expense changedExpense = gson.fromJson(req.body(), Expense.class);
             Expense expense = expenseService.editExpense(groupId, expenseId, changedExpense);
@@ -76,8 +72,7 @@ public class ExpenseEndpointController implements EndpointController {
         });
 
         delete(URL_WITH_EXPENSE_ID, (req, res) -> {
-            String groupId = req.params(GroupEndpointController.GROUP_ID_PARAM);
-            groupId = Normalizer.normalizeGroupId(groupId);
+            String groupId = GroupIdReader.getGroupId(req);
             int expenseId = Integer.parseInt(req.params(EXPENSE_ID_PARAM));
             expenseService.deleteExpense(groupId, expenseId);
             return "";
