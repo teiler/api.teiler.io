@@ -35,10 +35,11 @@ public class TopBottomChooser implements PersonChooser {
         return !debts.isEmpty();
     }
 
+    @Override
     public void updateDebt(int newBalance, Debt debt) {
         this.debts.remove(debt.getBalance(), debt);
-        debt.setBalance(newBalance);
         if (newBalance != 0) {
+            debt.setBalance(newBalance);
             this.debts.put(newBalance, debt);
         }
     }
