@@ -1,13 +1,18 @@
 package io.teiler.server.services;
 
 import io.teiler.server.Tylr;
+import io.teiler.server.dto.Compensation;
+import io.teiler.server.dto.Expense;
 import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
+import io.teiler.server.dto.Profiteer;
 import io.teiler.server.services.util.PersonUtil;
 import io.teiler.server.util.exceptions.NotAuthorizedException;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import io.teiler.server.util.exceptions.PersonHasUnsettledDebtsException;
 import io.teiler.server.util.exceptions.PersonInactiveException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
+import java.util.LinkedList;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,6 +38,12 @@ public class PersonServiceTest {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private ExpenseService expenseService;
+
+    @Autowired
+    private CompensationService compensationService;
 
     @Autowired
     private PersonUtil personUtil;
@@ -183,6 +194,36 @@ public class PersonServiceTest {
         personService.deactivatePerson(groupId, firstPerson.getId());
         firstPerson.setName(SECOND_PERSON_NAME);
         personService.editPerson(groupId, firstPerson.getId(), firstPerson);
+    }
+
+    @Test(expected = PersonHasUnsettledDebtsException.class)
+    public void testCannotDeactivatePersonWithUnsettledDebts() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person firstPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        Person secondPerson = personService.createPerson(groupId, SECOND_PERSON_NAME);
+        List<Profiteer> profiteers = new LinkedList<>();
+        Profiteer profiteer = new Profiteer(null, secondPerson, 500);
+        profiteers.add(profiteer);
+        Expense expense = new Expense(null, 500, firstPerson, "Test", profiteers);
+        expenseService.createExpense(expense, groupId);
+        personService.deactivatePerson(groupId, secondPerson.getId());
+    }
+
+    @Test
+    public void testCanDeactivatePersonWithSettledDebts() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person firstPerson = personService.createPerson(groupId, FIRST_PERSON_NAME);
+        Person secondPerson = personService.createPerson(groupId, SECOND_PERSON_NAME);
+        List<Profiteer> profiteers = new LinkedList<>();
+        Profiteer profiteer = new Profiteer(null, secondPerson, 500);
+        profiteers.add(profiteer);
+        Expense expense = new Expense(null, 500, firstPerson, "Test", profiteers);
+        expenseService.createExpense(expense, groupId);
+        Compensation compensation = new Compensation(null, 500, secondPerson, firstPerson);
+        compensationService.createCompensation(compensation, groupId);
+        personService.deactivatePerson(groupId, firstPerson.getId());
     }
 
 }

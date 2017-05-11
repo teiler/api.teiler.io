@@ -1,18 +1,17 @@
 package io.teiler.server.services;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import io.teiler.server.dto.Debt;
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.services.util.GroupUtil;
 import io.teiler.server.services.util.PersonUtil;
+import java.util.LinkedList;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Groups.
@@ -33,6 +32,9 @@ public class PersonService {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private DebtService debtService;
 
     /**
      * Creates a new Person.
@@ -124,6 +126,9 @@ public class PersonService {
         groupUtil.checkIdExists(groupId);
         personUtil.checkPersonExists(personId);
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
+        // This could be done in the util layer but then we have up-references
+        List<Debt> debts = debtService.getDebts(groupId);
+        personUtil.checkPersonHasNoDebts(personId, debts);
 
         PersonEntity person = personRepository.getById(personId);
         person.setActive(false);

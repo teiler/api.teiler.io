@@ -1,11 +1,14 @@
 package io.teiler.server.services.util;
 
+import io.teiler.server.dto.Debt;
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import io.teiler.server.util.exceptions.PersonHasUnsettledDebtsException;
 import io.teiler.server.util.exceptions.PersonInactiveException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,4 +79,11 @@ public class PersonUtil {
         }
     }
 
+    public void checkPersonHasNoDebts(int personId, List<Debt> debts) {
+        for (Debt debt : debts) {
+            if (debt.getPerson().getId() == personId && debt.getBalance() != 0) {
+                throw new PersonHasUnsettledDebtsException();
+            }
+        }
+    }
 }
