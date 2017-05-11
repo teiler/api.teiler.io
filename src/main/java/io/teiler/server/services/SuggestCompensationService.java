@@ -62,10 +62,10 @@ public class SuggestCompensationService {
             }
 
             Compensation compensation = new Compensation(
-                    null,
-                    balance,
-                    debitor.getPerson(),
-                    creditor.getPerson()
+                null,
+                balance,
+                debitor.getPerson(),
+                creditor.getPerson()
             );
             suggestedCompensations.add(compensation);
 
