@@ -11,6 +11,7 @@ import io.teiler.server.endpoints.util.EndpointUtil;
 import io.teiler.server.services.PersonService;
 import io.teiler.server.util.HomebrewGson;
 import io.teiler.server.util.exceptions.PeopleNameConflictException;
+import io.teiler.server.util.exceptions.PersonHasUnsettledDebtsException;
 import io.teiler.server.util.exceptions.PersonInactiveException;
 import io.teiler.server.util.exceptions.PersonNotFoundException;
 import java.util.List;
@@ -77,6 +78,9 @@ public class PersonEndpointController implements EndpointController {
 
         exception(PersonInactiveException.class, (e, request, response) ->
             EndpointUtil.prepareErrorResponse(response, 410, e));
+
+        exception(PersonHasUnsettledDebtsException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 417, e));
     }
 
 }
