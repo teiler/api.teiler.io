@@ -100,4 +100,24 @@ public class SuggestedCompensationServiceTest {
             }
         }
     }
+
+    @Test
+    public void testGroupWithoutPeople() {
+        Group group = groupService.createGroup(TEST_GROUP_NAME);
+        List<Compensation> suggestedCompensations = suggestedCompensationService.getSuggestedCompensations(group.getId());
+
+        Assert.assertEquals(0, suggestedCompensations.size());
+    }
+
+    @Test
+    public void testGroupWithoutTransactions() {
+        Group group = groupService.createGroup(TEST_GROUP_NAME);
+        List<Compensation> suggestedCompensations = suggestedCompensationService.getSuggestedCompensations(group.getId());
+
+        for (int i = 0; i < 5; i++) {
+            personService.createPerson(group.getId(), "Person " + i);
+        }
+
+        Assert.assertEquals(0, suggestedCompensations.size());
+    }
 }
