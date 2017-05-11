@@ -4,6 +4,8 @@ import io.teiler.server.Tylr;
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
+import java.util.LinkedList;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,9 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -118,6 +117,20 @@ public class SuggestedCompensationServiceTest {
             personService.createPerson(group.getId(), "Person " + i);
         }
 
+        Assert.assertEquals(0, suggestedCompensations.size());
+    }
+
+    @Test
+    public void testCompensationsCancelEachOtherOut() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+        Person firstPerson = personService.createPerson(groupId, "Richi");
+        Person secondPerson = personService.createPerson(groupId, "Heiri");
+        Compensation firstCompensation = new Compensation(null, 500, firstPerson, secondPerson);
+        Compensation secondCompensation = new Compensation(null, 500, secondPerson, firstPerson);
+        compensationService.createCompensation(firstCompensation, groupId);
+        compensationService.createCompensation(secondCompensation, groupId);
+        List<Compensation> suggestedCompensations = suggestedCompensationService.getSuggestedCompensations(groupId);
         Assert.assertEquals(0, suggestedCompensations.size());
     }
 }
