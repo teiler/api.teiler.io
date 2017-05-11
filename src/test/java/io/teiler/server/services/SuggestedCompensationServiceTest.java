@@ -24,7 +24,7 @@ public class SuggestedCompensationServiceTest {
     private static final String TEST_GROUP_NAME = "Testgroup";
 
     @Autowired
-    private SuggestCompensationService suggestCompensationService;
+    private SuggestedCompensationService suggestedCompensationService;
 
     @Autowired
     private CompensationService compensationService;
@@ -53,7 +53,7 @@ public class SuggestedCompensationServiceTest {
         Compensation compensation = new Compensation(null, share, payer, profiteer);
         compensationService.createCompensation(compensation, group.getId());
 
-        List<Compensation> suggestedCompensations = suggestCompensationService.getSuggestedCompensations(group.getId());
+        List<Compensation> suggestedCompensations = suggestedCompensationService.getSuggestedCompensations(group.getId());
         Compensation suggestedCompensation = suggestedCompensations.get(0);
 
         Assert.assertEquals(payer.getId(), suggestedCompensation.getProfiteer().getId());
