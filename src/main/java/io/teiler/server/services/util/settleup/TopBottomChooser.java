@@ -17,7 +17,7 @@ public class TopBottomChooser implements PersonChooser {
 
     public TopBottomChooser(List<Debt> debts) {
         debts.stream().filter(d -> d.getBalance() != 0)
-                .forEach(d -> this.debts.put(d.getBalance(), d));
+            .forEach(d -> this.debts.put(d.getBalance(), d));
     }
 
     @Override
