@@ -4,7 +4,7 @@ import static spark.Spark.get;
 
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.endpoints.util.EndpointUtil;
-import io.teiler.server.services.SuggestCompensationService;
+import io.teiler.server.services.SuggestedCompensationService;
 import io.teiler.server.util.HomebrewGson;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +22,13 @@ public class SuggestedCompensationsEndpointController implements EndpointControl
         + EndpointUtil.GROUP_ID_PARAM + "/settleup";
 
     @Autowired
-    private SuggestCompensationService suggestCompensationService;
+    private SuggestedCompensationService suggestedCompensationService;
 
     @Override
     public void register() {
         get(BASE_URL, (req, res) -> {
             String groupId = EndpointUtil.readGroupId(req);
-            List<Compensation> suggestedCompensations = suggestCompensationService
+            List<Compensation> suggestedCompensations = suggestedCompensationService
                 .getSuggestedCompensations(groupId);
             return HomebrewGson.getInstance().toJson(suggestedCompensations);
         });

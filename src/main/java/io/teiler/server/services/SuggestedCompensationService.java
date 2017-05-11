@@ -19,9 +19,9 @@ import java.util.List;
  * @author dthoma
  */
 @Service
-public class SuggestCompensationService {
+public class SuggestedCompensationService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SuggestCompensationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SuggestedCompensationService.class);
 
     @Autowired
     private GroupUtil groupUtil;
