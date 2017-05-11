@@ -48,13 +48,24 @@ public class SuggestedCompensationService {
             int newCreditorBalance;
             int newDebitorBalance;
             int balance;
-
+            
+            // The idea is to eliminate (balance = 0) a creditor or a debitor each loop
             if (creditor.getBalance() >= -debitor.getBalance()) {
+                /*
+                The creditor's credit is higher than (or equal to) the debitor's debt
+                Therefore, we can eliminate the debitor
+                The debitor will pay his whole debt to the creditor
+                */
                 balance = -debitor.getBalance();
 
                 newCreditorBalance = creditor.getBalance() + debitor.getBalance();
                 newDebitorBalance = 0;
             } else {
+                /*
+                The debitor's debt is higher than the creditor's credit
+                Therefore, we can eliminate the creditor
+                The debitor will pay the remaining balance of the creditor and ease his debt
+                */
                 balance = creditor.getBalance();
 
                 newCreditorBalance = 0;
