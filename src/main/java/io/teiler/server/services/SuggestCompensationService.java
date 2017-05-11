@@ -69,8 +69,8 @@ public class SuggestCompensationService {
             );
             suggestedCompensations.add(compensation);
 
-            personChooser.updateDebts(newCreditorBalance, creditor);
-            personChooser.updateDebts(newDebitorBalance, debitor);
+            personChooser.updateDebt(newCreditorBalance, creditor);
+            personChooser.updateDebt(newDebitorBalance, debitor);
         }
 
         LOGGER.debug("View suggested compensations: {}", suggestedCompensations);
