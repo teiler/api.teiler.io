@@ -49,7 +49,7 @@ public class SuggestCompensationService {
             int newDebitorBalance;
             int balance;
 
-            if (creditor.getBalance() >= debitor.getBalance()) {
+            if (creditor.getBalance() >= -debitor.getBalance()) {
                 balance = -debitor.getBalance();
 
                 newCreditorBalance = creditor.getBalance() + debitor.getBalance();
