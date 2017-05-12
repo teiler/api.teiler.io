@@ -5,14 +5,13 @@ import io.teiler.server.dto.Debt;
 import io.teiler.server.services.util.GroupUtil;
 import io.teiler.server.services.util.settleup.PersonChooser;
 import io.teiler.server.services.util.settleup.TopBottomChooser;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Provides service-methods for suggested compensations.
@@ -20,11 +19,9 @@ import org.springframework.stereotype.Service;
  * @author dthoma
  */
 @Service
-public class SuggestCompensationService {
+public class SuggestedCompensationService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SuggestCompensationService.class);
-
-    private SortedMap<Integer, Debt> debts;
+    private static final Logger LOGGER = LoggerFactory.getLogger(SuggestedCompensationService.class);
 
     @Autowired
     private GroupUtil groupUtil;
@@ -41,12 +38,8 @@ public class SuggestCompensationService {
     public List<Compensation> getSuggestedCompensations(String groupId) {
         groupUtil.checkIdExists(groupId);
 
-        this.debts = new TreeMap<>();
-        debtService.getDebts(groupId).stream().filter(d -> d.getBalance() != 0)
-            .forEach(d -> this.debts.put(d.getBalance(), d));
-
         List<Compensation> suggestedCompensations = new LinkedList<>();
-        PersonChooser personChooser = new TopBottomChooser(debts);
+        PersonChooser personChooser = new TopBottomChooser(debtService.getDebts(groupId));
 
         while (personChooser.personsLeft()) {
             Debt creditor = personChooser.getNextCreditor();
@@ -55,13 +48,24 @@ public class SuggestCompensationService {
             int newCreditorBalance;
             int newDebitorBalance;
             int balance;
-
-            if (creditor.getBalance() >= debitor.getBalance()) {
+            
+            // The idea is to eliminate (balance = 0) a creditor or a debitor each loop
+            if (creditor.getBalance() >= -debitor.getBalance()) {
+                /*
+                The creditor's credit is higher than (or equal to) the debitor's debt
+                Therefore, we can eliminate the debitor
+                The debitor will pay his whole debt to the creditor
+                */
                 balance = -debitor.getBalance();
 
                 newCreditorBalance = creditor.getBalance() + debitor.getBalance();
                 newDebitorBalance = 0;
             } else {
+                /*
+                The debitor's debt is higher than the creditor's credit
+                Therefore, we can eliminate the creditor
+                The debitor will pay the remaining balance of the creditor and ease his debt
+                */
                 balance = creditor.getBalance();
 
                 newCreditorBalance = 0;
@@ -76,18 +80,11 @@ public class SuggestCompensationService {
             );
             suggestedCompensations.add(compensation);
 
-            updateDebts(newCreditorBalance, creditor);
-            updateDebts(newDebitorBalance, debitor);
+            personChooser.updateDebt(newCreditorBalance, creditor);
+            personChooser.updateDebt(newDebitorBalance, debitor);
         }
 
         LOGGER.debug("View suggested compensations: {}", suggestedCompensations);
         return suggestedCompensations;
     }
-
-    private void updateDebts(int newBalance, Debt debt) {
-        this.debts.remove(debt.getBalance(), debt);
-        debt.setBalance(newBalance);
-        this.debts.put(newBalance, debt);
-    }
-
 }
