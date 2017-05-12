@@ -4,8 +4,6 @@ import io.teiler.server.Tylr;
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.dto.Group;
 import io.teiler.server.dto.Person;
-import java.util.LinkedList;
-import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +13,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = {"local.server.port=4567"})
@@ -22,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SuggestedCompensationServiceTest {
 
     private static final String TEST_GROUP_NAME = "Testgroup";
+    private static final String TEST_NAME_PREFIX = "Person ";
 
     @Autowired
     private SuggestedCompensationService suggestedCompensationService;
@@ -48,7 +50,7 @@ public class SuggestedCompensationServiceTest {
         List<Person> people = new LinkedList<>();
 
         for (int i = 0; i < personCount; i++) {
-            people.add(personService.createPerson(group.getId(), "Person " + i));
+            people.add(personService.createPerson(group.getId(), TEST_NAME_PREFIX + i));
         }
 
         Person payer = people.get(0);
@@ -75,7 +77,7 @@ public class SuggestedCompensationServiceTest {
 
         List<Person> people = new LinkedList<>();
         for (int i = 0; i < 3; i++) {
-            people.add(personService.createPerson(group.getId(), "Person " + i));
+            people.add(personService.createPerson(group.getId(), TEST_NAME_PREFIX + i));
         }
 
         Compensation firstCompensation = new Compensation(null, 10, people.get(0), people.get(2));
@@ -114,7 +116,7 @@ public class SuggestedCompensationServiceTest {
         List<Compensation> suggestedCompensations = suggestedCompensationService.getSuggestedCompensations(group.getId());
 
         for (int i = 0; i < 5; i++) {
-            personService.createPerson(group.getId(), "Person " + i);
+            personService.createPerson(group.getId(), TEST_NAME_PREFIX + i);
         }
 
         Assert.assertEquals(0, suggestedCompensations.size());
