@@ -15,4 +15,5 @@ public interface PersonChooser {
 
     boolean personsLeft();
 
+    void updateDebt(int newBalance, Debt debt);
 }
