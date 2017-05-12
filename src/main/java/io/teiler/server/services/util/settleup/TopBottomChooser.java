@@ -1,6 +1,8 @@
 package io.teiler.server.services.util.settleup;
 
 import io.teiler.server.dto.Debt;
+
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -11,14 +13,11 @@ import java.util.TreeMap;
  */
 public class TopBottomChooser implements PersonChooser {
 
-    private final SortedMap<Integer, Debt> debts;
-    
-    public TopBottomChooser() {
-        debts = new TreeMap<>();
-    }
+    private final SortedMap<Integer, Debt> debts = new TreeMap<>();
 
-    public TopBottomChooser(SortedMap<Integer, Debt> debts) {
-        this.debts = debts;
+    public TopBottomChooser(List<Debt> debts) {
+        debts.stream().filter(d -> d.getBalance() != 0)
+            .forEach(d -> this.debts.put(d.getBalance(), d));
     }
 
     @Override
@@ -33,7 +32,16 @@ public class TopBottomChooser implements PersonChooser {
 
     @Override
     public boolean personsLeft() {
-        return debts.entrySet().stream().anyMatch(d -> d.getKey() != 0);
+        return !debts.isEmpty();
+    }
+
+    @Override
+    public void updateDebt(int newBalance, Debt debt) {
+        this.debts.remove(debt.getBalance(), debt);
+        if (newBalance != 0) {
+            debt.setBalance(newBalance);
+            this.debts.put(newBalance, debt);
+        }
     }
 
 }
