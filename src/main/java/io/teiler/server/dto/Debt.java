@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author dthoma
  */
-public class Debt {
+public class Debt implements Comparable<Debt> {
 
     @Expose(deserialize = false)
     @SerializedName("person")
@@ -44,6 +44,7 @@ public class Debt {
         return "Debt [person=" + person.toString() + ", balance=" + balance + "]";
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -68,4 +69,14 @@ public class Debt {
         return result;
     }
 
+
+    @Override
+    public int compareTo(Debt that) {
+        if (this.balance.compareTo(that.balance) > 0) {
+            return -1;
+        } else if (this.balance.compareTo(that.balance) < 0) {
+            return 1;
+        }
+        return 0;
+    }
 }
