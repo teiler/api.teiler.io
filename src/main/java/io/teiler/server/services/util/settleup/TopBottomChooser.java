@@ -1,10 +1,8 @@
 package io.teiler.server.services.util.settleup;
 
 import io.teiler.server.dto.Debt;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 /**
  * Implements methods by choosing the persons with the highest and the lowest balance.
@@ -13,21 +11,22 @@ import java.util.TreeMap;
  */
 public class TopBottomChooser implements PersonChooser {
 
-    private final SortedMap<Integer, Debt> debts = new TreeMap<>();
+    private final ArrayList<Debt> debts = new ArrayList<>();
 
     public TopBottomChooser(List<Debt> debts) {
         debts.stream().filter(d -> d.getBalance() != 0)
-            .forEach(d -> this.debts.put(d.getBalance(), d));
+            .forEach(this.debts::add);
+        debts.sort(Debt::compareTo);
     }
 
     @Override
     public Debt getNextDebitor() {
-        return debts.get(debts.firstKey());
+        return debts.get(debts.size() - 1);
     }
 
     @Override
     public Debt getNextCreditor() {
-        return debts.get(debts.lastKey());
+        return debts.get(0);
     }
 
     @Override
@@ -37,11 +36,12 @@ public class TopBottomChooser implements PersonChooser {
 
     @Override
     public void updateDebt(int newBalance, Debt debt) {
-        this.debts.remove(debt.getBalance(), debt);
+        this.debts.remove(debt);
         if (newBalance != 0) {
             debt.setBalance(newBalance);
-            this.debts.put(newBalance, debt);
+            debts.add(debt);
         }
+        debts.sort(Debt::compareTo);
     }
 
 }
