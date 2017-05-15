@@ -15,8 +15,8 @@ public class TopBottomChooser implements PersonChooser {
 
     private final SortedSet<Debt> debts = new TreeSet<>();
 
-    public TopBottomChooser(List<Debt> debts) {
-        debts.stream().filter(d -> d.getBalance() != 0)
+    public TopBottomChooser(List<Debt> debtList) {
+        debtList.stream().filter(d -> d.getBalance() != 0)
             .forEach(this.debts::add);
     }
 
