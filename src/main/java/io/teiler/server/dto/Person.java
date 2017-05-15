@@ -1,9 +1,8 @@
 package io.teiler.server.dto;
 
-import java.time.LocalDateTime;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.time.LocalDateTime;
 
 /**
  * Class holding all information about a group.
@@ -11,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * @author lroellin
  * @author pbaechli
  */
-public class Person {
+public class Person implements Comparable<Person> {
 
     @Expose
     @SerializedName("id")
@@ -136,4 +135,14 @@ public class Person {
         return result;
     }
 
+
+    @Override
+    public int compareTo(Person that) {
+        if (this.id.compareTo(that.id) < 0) {
+            return -1;
+        } else if (this.id.compareTo(that.id) > 0) {
+            return 1;
+        }
+        return 0;
+    }
 }
