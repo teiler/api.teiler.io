@@ -170,4 +170,31 @@ public class SuggestedCompensationServiceTest {
             Assert.assertEquals(hello.getId(), suggestedCompensation.getProfiteer().getId());
         }
     }
+
+    @Test
+    public void testCyrill() {
+        Group group = groupService.createGroup("Test Cyrill");
+        Person cyrill = personService.createPerson(group.getId(), "Cyrill");
+        Person dominik = personService.createPerson(group.getId(), "Dominik");
+        Person remo = personService.createPerson(group.getId(), "Remo");
+
+        Profiteer dominikProfiteer = new Profiteer(null, dominik, 5000);
+        Profiteer cyrillProfiteer = new Profiteer(null, cyrill, 7000);
+        Profiteer remoProfiteer = new Profiteer(null, remo, 3000);
+        List<Profiteer> profiteers = new LinkedList<>(
+            Arrays.asList(dominikProfiteer, cyrillProfiteer, remoProfiteer));
+        Expense expense = new Expense(null, 15000, dominik, "Restaurant", profiteers);
+        expenseService.createExpense(expense, group.getId());
+        Compensation compensation = new Compensation(null, 5000, cyrill, dominik);
+        compensationService.createCompensation(compensation, group.getId());
+        List<Compensation> suggestedCompensations = suggestedCompensationService
+            .getSuggestedCompensations(group.getId());
+        Assert.assertEquals(2, suggestedCompensations.size());
+        Assert.assertEquals(3000, suggestedCompensations.get(0).getAmount().longValue());
+        Assert.assertEquals(remo, suggestedCompensations.get(0).getPayer());
+        Assert.assertEquals(dominik, suggestedCompensations.get(0).getProfiteer());
+        Assert.assertEquals(2000, suggestedCompensations.get(1).getAmount().longValue());
+        Assert.assertEquals(cyrill, suggestedCompensations.get(1).getPayer());
+        Assert.assertEquals(dominik, suggestedCompensations.get(1).getProfiteer());
+    }
 }
