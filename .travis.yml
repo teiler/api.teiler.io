@@ -30,7 +30,9 @@ before_install:
 - chmod +x ./gradlew
 
 before_script:
-- psql -c 'create database travis_ci_test;' -U postgres
+- psql -U postgres -c "CREATE USER tylr WITH PASSWORD 'dGolICMsoO'";
+- psql -U postgres tylr -f src/dist/sql/2_setup-database.sql
+- psql -U postgres tylr -f src/dist/sql/10_runEverytime.sql
 
 script:
 - ./gradlew assemble
