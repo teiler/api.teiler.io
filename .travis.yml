@@ -31,8 +31,10 @@ before_install:
 
 before_script:
 - psql -U postgres -c "CREATE USER tylr WITH PASSWORD 'dGolICMsoO'";
-- psql -U postgres tylr -f src/dist/sql/2_setup-database.sql
+- psql -U postgres -f src/dist/sql/1_reset-database.sql
+- psql -U postgres -f src/dist/sql/2_setup-database.sql
 - psql -U postgres tylr -f src/dist/sql/10_runEverytime.sql
+- psql -U postgres tylr -f src/test/resources/insert_test_data.sql
 
 script:
 - ./gradlew assemble
