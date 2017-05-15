@@ -77,6 +77,13 @@ public class Debt implements Comparable<Debt> {
         } else if (this.balance.compareTo(that.balance) < 0) {
             return 1;
         }
+
+        if (this.person.compareTo(that.person) < 0) {
+            return -1;
+        } else if (this.person.compareTo(that.person) > 0) {
+            return 1;
+        }
+
         return 0;
     }
 }
