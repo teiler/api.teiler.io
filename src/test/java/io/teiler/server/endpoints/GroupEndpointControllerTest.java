@@ -15,19 +15,24 @@ import io.teiler.server.util.enums.Currency;
 
 public class GroupEndpointControllerTest extends BaseEndpointControllerTest {
 
-    private static final String GROUP_URL = URL_VERSION + "groups";
-
     private static final String POST_GROUP_NAME = "Manamana";
     private static final String GET_GROUP_ID = "gettgrup";
     private static final String GET_GROUP_NAME = "GetGroup";
     private static final String PUT_GROUP_ID = "puttgrup";
     private static final String PUT_GROUP_NAME = "PutGroupABC";
     private static final String DELETE_GROUP_ID = "deltgrup";
+    
+    private static final String PARAM_NAME = "name";
+    private static final String PARAM_ID = "id";
+    private static final String PARAM_CURRENCY = "currency";
+    private static final String PARAM_UPDATE_TIME = "update-time";
+    private static final String GROUP_URL = URL_VERSION + "groups";
+    private static final String PARAM_CREATE_TIME = "create-time";
 
     @Test
     public void testPostGroup() {
         Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("name", POST_GROUP_NAME);
+        requestBody.put(PARAM_NAME, POST_GROUP_NAME);
         
         given()
             .contentType(ContentType.JSON)
@@ -36,11 +41,11 @@ public class GroupEndpointControllerTest extends BaseEndpointControllerTest {
                 .post(GROUP_URL)
             .then()
                 .statusCode(200)
-                .body("name", equalTo(POST_GROUP_NAME))
-                .body("id", is(notNullValue()))
-                .body("currency", is(notNullValue()))
-                .body("update-time", is(notNullValue()))
-                .body("create-time", is(notNullValue()));
+                .body(PARAM_NAME, equalTo(POST_GROUP_NAME))
+                .body(PARAM_ID, is(notNullValue()))
+                .body(PARAM_CURRENCY, is(notNullValue()))
+                .body(PARAM_UPDATE_TIME, is(notNullValue()))
+                .body(PARAM_CREATE_TIME, is(notNullValue()));
     }
 
     @Test
@@ -50,18 +55,18 @@ public class GroupEndpointControllerTest extends BaseEndpointControllerTest {
                 .get(GROUP_URL + "/" + GET_GROUP_ID)
             .then()
                 .statusCode(200)
-                .body("id", equalTo(GET_GROUP_ID))
-                .body("name", equalTo(GET_GROUP_NAME))
-                .body("currency", equalTo(Currency.CHF.toString().toLowerCase()))
-                .body("update-time", is(notNullValue()))
-                .body("create-time", is(notNullValue()));
+                .body(PARAM_ID, equalTo(GET_GROUP_ID))
+                .body(PARAM_NAME, equalTo(GET_GROUP_NAME))
+                .body(PARAM_CURRENCY, equalTo(Currency.CHF.toString().toLowerCase()))
+                .body(PARAM_UPDATE_TIME, is(notNullValue()))
+                .body(PARAM_CREATE_TIME, is(notNullValue()));
     }
 
     @Test
     public void testPutGroup() {
         Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("name", PUT_GROUP_NAME);
-        requestBody.put("currency", Currency.EUR.toString().toLowerCase());
+        requestBody.put(PARAM_NAME, PUT_GROUP_NAME);
+        requestBody.put(PARAM_CURRENCY, Currency.EUR.toString().toLowerCase());
         
         given()
             .contentType(ContentType.JSON)
@@ -70,11 +75,11 @@ public class GroupEndpointControllerTest extends BaseEndpointControllerTest {
                 .put(GROUP_URL + "/" + PUT_GROUP_ID)
             .then()
                 .statusCode(200)
-                .body("id", equalTo(PUT_GROUP_ID))
-                .body("name", equalTo(PUT_GROUP_NAME))
-                .body("currency", equalTo(Currency.EUR.toString().toLowerCase()))
-                .body("update-time", is(notNullValue()))
-                .body("create-time", is(notNullValue()));
+                .body(PARAM_ID, equalTo(PUT_GROUP_ID))
+                .body(PARAM_NAME, equalTo(PUT_GROUP_NAME))
+                .body(PARAM_CURRENCY, equalTo(Currency.EUR.toString().toLowerCase()))
+                .body(PARAM_UPDATE_TIME, is(notNullValue()))
+                .body(PARAM_CREATE_TIME, is(notNullValue()));
     }
     
     @Test
