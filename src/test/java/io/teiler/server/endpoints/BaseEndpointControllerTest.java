@@ -1,6 +1,7 @@
 package io.teiler.server.endpoints;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,11 @@ public abstract class BaseEndpointControllerTest {
     @BeforeClass
     public static void beforeClass() {
         RestAssured.port = SERVER_PORT;
+    }
+    
+    @Before
+    public void before() {
+        Spark.awaitInitialization();
     }
 
     @AfterClass
