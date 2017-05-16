@@ -14,7 +14,7 @@ apply plugin: "idea"
 
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/main/java", "src/main/resources", "src/dist/sql" ]
-sourceSets.test.java.srcDirs = [ "src/test/java", "src/test/chakram" ]
+sourceSets.test.java.srcDirs = [ "src/test/java", "src/test/resources", "src/test/chakram" ]
 
 mainClassName = "io.teiler.server.Tylr"
 
@@ -37,6 +37,7 @@ ext {
     logbackVersion = "1.2.3"
 
     junitVersion = "4.12"
+    restAssuredVersion = "3.0.3"
     h2Version = "1.4.195"
 }
 
@@ -55,6 +56,7 @@ dependencies {
     compile "ch.qos.logback:logback-classic:${logbackVersion}"
 
     testCompile "junit:junit:${junitVersion}"
+    testCompile "io.rest-assured:rest-assured:${restAssuredVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     testCompile "com.h2database:h2:${h2Version}"
