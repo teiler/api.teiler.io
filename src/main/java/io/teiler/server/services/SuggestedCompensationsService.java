@@ -1,17 +1,18 @@
 package io.teiler.server.services;
 
-import io.teiler.server.dto.Compensation;
-import io.teiler.server.dto.Debt;
-import io.teiler.server.services.util.GroupUtil;
-import io.teiler.server.services.util.settleup.PersonChooser;
-import io.teiler.server.services.util.settleup.TopBottomChooser;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
+import io.teiler.server.dto.Compensation;
+import io.teiler.server.dto.Debt;
+import io.teiler.server.services.util.GroupUtil;
+import io.teiler.server.services.util.settleup.PersonChooser;
+import io.teiler.server.services.util.settleup.TopBottomChooser;
 
 /**
  * Provides service-methods for suggested compensations.
@@ -19,9 +20,9 @@ import java.util.List;
  * @author dthoma
  */
 @Service
-public class SuggestedCompensationService {
+public class SuggestedCompensationsService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SuggestedCompensationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SuggestedCompensationsService.class);
 
     @Autowired
     private GroupUtil groupUtil;
@@ -87,4 +88,5 @@ public class SuggestedCompensationService {
         LOGGER.debug("View suggested compensations: {}", suggestedCompensations);
         return suggestedCompensations;
     }
+    
 }
