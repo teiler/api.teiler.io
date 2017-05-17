@@ -2,16 +2,18 @@ package io.teiler.server.endpoints;
 
 import static spark.Spark.get;
 
-import io.teiler.server.dto.Compensation;
-import io.teiler.server.endpoints.util.EndpointUtil;
-import io.teiler.server.services.SuggestedCompensationService;
-import io.teiler.server.util.HomebrewGson;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import io.teiler.server.dto.Compensation;
+import io.teiler.server.endpoints.util.EndpointUtil;
+import io.teiler.server.services.SuggestedCompensationsService;
+import io.teiler.server.util.HomebrewGson;
+
 /**
- * Controller for suggested payments.
+ * Controller for suggested compensations.
  *
  * @author dthoma
  */
@@ -22,7 +24,7 @@ public class SuggestedCompensationsEndpointController implements EndpointControl
         + EndpointUtil.GROUP_ID_PARAM + "/settleup";
 
     @Autowired
-    private SuggestedCompensationService suggestedCompensationService;
+    private SuggestedCompensationsService suggestedCompensationService;
 
     @Override
     public void register() {
@@ -33,4 +35,5 @@ public class SuggestedCompensationsEndpointController implements EndpointControl
             return HomebrewGson.getInstance().toJson(suggestedCompensations);
         });
     }
+    
 }
