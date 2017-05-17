@@ -22,13 +22,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(properties = {"local.server.port=4567"})
 @ActiveProfiles("test")
-public class SuggestedCompensationServiceTest {
+public class SuggestedCompensationsServiceTest {
 
     private static final String TEST_GROUP_NAME = "Testgroup";
     private static final String TEST_NAME_PREFIX = "Person ";
 
     @Autowired
-    private SuggestedCompensationService suggestedCompensationService;
+    private SuggestedCompensationsService suggestedCompensationService;
 
     @Autowired
     private ExpenseService expenseService;
