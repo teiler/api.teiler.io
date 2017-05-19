@@ -80,6 +80,10 @@ test {
     }
 }
 
+license {
+    exclude "querydsl/**/*.java"
+}
+
 tasks.withType(Checkstyle) {
     exclude "src/querydsl/java/**"
 
