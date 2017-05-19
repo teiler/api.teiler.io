@@ -1,6 +1,7 @@
 plugins {
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.8"
     id "com.github.ben-manes.versions" version "0.14.0"
+    id "com.github.hierynomus.license" version "0.14.0"
 }
 
 apply plugin: "application"
@@ -13,8 +14,8 @@ apply plugin: "eclipse"
 apply plugin: "idea"
 
 sourceCompatibility = 1.8
-sourceSets.main.java.srcDirs = [ "src/main/java", "src/main/resources", "src/dist/sql" ]
-sourceSets.test.java.srcDirs = [ "src/test/java", "src/test/resources", "src/test/chakram" ]
+sourceSets.main.java.srcDirs = ["src/main/java", "src/main/resources", "src/dist/sql"]
+sourceSets.test.java.srcDirs = ["src/test/java", "src/test/resources", "src/test/chakram"]
 
 mainClassName = "io.teiler.server.Tylr"
 
@@ -77,6 +78,10 @@ test {
         junitXml.enabled = true
         html.enabled = false
     }
+}
+
+license {
+    exclude "src/querydsl/**/*.java"
 }
 
 tasks.withType(Checkstyle) {
