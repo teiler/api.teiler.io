@@ -1,10 +1,11 @@
 package io.teiler.server.persistence.entities;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 import io.teiler.server.dto.Compensation;
 import io.teiler.server.util.TimeUtil;
 import io.teiler.server.util.enums.TransactionType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
 
 /**
  * Entity representing a Compensation-entry of the <code>transaction</code>-table.
@@ -43,7 +44,6 @@ public class CompensationEntity extends TransactionEntity {
     }
 
     public ProfiteerEntity getProfiteer() {
-        // TODO maybe make this even better
         return getProfiteers().get(0);
     }
 

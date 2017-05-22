@@ -44,7 +44,6 @@ public class DebtService {
 
         List<Debt> debts = new LinkedList<>();
         for (DebtEntity debtEntity : debtRepository.get(groupId)) {
-            // TODO: Find a better solution than converting it here
             Debt debt = new Debt(personRepository.getById(debtEntity.getPersonId()).toPerson(),
                 debtEntity.getBalance());
             debts.add(debt);
