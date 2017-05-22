@@ -1,10 +1,5 @@
 package io.teiler.server.services;
 
-import io.teiler.server.Tylr;
-import io.teiler.server.dto.Group;
-import io.teiler.server.util.enums.Currency;
-import io.teiler.server.util.exceptions.CurrencyNotValidException;
-import io.teiler.server.util.exceptions.NotAuthorizedException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +9,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import io.teiler.server.Tylr;
+import io.teiler.server.dto.Group;
+import io.teiler.server.dto.Person;
+import io.teiler.server.util.enums.Currency;
+import io.teiler.server.util.exceptions.CurrencyNotValidException;
+import io.teiler.server.util.exceptions.NotAuthorizedException;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Tylr.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -22,9 +24,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class GroupServiceTest {
 
     private static final String TEST_GROUP_NAME = "Test";
+    
+    private static final String TEST_PERSON_1_NAME = "Peter";
+    private static final String TEST_PERSON_2_NAME = "Paul";
 
     @Autowired
     private GroupService groupService;
+    
+    @Autowired
+    private PersonService personService;
 
     @Test(expected = NotAuthorizedException.class)
     public void testReturnNotAuthorizedWhenViewingGroupWithoutValidId() {
@@ -106,6 +114,39 @@ public class GroupServiceTest {
         String groupId = testGroup.getId();
         groupService.deleteGroup(groupId);
         groupService.viewGroup(groupId, true);
+    }
+    
+    @Test
+    public void testReturnsOnlyActive() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+
+        Person person1 = personService.createPerson(groupId, TEST_PERSON_1_NAME);
+        Person person2 = personService.createPerson(groupId, TEST_PERSON_2_NAME);
+        
+        personService.deactivatePerson(groupId, person1.getId());
+        
+        Group getGroup = groupService.viewGroup(groupId, true);
+        Assert.assertEquals(groupId, testGroup.getId());
+        Assert.assertEquals(1, getGroup.getPeople().size());
+        Assert.assertNotNull(getGroup.getPeople().get(0));
+        Assert.assertEquals(person2.getId(), getGroup.getPeople().get(0).getId());
+    }
+    
+    @Test
+    public void testReturnsInactive() {
+        Group testGroup = groupService.createGroup(TEST_GROUP_NAME);
+        String groupId = testGroup.getId();
+
+        Person person1 = personService.createPerson(groupId, TEST_PERSON_1_NAME);
+        Person person2 = personService.createPerson(groupId, TEST_PERSON_2_NAME);
+        
+        personService.deactivatePerson(groupId, person1.getId());
+        personService.deactivatePerson(groupId, person2.getId());
+        
+        Group getGroup = groupService.viewGroup(groupId, false);
+        Assert.assertEquals(groupId, testGroup.getId());
+        Assert.assertEquals(2, getGroup.getPeople().size());
     }
 
 }
