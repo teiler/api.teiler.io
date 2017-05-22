@@ -1,15 +1,19 @@
 package io.teiler.server.persistence.repositories;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.jpa.impl.JPAQuery;
+
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.GroupEntity;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.entities.QPersonEntity;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 /**
  * Provides database-related operations for Groups.
@@ -114,17 +118,6 @@ public class PersonRepository {
         updatedPerson.setGroupId(existingPerson.getGroupId());
 
         return entityManager.merge(updatedPerson);
-    }
-
-    /**
-     * Deletes the Person with the given Id.
-     *
-     * @param personId Id of the Person
-     */
-    @Transactional
-    public void deletePerson(int personId) {
-        PersonEntity person = getById(personId);
-        entityManager.remove(person);
     }
 
 }
