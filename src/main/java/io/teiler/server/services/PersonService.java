@@ -1,17 +1,19 @@
 package io.teiler.server.services;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.teiler.server.dto.Debt;
 import io.teiler.server.dto.Person;
 import io.teiler.server.persistence.entities.PersonEntity;
 import io.teiler.server.persistence.repositories.PersonRepository;
 import io.teiler.server.services.util.GroupUtil;
 import io.teiler.server.services.util.PersonUtil;
-import java.util.LinkedList;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Provides service-methods for Groups.
@@ -105,12 +107,6 @@ public class PersonService {
         personUtil.checkPersonBelongsToThisGroup(groupId, personId);
         personUtil.checkNamesAreUnique(groupId, changedPerson.getName());
         personUtil.checkPersonIsActive(personId);
-        
-        /* TODO
-         *   - If personId = changedPerson.id -> return person with personId
-         *   - If active-flag changed -> throw exception (active flag has to
-         *      be set through the corresponding service) 
-         */
 
         LOGGER.debug("Edit person: {}", changedPerson);
         return personRepository.editPerson(personId, changedPerson).toPerson();
