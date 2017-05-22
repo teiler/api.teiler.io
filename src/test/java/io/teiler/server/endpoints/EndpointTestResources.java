@@ -14,12 +14,10 @@ import spark.Spark;
 class EndpointTestResources extends ExternalResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(EndpointTestResources.class);
     
-    private static int count = 0;
+    private static int count = getAmountOfEndpointTests();
     private static EndpointTestResources instance;
     
-    private EndpointTestResources() {
-        count = getAmountOfEndpointTests();
-    }
+    private EndpointTestResources() { /* intentionally empty */ }
     
     public static EndpointTestResources getInstance() {
         if (count == 0) {
@@ -28,7 +26,7 @@ class EndpointTestResources extends ExternalResource {
         return instance;
     }
     
-    private int getAmountOfEndpointTests() {
+    private static int getAmountOfEndpointTests() {
         Reflections reflections = new Reflections("io.teiler.server.endpoints");
         Set<Class<? extends BaseEndpointControllerTest>> allClasses =
                 reflections.getSubTypesOf(BaseEndpointControllerTest.class);
