@@ -49,14 +49,14 @@ class EndpointTestResources extends ExternalResource {
     
     @Override
     protected void after() {
-        count--;
-        LOGGER.debug("after() has been called (" + count + " left)");
-        LOGGER.debug("count is now = " + count);
         if (count == 0) {
             LOGGER.debug("STAWP!");
             Spark.stop();
             LOGGER.debug("Do you know how fast you were going?");
         }
+        count--;
+        LOGGER.debug("after() has been called (" + count + " left)");
+        LOGGER.debug("count is now = " + count);
     }
     
 }
