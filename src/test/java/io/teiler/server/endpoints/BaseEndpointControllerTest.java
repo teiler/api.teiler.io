@@ -4,6 +4,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
@@ -18,28 +20,32 @@ import spark.Spark;
 @TestPropertySource(properties = {"local.server.port=4567"})
 @ActiveProfiles("integration-test")
 public abstract class BaseEndpointControllerTest {
-
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseEndpointControllerTest.class);
+    
     private static final int SERVER_PORT = 4567;
     protected static final String URL_VERSION = GlobalEndpointController.URL_VERSION;
     
+    private static boolean sparkInitilized = false;
+    
     @BeforeClass
     public static void beforeClass() {
-        /**
-         * We need to stop Spark manually before running any of the integration tests.
-         * Otherwise we'll get tons of Exceptions. */
-        Spark.stop();
-        
         RestAssured.port = SERVER_PORT;
     }
     
     @Before
     public void before() {
-        Spark.awaitInitialization();
+        if (!sparkInitilized) {
+            LOGGER.info("await initialization");
+            Spark.awaitInitialization();
+            sparkInitilized = true;
+            LOGGER.info("initialization done");
+        }
     }
-
+    
     @AfterClass
     public static void afterClass() {
-        Spark.stop();
+//        Spark.stop();
     }
     
 }
