@@ -92,4 +92,9 @@ tasks.withType(Checkstyle) {
 
 task integrationTest(type: Test) {
     include "**/EndpointControllerTestSuite.class"
+
+    reports {
+        junitXml.enabled = true
+        html.enabled = false
+    }
 }
