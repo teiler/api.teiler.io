@@ -1,6 +1,5 @@
 package io.teiler.server.endpoints;
 
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -41,11 +40,6 @@ public abstract class BaseEndpointControllerTest {
             sparkInitilized = true;
             LOGGER.info("initialization done");
         }
-    }
-    
-    @AfterClass
-    public static void afterClass() {
-//        Spark.stop();
     }
     
 }
