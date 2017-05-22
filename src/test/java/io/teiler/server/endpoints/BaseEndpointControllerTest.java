@@ -35,10 +35,10 @@ public abstract class BaseEndpointControllerTest {
     @Before
     public void before() {
         if (!sparkInitialized) {
-            LOGGER.info("await initialization");
+            LOGGER.trace("await initialization");
             Spark.awaitInitialization();
             sparkInitialized = true;
-            LOGGER.info("initialization done");
+            LOGGER.trace("initialization done");
         }
     }
     
