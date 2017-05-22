@@ -25,7 +25,7 @@ public abstract class BaseEndpointControllerTest {
     private static final int SERVER_PORT = 4567;
     protected static final String URL_VERSION = GlobalEndpointController.URL_VERSION;
     
-    private boolean sparkInitilized = false;
+    private boolean sparkInitialized = false;
     
     @BeforeClass
     public static void beforeClass() {
@@ -34,11 +34,11 @@ public abstract class BaseEndpointControllerTest {
     
     @Before
     public void before() {
-        if (!sparkInitilized) {
-            LOGGER.info("await initialization");
+        if (!sparkInitialized) {
+            LOGGER.trace("await initialization");
             Spark.awaitInitialization();
-            sparkInitilized = true;
-            LOGGER.info("initialization done");
+            sparkInitialized = true;
+            LOGGER.trace("initialization done");
         }
     }
     
