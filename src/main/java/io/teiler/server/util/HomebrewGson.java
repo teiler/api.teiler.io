@@ -1,11 +1,11 @@
 package io.teiler.server.util;
 
+import java.time.LocalDateTime;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import io.teiler.server.util.jsonserializer.LocalDateTimeSerializer;
-import io.teiler.server.util.jsonserializer.TimestampSerializer;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class HomebrewGson {
 
@@ -34,7 +34,6 @@ public class HomebrewGson {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.excludeFieldsWithoutExposeAnnotation();
         gsonBuilder.registerTypeHierarchyAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
-        gsonBuilder.registerTypeHierarchyAdapter(Timestamp.class, new TimestampSerializer());
         return gsonBuilder.create();
     }
 
