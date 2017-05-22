@@ -11,8 +11,10 @@ import org.junit.runners.Suite.SuiteClasses;
     PeopleEndpointControllerTest.class
 })
 public class EndpointControllerTestSuite {
+    
+    private EndpointControllerTestSuite() { /* intentionally empty */ }
 
     @ClassRule
-    public static EndpointTestResources res = EndpointTestResources.getInstance();
+    public static final EndpointTestResources res = EndpointTestResources.getInstance();
     
 }
