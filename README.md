@@ -40,7 +40,7 @@ spring.datasource.password = tylr
 5. Run `scripts/tylr-api` to start the TYLR.
 6. Access it through http://localhost:PORT
 
-If you want to access the API from outside localhost or / and SSL, you need to use a reverse proxy in front of the application like an NGINX.
+If you want to access the API from outside localhost or / and SSL, use a reverse proxy in front of the application like an NGINX.
 
 ## Run from source
 
