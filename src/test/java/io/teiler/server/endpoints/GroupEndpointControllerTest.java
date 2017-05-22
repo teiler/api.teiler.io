@@ -15,6 +15,8 @@ import io.teiler.server.util.enums.Currency;
 
 public class GroupEndpointControllerTest extends BaseEndpointControllerTest {
 
+    private static final String GROUP_URL = URL_VERSION + "groups";
+    
     private static final String POST_GROUP_NAME = "Manamana";
     private static final String GET_GROUP_ID = "gettgrup";
     private static final String GET_GROUP_NAME = "GetGroup";
@@ -26,7 +28,6 @@ public class GroupEndpointControllerTest extends BaseEndpointControllerTest {
     private static final String PARAM_ID = "id";
     private static final String PARAM_CURRENCY = "currency";
     private static final String PARAM_UPDATE_TIME = "update-time";
-    private static final String GROUP_URL = URL_VERSION + "groups";
     private static final String PARAM_CREATE_TIME = "create-time";
 
     @Test
