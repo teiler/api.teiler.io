@@ -25,7 +25,7 @@ public abstract class BaseEndpointControllerTest {
     private static final int SERVER_PORT = 4567;
     protected static final String URL_VERSION = GlobalEndpointController.URL_VERSION;
     
-    private static boolean sparkInitilized = false;
+    private boolean sparkInitilized = false;
     
     @BeforeClass
     public static void beforeClass() {
