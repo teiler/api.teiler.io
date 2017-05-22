@@ -14,13 +14,13 @@ import spark.Spark;
 class EndpointTestResources extends ExternalResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(EndpointTestResources.class);
     
-    private static int count = getAmountOfEndpointTests();
+    private int count = getAmountOfEndpointTests();
     private static EndpointTestResources instance;
     
     private EndpointTestResources() { /* intentionally empty */ }
     
     public static EndpointTestResources getInstance() {
-        if (count == 0) {
+        if (instance == null) {
             instance = new EndpointTestResources();
         }
         return instance;
