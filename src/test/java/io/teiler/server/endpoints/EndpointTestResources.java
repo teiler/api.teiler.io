@@ -45,7 +45,6 @@ class EndpointTestResources extends ExternalResource {
         LOGGER.trace("Amount of test methods: " + amountOfTestMethods);
         
         return amountOfTestMethods;
-        
     }
     
     @Override
