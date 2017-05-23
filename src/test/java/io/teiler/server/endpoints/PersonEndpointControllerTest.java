@@ -29,6 +29,8 @@ public class PersonEndpointControllerTest extends BaseEndpointControllerTest {
     private static final String GET_PERSON_1_NAME = "PeoplePerson1";
     private static final int GET_PERSON_2_ID = 8;
     private static final String GET_PERSON_2_NAME = "PeoplePerson2";
+    
+    private static final int PERSON_NOT_FOUND_ID = 666;
 
     private static final String PARAM_NAME = "name";
     private static final String PARAM_ID = "id";
@@ -95,6 +97,15 @@ public class PersonEndpointControllerTest extends BaseEndpointControllerTest {
                 .delete(PERSON_URL + "/" + DELETE_PERSON_ID)
             .then()
                 .statusCode(200);
+    }
+    
+    @Test
+    public void testPersonNotFound() {
+        given()
+            .when()
+                .get(PERSON_URL + "/" + PERSON_NOT_FOUND_ID)
+            .then()
+                .statusCode(404);
     }
 
 }
