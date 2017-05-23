@@ -5,6 +5,7 @@ plugins {
 
 apply plugin: "application"
 apply plugin: "java"
+apply plugin: "distribution"
 
 apply plugin: "checkstyle"
 apply plugin: "jacoco"
@@ -62,6 +63,14 @@ dependencies {
     testCompile "com.h2database:h2:${h2Version}"
 }
 
+distributions {
+    main {
+        contents {
+            from { "application.properties-example" }
+        }
+    }
+}
+
 checkstyle {
     configFile = rootProject.file("checkstyle.xml")
     toolVersion = "7.6"
@@ -72,12 +81,23 @@ querydsl {
     jpa = true
 }
 
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
 test {
     exclude "**/*EndpointController*"
 
     reports {
         junitXml.enabled = true
         html.enabled = false
+    }
+
+    jacoco {
+        append = false
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpFile = file("$buildDir/jacoco/classpathdumps")
     }
 }
 
@@ -87,6 +107,14 @@ tasks.withType(Checkstyle) {
     reports {
         xml.enabled false
         html.enabled false
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
     }
 }
 
