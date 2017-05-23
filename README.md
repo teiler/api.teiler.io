@@ -13,7 +13,7 @@ Prerequisites:
  - PostgreSQL 9
  
 1. Install the prerequisites.
-2. Download the newest release fromm Github.
+2. Download the newest release from Github.
 3. Run the following commands to create a user and database:
 
 ````
