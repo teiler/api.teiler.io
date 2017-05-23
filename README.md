@@ -1,10 +1,6 @@
 # TYLR
 TYLR is a REST API to help you to split up expenses in groups.
 
-TODO:
-* Port
-* SQL create user
-
 ## Run from binaries
 
 Prerequisites:
