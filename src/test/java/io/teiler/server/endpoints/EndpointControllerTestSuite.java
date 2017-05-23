@@ -8,7 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
     GroupEndpointControllerTest.class,
-    PeopleEndpointControllerTest.class
+    PersonEndpointControllerTest.class
 })
 public class EndpointControllerTestSuite {
     
