@@ -7,13 +7,13 @@ TODO:
 
 ## Run from binaries
 
-Perquisites:
+Prerequisites:
  
  - Java / OpenJDK 8
  - PostgreSQL 9
  
-1. Install the perquisites.
-2. Download the newest release form Github.
+1. Install the prerequisites.
+2. Download the newest release fromm Github.
 3. Run the following commands to create a user and database:
 
 ````
@@ -44,12 +44,12 @@ If you want to access the API from outside localhost or / and SSL, use a reverse
 
 ## Run from source
 
-Perquisites:
+Prerequisites:
  
  - Java / OpenJDK 8
  - PostgreSQL 9
  
-1. Install the perquisites.
+1. Install the prerequisites.
 2. Clone the master branch or a version tag from Github.
 3. Do steps 4 and 5 from above.
 4. Run `./gradlew run` to run TYLR.
