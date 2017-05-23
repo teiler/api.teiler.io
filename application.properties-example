@@ -2,3 +2,5 @@
 spring.datasource.url = jdbc:postgresql://localhost:5432/tylr
 spring.datasource.username = tylr
 spring.datasource.password = tylr
+#server.port = 4567 #default
+#server.ip = 127.0.0.1 #default
