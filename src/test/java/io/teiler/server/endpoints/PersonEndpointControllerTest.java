@@ -35,6 +35,9 @@ public class PersonEndpointControllerTest extends BaseEndpointControllerTest {
     private static final String PEOPLE_NAME_CONFLICT_GROUP_ID = "spargrup";
     private static final String PEOPLE_NAME_CONFLICT_URL = URL_VERSION + "groups/" + PEOPLE_NAME_CONFLICT_GROUP_ID + "/people";    
     private static final String PEOPLE_NAME_CONFLICT_PERSON_NAME = "Spartacus";
+    
+    private static final int INACTIVE_PERSON_ID = 4;
+    private static final String INACTIVE_PERSON_NAME = "InactivePerson";
 
     private static final String PARAM_NAME = "name";
     private static final String PARAM_ID = "id";
@@ -124,6 +127,20 @@ public class PersonEndpointControllerTest extends BaseEndpointControllerTest {
                 .post(PEOPLE_NAME_CONFLICT_URL)
             .then()
                 .statusCode(409);
+    }
+    
+    @Test
+    public void testPersonInactive() {
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put(PARAM_NAME, INACTIVE_PERSON_NAME + "ABC");
+        
+        given()
+            .contentType(ContentType.JSON)
+            .body(requestBody)
+            .when()
+                .put(PERSON_URL + "/" + INACTIVE_PERSON_ID)
+            .then()
+                .statusCode(410);
     }
 
 }
