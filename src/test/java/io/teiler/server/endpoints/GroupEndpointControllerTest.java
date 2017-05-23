@@ -16,14 +16,16 @@ import io.teiler.server.util.enums.Currency;
 public class GroupEndpointControllerTest extends BaseEndpointControllerTest {
 
     private static final String GROUP_URL = URL_VERSION + "groups";
-    
+
     private static final String POST_GROUP_NAME = "Manamana";
     private static final String GET_GROUP_ID = "gettgrup";
     private static final String GET_GROUP_NAME = "GetGroup";
     private static final String PUT_GROUP_ID = "puttgrup";
     private static final String PUT_GROUP_NAME = "PutGroupABC";
     private static final String DELETE_GROUP_ID = "deltgrup";
-    
+    private static final String INVALID_CURRENCY_GROUP_NAME = "InvalidCurrency";
+    private static final String INVALID_CURRENCY = "XYZ";
+
     private static final String PARAM_NAME = "name";
     private static final String PARAM_ID = "id";
     private static final String PARAM_CURRENCY = "currency";
@@ -82,7 +84,7 @@ public class GroupEndpointControllerTest extends BaseEndpointControllerTest {
                 .body(PARAM_UPDATE_TIME, is(notNullValue()))
                 .body(PARAM_CREATE_TIME, is(notNullValue()));
     }
-    
+
     @Test
     public void testDeleteGroup() {
         given()
@@ -90,6 +92,21 @@ public class GroupEndpointControllerTest extends BaseEndpointControllerTest {
                 .delete(GROUP_URL + "/" + DELETE_GROUP_ID)
             .then()
                 .statusCode(200);
+    }
+
+    @Test
+    public void testInvalidCurrency() {
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put(PARAM_NAME, INVALID_CURRENCY_GROUP_NAME);
+        requestBody.put(PARAM_CURRENCY, INVALID_CURRENCY);
+        
+        given()
+            .contentType(ContentType.JSON)
+            .body(requestBody)
+            .when()
+                .put(GROUP_URL + "/" + PUT_GROUP_ID)
+            .then()
+                .statusCode(416);
     }
 
 }
