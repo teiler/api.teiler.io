@@ -5,6 +5,7 @@ plugins {
 
 apply plugin: "application"
 apply plugin: "java"
+apply plugin: "distribution"
 
 apply plugin: "checkstyle"
 apply plugin: "jacoco"
@@ -60,6 +61,14 @@ dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     testCompile "com.h2database:h2:${h2Version}"
+}
+
+distributions {
+    main {
+        contents {
+            from { "application.properties-example" }
+        }
+    }
 }
 
 checkstyle {
