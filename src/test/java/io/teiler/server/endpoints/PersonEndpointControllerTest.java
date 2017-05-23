@@ -13,23 +13,23 @@ import org.junit.Test;
 
 import io.restassured.http.ContentType;
 
-public class PeopleEndpointControllerTest extends BaseEndpointControllerTest {
+public class PersonEndpointControllerTest extends BaseEndpointControllerTest {
 
     private static final String GROUP_ID = "persgrup";
     private static final String PERSON_URL = URL_VERSION + "groups/" + GROUP_ID + "/people";
-    
+
     private static final String POST_PERSON_NAME = "Richi";
     private static final int PUT_PERSON_ID = 2;
     private static final String PUT_PERSON_NAME = "PutPersonABC";
     private static final int DELETE_PERSON_ID = 3;
-    
+
     private static final String PEOPLE_GROUP_ID = "piplgrup";
     private static final String PERSON_PEOPLE_URL = URL_VERSION + "groups/" + PEOPLE_GROUP_ID + "/people";
     private static final int GET_PERSON_1_ID = 7;
     private static final String GET_PERSON_1_NAME = "PeoplePerson1";
     private static final int GET_PERSON_2_ID = 8;
     private static final String GET_PERSON_2_NAME = "PeoplePerson2";
-    
+
     private static final String PARAM_NAME = "name";
     private static final String PARAM_ID = "id";
     private static final String PARAM_ACTIVE = "active";
@@ -87,7 +87,7 @@ public class PeopleEndpointControllerTest extends BaseEndpointControllerTest {
                 .body(PARAM_UPDATE_TIME, is(notNullValue()))
                 .body(PARAM_CREATE_TIME, is(notNullValue()));
     }
-    
+
     @Test
     public void testDeletePerson() {
         given()
