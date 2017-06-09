@@ -1,0 +1,36 @@
+dist: trusty
+language: java
+
+jdk:
+- openjdk8
+
+services:
+- postgresql
+
+addons:
+  postgresql: "9.6"
+
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+
+before_install:
+- chmod +x ./gradlew
+
+before_script:
+- psql -U postgres -c "CREATE USER tylr WITH PASSWORD 'dGolICMsoO'";
+- psql -U postgres -f src/dist/sql/1_reset-database.sql
+- psql -U postgres -f src/dist/sql/2_setup-database.sql
+- psql -U postgres tylr -f src/dist/sql/10_runEverytime.sql
+- psql -U postgres tylr -f src/test/resources/insert_test_data.sql
+
+script:
+- ./gradlew assemble
+- ./gradlew check
+- ./gradlew integrationTest
+
+after_success: ./gradlew build
