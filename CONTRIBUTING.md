@@ -27,15 +27,15 @@ Let's start by defining the domain of Teiler. Along, we'll define some terms so 
 
 In the actual code, it's packaged like that (from top to bottom if you think of layers)
 
-* `endpoint`: The REST endpoints reside in this package. It's responsible for presentation and request handling. Request data is de-serialized from JSON to our internal representation (next layer), and any answers are serialized to JSON. Also, any limits and other parameters are set and read here. If an exception is thrown, the logic to convert them into HTTP error codes and JSON error literals is also here. 
+* `endpoint` The REST endpoints reside in this package. It's responsible for presentation and request handling. Request data is de-serialized from JSON to our internal representation (next layer), and any answers are serialized to JSON. Also, any limits and other parameters are set and read here. If an exception is thrown, the logic to convert them into HTTP error codes and JSON error literals is also here. 
 
 Per endpoint, there's one class. Each class implements a single lambda method for each request.
 
-* `dto`: This is the data as we need it for the business logic part.
-* `services`: This is the actual flesh on the bones. There's one class per endpoint and one method per request. First, all the data given from the `endpoint` class is validated. If the data is valid, it's processed according to business logic rules and then sent to the persistence layer. 
+* `dto` This is the data as we need it for the business logic part.
+* `services` This is the actual flesh on the bones. There's one class per endpoint and one method per request. First, all the data given from the `endpoint` class is validated. If the data is valid, it's processed according to business logic rules and then sent to the persistence layer. 
 
 Validation (along with other things) happens in the `services.util` package, so we can focus on actual business logic for the happy case in the `services` package. All errors are thrown via *exceptions*.
 
-* `entities`: This is the data as we need it for the persistence part. Also, any conversion logic from `dto` to `entities` *and vice-versa* is stored here.
-* `repositories`: This is the persistence layer where the logic resides on how to actually store and query data in the database. 
-* `util`: At the very bottom, there are various tools, e.g. a helper for time serialization in GSON and classes for the exceptions and some enums.
+* `entities` This is the data as we need it for the persistence part. Also, any conversion logic from `dto` to `entities` *and vice-versa* is stored here.
+* `repositories` This is the persistence layer where the logic resides on how to actually store and query data in the database. 
+* `util` At the very bottom, there are various tools, e.g. a helper for time serialization in GSON and classes for the exceptions and some enums.
