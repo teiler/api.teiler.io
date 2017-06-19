@@ -60,7 +60,23 @@ Everyone is invited to create their own clients. Here's a list of clients we kno
 
 * [web.teiler.io](https://github.com/teiler/web.teiler.io) (reference implementation)
 
-## Software Architecture
+## How to contribute
+
+If you want to contribute, have a look at our issues list first to see what we think is needed. If you want to add something else, you're free to do so aswell.
+
+### Testing & prototyping
+
+You need to be able to run the system and run the JUnit tests in the `tests` package. Make sure you test from our clean source first, so that you know if something's broken because of your changes, or if the tests fail anyway.
+
+If you want to test against the real implementation, there's a [Postman file](https://github.com/teiler/api.teiler.io/blob/master/src/main/resources/postman/Postman.json). Your contribution could also extend that Postman file (just export it after you're done). To run it, simply add a Postman environment variable `url` which should point to the server, e.g. `http://localhost:4567`.
+
+Be aware that your contribution *should* also include new unit tests for what you've added or fixed, although we won't reject it just because of that.
+
+### Dealing with API changes
+
+If your change would add something to the API, or even change the behaviour, you need to add a proposal to our [API specification repository](https://github.com/teiler/doc.teiler.io) first. The contribution process for the API is written out there.
+
+### Software Architecture
 
 Let's start by defining the domain of Teiler. Along, we'll define some terms so we're talking of the same thing
 
