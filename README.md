@@ -59,3 +59,7 @@ This project is the backend implementation for teiler. It implements the API spe
 Everyone is invited to create their own clients. Here's a list of clients we know of:
 
 * [web.teiler.io](https://github.com/teiler/web.teiler.io) (reference implementation)
+
+## Contributing
+
+For contribution guidelines and software architectural help, see [CONTRIBUTING](CONTRIBUTING.md)
