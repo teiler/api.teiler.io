@@ -1,6 +1,6 @@
 plugins {
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.8"
-    id "com.github.ben-manes.versions" version "0.14.0"
+    id "com.github.ben-manes.versions" version "0.15.0"
 }
 
 apply plugin: "application"
@@ -25,21 +25,21 @@ repositories {
 }
 
 ext {
-    sparkVersion = "2.6.0.RC0"
-    springBootVersion = "1.5.3.RELEASE"
+    sparkVersion = "2.6.0"
+    springBootVersion = "1.5.7.RELEASE"
 
-    postgresqlVersion = "42.0.0"
-    hibernateValidatorVersion = "6.0.0.Alpha2"
+    postgresqlVersion = "42.1.4"
+    hibernateValidatorVersion = "6.0.2.Final"
     queryDslVersion = "4.1.4"
 
-    gsonVersion = "2.8.0"
+    gsonVersion = "2.8.2"
 
     slf4jVersion = "1.7.24"
     logbackVersion = "1.2.3"
 
     junitVersion = "4.12"
     restAssuredVersion = "3.0.3"
-    h2Version = "1.4.195"
+    h2Version = "1.4.196"
 }
 
 dependencies {
@@ -50,6 +50,7 @@ dependencies {
     compile "org.postgresql:postgresql:${postgresqlVersion}"
     compile "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
     compile "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    compile "com.querydsl:querydsl-apt:${queryDslVersion}"
 
     compile "com.google.code.gson:gson:${gsonVersion}"
 

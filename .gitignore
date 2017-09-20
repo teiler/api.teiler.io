@@ -16,6 +16,9 @@ node_modules
 # Gradle
 .gradle
 
+# VSCode
+.vscode
+
 ### End non-generated rules ### 
 
 ### Start generated rules ###
