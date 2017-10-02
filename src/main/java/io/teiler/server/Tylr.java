@@ -17,4 +17,10 @@ public class Tylr {
         SpringApplication.run(Tylr.class, args);
     }
 
+    public void doIt() {
+        if (true) {
+            // do something
+        }
+    }
+
 }
