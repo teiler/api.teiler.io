@@ -1,4 +1,7 @@
 # Teiler
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/da2f479780b7421d96a3f42faa55f313)](https://www.codacy.com/app/Teiler/api.teiler.io?utm_source=github.com&utm_medium=referral&utm_content=teiler/api.teiler.io&utm_campaign=badger)
+
 Teiler is a REST API to help you to split up expenses in groups.
 
 ## Run from binaries
