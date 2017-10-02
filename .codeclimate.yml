@@ -16,7 +16,7 @@ engines:
         - "java-migrating"
         - "java-naming"
         - "java-optimizations"
-        - "java-strictexceptions"
+        - "java-strictexception"
         - "java-strings"
         - "java-sunsecure"
         - "java-typeresolution"
