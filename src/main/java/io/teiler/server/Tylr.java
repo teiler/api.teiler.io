@@ -17,4 +17,8 @@ public class Tylr {
         SpringApplication.run(Tylr.class, args);
     }
 
+    public void test() {
+	throw new java.lang.Exception();
+    }
+
 }
