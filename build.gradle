@@ -19,6 +19,10 @@ sourceSets.test.java.srcDirs = ["src/test/java", "src/test/resources"]
 
 mainClassName = "io.teiler.server.Tylr"
 
+configurations {
+    codacy
+}
+
 repositories {
     mavenLocal()
     jcenter()
@@ -40,6 +44,8 @@ ext {
     junitVersion = "4.12"
     restAssuredVersion = "3.0.3"
     h2Version = "1.4.196"
+
+    codacyCoverageReporterVersion = "2.0.1"
 }
 
 dependencies {
@@ -62,6 +68,8 @@ dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     testCompile "com.h2database:h2:${h2Version}"
+
+    codacy "com.codacy:codacy-coverage-reporter:${codacyCoverageReporterVersion}"
 }
 
 distributions {
@@ -79,22 +87,28 @@ checkstyle {
 }
 
 querydsl {
-    jpa = true
+    jpa true
 }
 
 test {
     exclude "**/*EndpointController*"
 
     reports {
-        junitXml.enabled = true
-        html.enabled = false
+        junitXml.enabled true
+        html.enabled false
     }
 }
 
 jacocoTestReport {
+    executionData(
+        file("${buildDir}/jacoco/test.exec"),
+        file("${buildDir}/jacoco/integrationTest.exec")
+    )
+
     reports {
-        xml.enabled true
         html.enabled false
+        xml.enabled true
+        xml.destination file("${buildDir}/reports/jacocoTestReport.xml")
     }
 }
 
@@ -111,7 +125,26 @@ task integrationTest(type: Test) {
     include "**/EndpointControllerTestSuite.class"
 
     reports {
-        junitXml.enabled = true
-        html.enabled = false
+        junitXml.enabled true
+        html.enabled false
     }
+}
+
+task pushCoverageReportToCodacy(type: JavaExec) {
+    dependsOn test
+    dependsOn integrationTest
+    dependsOn jacocoTestReport
+
+    onlyIf {
+        System.env["CODACY_PROJECT_TOKEN"] != null
+    }
+    
+    main = "com.codacy.CodacyCoverageReporter"
+    classpath = configurations.codacy
+    args = [
+        "-l",
+        "Java",
+        "-r",
+        "${buildDir}/reports/jacocoTestReport.xml"
+    ]
 }

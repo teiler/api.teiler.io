@@ -35,5 +35,5 @@ script:
 
 after_success: 
 - ./gradlew jacocoTestReport
-- bash <(curl -s https://codecov.io/bash)
+- ./gradlew pushCoverageReportToCodacy
 - ./gradlew build
