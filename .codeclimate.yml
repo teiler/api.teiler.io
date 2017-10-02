@@ -13,7 +13,7 @@ engines:
         - "java-empty"
         - "java-imports"
         - "java-junit"
-        - "java-migration"
+        - "java-migrating"
         - "java-naming"
         - "java-optimizations"
         - "java-strictexceptions"
