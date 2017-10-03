@@ -17,11 +17,4 @@ public class Tylr {
         SpringApplication.run(Tylr.class, args);
     }
 
-    /*
-     * Test-Kommentar
-     */
-    public void test() throws java.lang.Exception {
-	throw new java.lang.Exception();
-    }
-
 }
