@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("io.teiler")
 public class Tylr {
 
+    /** Test comment */
     public static void main(String[] args) {
         SpringApplication.run(Tylr.class, args);
     }
