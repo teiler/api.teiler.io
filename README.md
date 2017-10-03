@@ -1,16 +1,17 @@
 # Teiler
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/da2f479780b7421d96a3f42faa55f313)](https://www.codacy.com/app/Teiler/api.teiler.io?utm_source=github.com&utm_medium=referral&utm_content=teiler/api.teiler.io&utm_campaign=badger)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/da2f479780b7421d96a3f42faa55f313)](https://www.codacy.com/app/Teiler/api.teiler.io?utm_source=github.com&utm_medium=referral&utm_content=teiler/api.teiler.io&utm_campaign=Badge_Coverage)
 
 Teiler is a REST API to help you to split up expenses in groups.
 
 ## Run from binaries
 
 Prerequisites:
- 
+
  - Java / OpenJDK 8
  - PostgreSQL 9
- 
+
 1. Install the prerequisites.
 2. Download the newest release from Github.
 3. Run the following commands to create a user and database:
@@ -44,10 +45,10 @@ If you want to access the API from outside localhost or / and SSL, use a reverse
 ## Run from source
 
 Prerequisites:
- 
+
  - Java / OpenJDK 8
  - PostgreSQL 9
- 
+
 1. Install the prerequisites.
 2. Clone the master branch or a version tag from Github.
 3. Do steps 4 and 5 from above.
