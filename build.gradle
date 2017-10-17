@@ -130,22 +130,3 @@ task integrationTest(type: Test) {
         html.enabled false
     }
 }
-
-task pushCoverageReportToCodacy(type: JavaExec) {
-    dependsOn test
-    dependsOn integrationTest
-    dependsOn jacocoTestReport
-
-    onlyIf {
-        System.env["CODACY_PROJECT_TOKEN"] != null
-    }
-    
-    main = "com.codacy.CodacyCoverageReporter"
-    classpath = configurations.codacy
-    args = [
-        "-l",
-        "Java",
-        "-r",
-        "${buildDir}/reports/jacocoTestReport.xml"
-    ]
-}

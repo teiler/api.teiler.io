@@ -43,5 +43,4 @@ script:
 
 after_success: 
 - ./gradlew jacocoTestReport
-- ./gradlew pushCoverageReportToCodacy
 - ./gradlew build
