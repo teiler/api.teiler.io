@@ -39,7 +39,7 @@ script:
 - ./gradlew assemble
 - ./gradlew check
 - ./gradlew integrationTest
-- sonar-scanner
+- ./gradlew sonarqube
 
 after_success: 
 - ./gradlew jacocoTestReport
