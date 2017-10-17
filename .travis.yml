@@ -9,6 +9,10 @@ services:
 
 addons:
   postgresql: "9.6"
+  sonarcloud:
+    organization: "teiler"
+    token:
+      secure: "xledcssKTPnvqfs8yGkwN8akCOsaBxzItnodqEHfo862aB3LPH6ZcHEHuYlqPqRYhCxUZOzmElUyhZhJxTLogIZ5lFNX5M8XDogeMF2PaFeOuNG94MNmfSBxBBjT597XjhV1PX5e35U020hOgKX44Xk/4mKQ3ESwSrkkVlfsbW0lZHBlLyZlFNjs12K2kJHzdsnAa0z57AtQqmyq8VHht9/LqOPGkPsXQkVXYKvkENGkoJZimDUZewXi0lBVsfqlr8r1G7vKnmAy4UE5AO09Ud18I+cc6N7VSj2XBtMQQWzhLiz5Ry5d5wD6Vk8A1rLmLdvq0+0kPcvBjLwsjuy9AVeJw8Pe2dhMuVirn0ruAc7w2+HhR3MvCKqWJPZ1NbmwrYOZglYvbuz2bDiVLSqAsDC8sp4YsYSe+X87diMAgeo6I1qGxIBZt2So7PQa1X7Tu6KbhWtoFEYtzbW6AROJIIPRWoI95PJ+pj02DoxXLeN2qjQo/G7+hGxKwMu1XLDjL9262LwMVrhjqBwHqlDBe7oXOFPSZQMUIWCMJCjrTEWzbvMVT6hGU5tjtoHs6zFF0a0rqrLFrdAzCFP7gOy0Gv8H+i8HLpJSRNkbxZqIYALSelQB3YRVcsnLttCCZtyjCECh+fR6Wh5vPfUoPLJfjs/5DfcG37yBPYQ0dB05Z10="
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -32,6 +36,7 @@ script:
 - ./gradlew assemble
 - ./gradlew check
 - ./gradlew integrationTest
+- ./gradlew sonarqube
 
 after_success: 
 - ./gradlew jacocoTestReport
