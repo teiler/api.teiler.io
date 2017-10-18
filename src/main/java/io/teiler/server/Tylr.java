@@ -15,11 +15,6 @@ public class Tylr {
 
     public static void main(String[] args) {
         SpringApplication.run(Tylr.class, args);
-    
-        String test = null;
-        if (test == null) {
-            // do nothing
-        }
     }
 
 }
