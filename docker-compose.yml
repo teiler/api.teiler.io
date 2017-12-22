@@ -1,0 +1,19 @@
+version: '3'
+services:
+    teiler:
+        build: .
+        ports:
+        - 4567
+        depends_on:
+        - postgres
+        environment:
+            spring.datasource.url: jdbc:postgresql://postgres:5432/tylr
+            spring.datasource.username: tylr
+            spring.datasource.password: tylr
+            server.ip: 0.0.0.0
+    postgres:
+        image: postgres:9.6-alpine
+        environment:
+            POSTGRES_USER: tylr
+            POSTGRES_PASSWORD: tylr
+            POSTGRES_DB: tylr
