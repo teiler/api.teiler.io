@@ -5,7 +5,16 @@
 
 Teiler is a REST API to help you to split up expenses in groups.
 
-## Run from binaries
+## Run with docker
+
+Prerequisites:
+
+ - Docker
+
+1. Clone the master branch or a version tag from Github.
+2. Run `docker-compose up -d teiler` to run the server.
+
+## Run from precompiled binaries
 
 Prerequisites:
 
