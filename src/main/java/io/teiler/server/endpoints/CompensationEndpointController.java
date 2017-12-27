@@ -12,6 +12,8 @@ import io.teiler.server.services.CompensationService;
 import io.teiler.server.util.HomebrewGson;
 import io.teiler.server.util.exceptions.PayerProfiteerConflictException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,6 +77,9 @@ public class CompensationEndpointController implements EndpointController {
         exception(TransactionNotFoundException.class, (e, request, response) ->
             EndpointUtil.prepareErrorResponse(response, 404, e));
 
+        exception(ValueLessThanOrEqualToZeroException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 406, e));
+        
         exception(PayerProfiteerConflictException.class, (e, request, response) ->
             EndpointUtil.prepareErrorResponse(response, 409, e));
     }

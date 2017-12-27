@@ -12,6 +12,8 @@ import io.teiler.server.services.ExpenseService;
 import io.teiler.server.util.HomebrewGson;
 import io.teiler.server.util.exceptions.SharesNotAddingUpException;
 import io.teiler.server.util.exceptions.TransactionNotFoundException;
+import io.teiler.server.util.exceptions.ValueLessThanOrEqualToZeroException;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,6 +77,9 @@ public class ExpenseEndpointController implements EndpointController {
             EndpointUtil.prepareErrorResponse(response, 404, e));
 
         exception(SharesNotAddingUpException.class, (e, request, response) ->
+            EndpointUtil.prepareErrorResponse(response, 406, e));
+
+        exception(ValueLessThanOrEqualToZeroException.class, (e, request, response) ->
             EndpointUtil.prepareErrorResponse(response, 406, e));
     }
 
