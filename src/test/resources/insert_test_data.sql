@@ -17,4 +17,4 @@ INSERT INTO person VALUES (8, 'PeoplePerson2', 'piplgrup', TRUE, NOW(), NOW());
 INSERT INTO "group" VALUES ('spargrup', 'Spartacus', 'CHF', NOW(), NOW());
 INSERT INTO person VALUES (9, 'Spartacus', 'spargrup', TRUE, NOW(), NOW());
 
-SELECT SETVAL('person_id_seq', (SELECT MAX(id) FROM "person")); -- DO NOT REMOVE, ELSE: TRAVIS => BUMM
+SELECT SETVAL('person_id_seq', (SELECT MAX(id) FROM "person")); -- DO NOT REMOVE, ELSE: TRAVIS => BOOM
